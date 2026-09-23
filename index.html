@@ -41,6 +41,7 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
 .wrap{max-width:900px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
 h1,h2,h3,h4{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
@@ -163,6 +164,89 @@ textarea{min-height:70px;resize:vertical}
 .hl{background:var(--amber-soft);border-radius:3px;padding:0 3px}
 .callout{border-left:3px solid var(--amber);background:var(--amber-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15.5px}
 footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink-2)}
+/* ---- Trilha (gamified path) ---- */
+:root{--plum:#6B3FA0;--plum-soft:#EEE6F7}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--plum:#C4A3F0;--plum-soft:#2A1F3A}}
+:root[data-theme="dark"]{--plum:#C4A3F0;--plum-soft:#2A1F3A}
+.u-blue{--u:var(--blue);--u-soft:var(--blue-soft)}
+.u-teal{--u:var(--teal);--u-soft:var(--teal-soft)}
+.u-amber{--u:var(--amber);--u-soft:var(--amber-soft)}
+.u-red{--u:var(--red);--u-soft:var(--red-soft)}
+.u-plum{--u:var(--plum);--u-soft:var(--plum-soft)}
+.gstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.gtile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:6px}
+.gtile .big{font-family:var(--display);font-weight:700;font-size:26px;line-height:1.1;font-variant-numeric:tabular-nums}
+.gtile .mini{height:8px;background:var(--sunk);border-radius:6px;overflow:hidden}
+.gtile .mini i{display:block;height:100%;width:0;background:var(--teal);transition:width .4s}
+.gtile .mini.amber i{background:var(--amber)}
+.flame{color:var(--amber)}
+.badges{display:flex;flex-wrap:wrap;gap:8px}
+.badge{display:inline-flex;align-items:center;gap:6px;font-family:var(--display);font-size:13.5px;padding:5px 11px;border-radius:99px;border:1px solid var(--line);color:var(--ink-2);background:var(--surface)}
+.badge.on{border-color:var(--amber);background:var(--amber-soft);color:var(--amber)}
+.path{display:flex;flex-direction:column;gap:40px}
+.unit{display:flex;flex-direction:column;gap:22px}
+.unit-head{border-radius:12px;padding:16px 18px;background:var(--u);color:var(--paper);display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.unit-head h3{font-size:19px}
+.unit-head p{font-size:14.5px;opacity:.92}
+.unit-head .pill{background:var(--paper);color:var(--u)}
+.nodes{display:flex;flex-direction:column;align-items:center;gap:18px}
+.nodewrap{display:flex;flex-direction:column;align-items:center;gap:8px;transform:translateX(var(--x,0))}
+.node{appearance:none;width:74px;height:70px;border-radius:50%;border:0;cursor:pointer;background:var(--u);color:var(--paper);font-family:var(--display);font-weight:700;font-size:24px;box-shadow:0 6px 0 color-mix(in srgb,var(--u) 62%,#000);transition:transform .08s}
+.node:active{transform:translateY(4px);box-shadow:0 2px 0 color-mix(in srgb,var(--u) 62%,#000)}
+.node.locked{background:var(--sunk);color:var(--ink-2);box-shadow:0 6px 0 var(--line);cursor:not-allowed}
+.node.perfect{box-shadow:0 6px 0 color-mix(in srgb,var(--u) 62%,#000),0 0 0 5px var(--amber)}
+.node.current{outline:4px solid var(--u-soft);outline-offset:6px}
+.node.boss{border-radius:18px;width:92px;height:74px;font-size:15px;letter-spacing:.06em}
+.nodelabel{font-family:var(--display);font-size:13.5px;color:var(--ink-2);text-align:center;max-width:170px;line-height:1.3}
+.startflag{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;color:var(--u);text-transform:uppercase}
+
+/* player */
+.player{position:fixed;inset:0;z-index:50;background:var(--paper);display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.p-top{display:flex;align-items:center;gap:14px;padding:14px 20px;max-width:760px;width:100%;margin:0 auto}
+.p-x{appearance:none;border:0;background:none;color:var(--ink-2);font-size:24px;line-height:1;cursor:pointer;padding:4px 6px;font-family:var(--display)}
+.p-x.confirm{font-size:14px;color:var(--red);border:1px solid var(--red);border-radius:8px;padding:6px 10px}
+.p-bar{flex:1;height:14px;background:var(--sunk);border-radius:8px;overflow:hidden}
+.p-bar i{display:block;height:100%;width:0;background:var(--teal);transition:width .3s}
+.p-stat{font-family:var(--mono);font-size:15px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.p-stat.hearts{color:var(--red)}
+.p-body{flex:1;overflow-y:auto;width:100%}
+.p-inner{max-width:760px;margin:0 auto;padding:12px 20px 28px;display:flex;flex-direction:column;gap:18px}
+.p-kind{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--u,var(--blue))}
+.p-q{font-family:var(--display);font-size:clamp(21px,4vw,26px);font-weight:700;line-height:1.25;text-wrap:balance}
+.p-s{font-size:20px;line-height:1.5}
+.p-pt{font-size:19px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 16px}
+.blank{display:inline-block;min-width:70px;border-bottom:3px solid var(--blue);color:var(--blue);text-align:center}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{appearance:none;display:flex;gap:12px;align-items:center;width:100%;text-align:left;padding:13px 16px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);font-family:var(--body);font-size:17px;cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.opt .k{font-family:var(--mono);font-size:12px;color:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:1px 7px;flex:none}
+.opt[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 3px 0 var(--blue)}
+.opt.ok{border-color:var(--teal);background:var(--teal-soft);color:var(--teal);box-shadow:none;cursor:default}
+.opt.no{border-color:var(--red);background:var(--red-soft)}
+.opt:disabled{cursor:default}
+.tokarea{min-height:58px;border-bottom:2px solid var(--line);display:flex;flex-wrap:wrap;gap:8px;padding:6px 0 10px;align-content:flex-start}
+.tokbank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tok{appearance:none;font-family:var(--body);font-size:17px;padding:8px 13px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:0 3px 0 var(--line)}
+.tok.used{visibility:hidden}
+.matchgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.matchgrid .opt{justify-content:center;text-align:center;font-size:16px;min-height:56px}
+.p-input{font-size:19px;padding:12px 14px}
+.p-foot{border-top:1px solid var(--line);background:var(--surface);padding:16px 20px calc(16px + env(safe-area-inset-bottom,0px))}
+.p-foot.good{background:var(--teal-soft);border-top-color:var(--teal)}
+.p-foot.bad{background:var(--red-soft);border-top-color:var(--red)}
+.p-foot-in{max-width:760px;margin:0 auto;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.fb{display:flex;flex-direction:column;gap:4px;flex:1 1 300px}
+.fb h4{font-size:19px}
+.p-foot.good .fb h4{color:var(--teal)}
+.p-foot.bad .fb h4{color:var(--red)}
+.fb p{font-size:15.5px}
+.bigbtn{font-size:16px;padding:13px 26px;min-width:160px;border-radius:12px}
+.p-foot.good .bigbtn{background:var(--teal);border-color:var(--teal)}
+.p-foot.bad .bigbtn{background:var(--red);border-color:var(--red)}
+.endgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.endtile{border:2px solid var(--line);border-radius:12px;padding:12px;text-align:center;background:var(--surface)}
+.endtile .big{font-family:var(--display);font-weight:700;font-size:24px;font-variant-numeric:tabular-nums}
+.endhero{font-family:var(--display);font-weight:700;font-size:clamp(28px,6vw,40px);text-align:center;text-wrap:balance}
+@media (max-width:520px){.p-top,.p-inner{padding-inline:16px}.p-foot{padding-inline:16px}.bigbtn{width:100%}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 @media (max-width:520px){body{font-size:16px}.wrap{padding-inline:16px}nav.tabs{margin-inline:-16px;padding-inline:16px}.card{padding:16px}}
 </style>
@@ -179,7 +263,8 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
     <div class="meter">
       <div class="bar" aria-hidden="true"><i id="progBar"></i></div>
       <span class="stat">Módulo 1: <b id="progTxt">0%</b></span>
-      <span class="stat">Dias de estudo: <b id="daysTxt">0</b></span>
+      <span class="stat">Ofensiva: <b id="daysTxt">0 dias</b></span>
+      <span class="stat">XP: <b id="xpTxt">0</b></span>
       <span id="syncState"></span>
     </div>
   </header>
@@ -187,6 +272,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
   <nav class="tabs" aria-label="Seções">
     <div class="tabrow" role="tablist" id="tabrow">
       <button class="tab" role="tab" data-tab="hoje" aria-selected="true">Hoje</button>
+      <button class="tab" role="tab" data-tab="trilha" aria-selected="false">Trilha</button>
       <button class="tab" role="tab" data-tab="erros" aria-selected="false">Error Log</button>
       <button class="tab" role="tab" data-tab="quiz" aria-selected="false">Quiz</button>
       <button class="tab" role="tab" data-tab="nuance" aria-selected="false">Nuance Lab</button>
@@ -238,6 +324,30 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
         <p class="muted">Reestruturar a sua aula de conversação no formato TBL (<em>pre-task → task → report → language focus</em>) e dominar <em>hedging</em> e desacordo diplomático. Libera quando você enviar as tarefas do Módulo 1.</p>
       </div>
     </div>
+  </section>
+
+  <!-- TRILHA -->
+  <section class="panel stack-lg" id="p-trilha" data-panel="trilha" hidden>
+    <div class="stack">
+      <span class="label">Módulo 1 · lições de 5 minutos</span>
+      <h2>Trilha</h2>
+      <p class="muted">Lições curtas com correção automática. Cada lição tem 8 exercícios e 3 corações. Erros voltam no fim da lição e entram na sua revisão. Vença o Boss Fight de cada unidade para dominar o conteúdo.</p>
+    </div>
+    <div class="gstats">
+      <div class="gtile"><span class="label">Nível</span><span class="big" id="gLevel" style="font-size:19px"></span><div class="mini"><i id="gLevelBar"></i></div><span class="note" id="gLevelNext"></span></div>
+      <div class="gtile"><span class="label">Ofensiva</span><span class="big flame" id="gStreak">0 dias</span><span class="note">1 folga por semana não quebra a ofensiva.</span></div>
+      <div class="gtile"><span class="label">Meta de hoje</span><span class="big"><span id="gToday">0</span><span class="muted" style="font-size:17px"> / 50 XP</span></span><div class="mini amber"><i id="gTodayBar"></i></div></div>
+      <div class="gtile"><span class="label">Semana</span><span class="big"><span id="gWeek">0</span><span class="muted" style="font-size:17px"> / 350 XP</span></span><div class="mini"><i id="gWeekBar"></i></div></div>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="gNext" type="button">Continuar de onde parei</button>
+      <button class="btn warn" id="gReview" type="button">Revisar erros (0)</button>
+    </div>
+    <div class="stack">
+      <span class="label">Conquistas</span>
+      <div class="badges" id="gBadges"></div>
+    </div>
+    <div class="path" id="path"></div>
   </section>
 
   <!-- ERROR LOG -->
@@ -410,6 +520,21 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
   <footer>Language Lens Studio · Módulo 1 de um plano contínuo. Suas marcações e respostas ficam salvas <span id="whereSaved">neste navegador</span>.</footer>
 </div>
 
+<div class="player" id="player" hidden tabindex="-1" role="dialog" aria-modal="true" aria-label="Lição">
+  <div class="p-top">
+    <button class="p-x" id="pClose" type="button" aria-label="Sair da lição">×</button>
+    <div class="p-bar" aria-hidden="true"><i id="pBar"></i></div>
+    <span class="p-stat hearts" id="pHearts"></span>
+  </div>
+  <div class="p-body"><div class="p-inner" id="pBody"></div></div>
+  <div class="p-foot" id="pFoot">
+    <div class="p-foot-in">
+      <div class="fb" id="pFb"></div>
+      <button class="btn primary bigbtn" id="pBtn" type="button">Verificar</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
 "use strict";
@@ -455,7 +580,8 @@ const CHECKS = [
   {id:"c6",t:"Usar a técnica Context First numa aula real",tab:"professor"},
   {id:"c7",t:"Usar o Live Language Doc numa atividade de fluência",tab:"professor"},
   {id:"c8",t:"Enviar um recap pós-aula (3 acertos · 3 correções · 3 expressões)",tab:"professor"},
-  {id:"c9",t:"Fazer o “correction contract” com um grupo",tab:"professor"}
+  {id:"c9",t:"Fazer o “correction contract” com um grupo",tab:"professor"},
+  {id:"c10",t:"Vencer 3 Boss Fights na Trilha",auto:true,tab:"trilha"}
 ];
 
 const TECH = [
@@ -512,7 +638,7 @@ const TASK_A = [
 
 /* ---------- state + storage ---------- */
 const LS_KEY = "language-lens-studio:v1";
-const blank = () => ({done:{}, quiz:{}, tasks:{}, myErrors:[], days:[]});
+const blank = () => ({done:{}, quiz:{}, tasks:{}, myErrors:[], days:[], xp:{}, lessons:{}, boss:{}, mistakes:[]});
 let state = blank();
 let db = null, docRef = null;
 let writing = Promise.resolve();
@@ -555,6 +681,7 @@ function allErrors(){ return ERRORS.concat(state.myErrors.map(m=>({id:m.id,p:"mi
 function autoDone(id){
   if(id==="c2") return ERRORS.filter(e=>state.quiz[e.id]==="ok").length >= 12;
   if(id==="c4") return TASK_A.every(t=>(state.tasks[t.id]||"").trim().length>8);
+  if(id==="c10") return Object.values(state.boss).filter(b=>b && b.won).length >= 3;
   if(id==="c5") return (state.tasks.b1||"").trim().length>20 && (state.tasks.b2||"").trim().length>20;
   return !!state.done[id];
 }
@@ -563,7 +690,8 @@ function renderMeter(){
   const pct = Math.round(n / CHECKS.length * 100);
   $("#progBar").style.width = pct+"%";
   $("#progTxt").textContent = pct+"%";
-  $("#daysTxt").textContent = state.days.length;
+  $("#daysTxt").textContent = diasTxt(streak());
+  $("#xpTxt").textContent = totalXP();
 }
 
 /* ---------- tabs ---------- */
@@ -802,8 +930,443 @@ async function initClaude(){
 }
 
 function renderAll(){
-  renderChecklist(); renderWeek(); renderMeter(); renderErrFilters(); renderErrors(); renderTech(); renderTasks(); renderQuizStats();
+  renderTrilha(); renderChecklist(); renderWeek(); renderMeter(); renderErrFilters(); renderErrors(); renderTech(); renderTasks(); renderQuizStats();
   if(!$("#p-quiz").hidden) renderQuiz();
+}
+
+/* ---------- Trilha: content ---------- */
+// mc: o[0] is the correct option (shuffled on screen). type: a = accepted answers. bank: a = target sentence, x = distractor tiles.
+const UNITS = [
+ {id:"u1", color:"blue", title:"Padrões verbais", desc:"O padrão nº 1 do seu Error Log", lessons:[
+  {id:"u1l1", title:"-ing, to e for", ex:[
+   {t:"type", q:"Complete com a forma certa de find", s:"I have difficulty ___ the right word.", a:["finding"], w:"Difficulty pede -ing: have difficulty doing something."},
+   {t:"mc", q:"Qual frase soa natural?", o:["She asked me for the translation.","She asked me the translation.","She asked to me the translation."], w:"Ask no sentido de “pedir” leva for: ask someone for something."},
+   {t:"bank", q:"Traduza", pt:"Nós discutimos o orçamento.", a:"We discussed the budget", x:["about","on"], w:"Discuss é transitivo direto: sem about."},
+   {t:"mc", q:"Escolha a forma natural", s:"Could you ___ again?", o:["explain it to me","explain me it","explain to me it"], w:"Explain something to someone. Nunca explain me."},
+   {t:"type", q:"Complete com uma palavra", s:"My manager encouraged me ___ apply for the role.", a:["to"], w:"Encourage someone to do something."},
+   {t:"mc", q:"Qual verbo completa melhor?", s:"It's hard to ___ the exact meaning of “saudade”.", o:["convey","reply","answer"], w:"Convey = transmitir um sentido. Reply = responder (e pede to)."},
+   {t:"bank", q:"Traduza", pt:"Ela me pediu para traduzir o e-mail.", a:"She asked me to translate the email", x:["for","translating"], w:"Ask someone to do something."},
+   {t:"match", q:"Ligue o português ao padrão em inglês", p:[["ter dificuldade em","have difficulty -ing"],["pedir a tradução","ask for the translation"],["discutir o tema","discuss the topic"],["responder ao e-mail","reply to the email"]]}
+  ]},
+  {id:"u1l2", title:"Preposições traiçoeiras", ex:[
+   {t:"mc", q:"Qual frase soa natural?", o:["We need to discuss the proposal.","We need to discuss about the proposal.","We need to discuss on the proposal."], w:"Discuss já contém a ideia de “sobre”."},
+   {t:"type", q:"Complete com uma palavra", s:"Please reply ___ the client by Friday.", a:["to"], w:"Reply to someone/something."},
+   {t:"mc", q:"Como se diz “Ela entrou na sala”?", o:["She entered the room.","She entered in the room.","She entered on the room."], w:"Enter é transitivo direto. O “em” do português não vai junto."},
+   {t:"type", q:"Complete com uma palavra", s:"It depends ___ the budget.", a:["on"], w:"Depend on. O “de” do português leva muita gente a dizer depend of."},
+   {t:"mc", q:"Escolha a forma certa", s:"I'm looking forward ___ you.", o:["to meeting","to meet","meeting"], w:"Aqui to é preposição, então vem -ing: look forward to doing."},
+   {t:"bank", q:"Traduza", pt:"Ele insistiu em pagar a conta.", a:"He insisted on paying the bill", x:["in","to","pay"], w:"Insist on doing something."},
+   {t:"mc", q:"Qual frase NÃO tem interferência do português?", o:["I'm married to Ana.","I'm married with Ana.","I'm married of Ana."], w:"Married to someone."},
+   {t:"type", q:"Complete com uma palavra", s:"How can I get my students ___ review after class?", a:["to"], w:"Get someone to do something (= fazer alguém fazer algo)."}
+  ]}
+ ]},
+ {id:"u2", color:"teal", title:"Incontáveis e falsos cognatos", desc:"Adeus, “audios” e “habilities”", lessons:[
+  {id:"u2l1", title:"Incontáveis", ex:[
+   {t:"mc", q:"Escolha a forma natural", s:"In class, we listen to ___.", o:["audio clips","audios","an audio"], w:"Audio é incontável. Para contar: audio clips, recordings."},
+   {t:"mc", q:"Escolha a forma certa", s:"Can you give me some ___?", o:["advice","advices","an advice"], w:"Advice é incontável. Um conselho = a piece of advice ou a tip."},
+   {t:"type", q:"Complete (conselho)", s:"I have two pieces of ___ for you.", a:["advice"], w:"Pieces of advice torna o incontável contável."},
+   {t:"mc", q:"Qual frase está correta?", o:["The information is on the slide.","The informations are on the slide.","An information is on the slide."], w:"Information é incontável: sem plural e sem an."},
+   {t:"bank", q:"Traduza", pt:"Tenho uma boa notícia.", a:"I have some good news", x:["a","new","notice"], w:"News é incontável (e singular): some good news ou a piece of good news."},
+   {t:"type", q:"Complete (bagagem)", s:"How much ___ do you have?", a:["luggage","baggage"], w:"Luggage/baggage são incontáveis: how much, não how many."},
+   {t:"mc", q:"Escolha a forma certa", s:"The company bought new ___.", o:["equipment","equipments","an equipment"], w:"Equipment é incontável. Para contar: pieces of equipment."},
+   {t:"match", q:"Ligue o incontável a uma alternativa contável", p:[["advice","a tip"],["information","a fact"],["audio","a recording"],["news","an update"]]}
+  ]},
+  {id:"u2l2", title:"Falsos cognatos", ex:[
+   {t:"mc", q:"Escolha a forma natural", s:"We develop our students' ___.", o:["skills","habilities","hability"], w:"Habilities não existe. Develop skills é a colocação."},
+   {t:"mc", q:"Actually significa:", o:["na verdade","atualmente","de vez em quando"], w:"Atualmente = currently / nowadays."},
+   {t:"type", q:"Traduza “pretendo”", s:"I ___ to travel next year.", a:["intend","plan","mean"], w:"Pretend = fingir. Pretender = intend / plan."},
+   {t:"mc", q:"Eventually significa:", o:["no fim, com o tempo","eventualmente, às vezes","imediatamente"], w:"Eventualmente (às vezes) = occasionally."},
+   {t:"mc", q:"Como se diz “Ele assistiu à reunião”?", o:["He attended the meeting.","He assisted the meeting.","He assisted to the meeting."], w:"Assist = ajudar. Assistir a um evento = attend."},
+   {t:"type", q:"Traduza “parentes”", s:"My ___ live in Recife.", a:["relatives"], w:"Parents = pais. Parentes = relatives."},
+   {t:"mc", q:"Como se diz “realizar um projeto”?", o:["carry out a project","realize a project","make a project"], w:"Realize = perceber, dar-se conta."},
+   {t:"match", q:"Ligue o falso cognato ao sentido real", p:[["pretend","fingir"],["library","biblioteca"],["sensible","sensato"],["push","empurrar"]]}
+  ]}
+ ]},
+ {id:"u3", color:"amber", title:"Precisão gramatical", desc:"Os detalhes que separam C1 de C2", lessons:[
+  {id:"u3l1", title:"Superlativo, tempos e paralelismo", ex:[
+   {t:"mc", q:"Entre quatro opções:", s:"This is the ___ natural option.", o:["most","more","much"], w:"Mais de duas opções pede superlativo."},
+   {t:"type", q:"Complete (se, com alternativas)", s:"Yesterday I wasn't sure ___ it was the best option.", a:["whether","if"], w:"Whether soa mais preciso quando há alternativas. If também é aceito."},
+   {t:"mc", q:"Narrando o que aconteceu ontem:", s:"I told the student I ___ sure.", o:["wasn't","am not","don't"], w:"Correlação de tempos: a narrativa no passado puxa o verbo para o passado."},
+   {t:"mc", q:"Escolha a grafia certa", o:["Brazilian Portuguese","Brazilian portuguese","brazilian Portuguese"], w:"Nacionalidades e idiomas sempre com maiúscula."},
+   {t:"mc", q:"Mantenha o paralelismo", s:"My goals are to improve my speaking and ___ my vocabulary.", o:["to expand","expanding","I expand"], w:"Itens de uma lista têm a mesma forma: to improve... and to expand."},
+   {t:"type", q:"Complete com o possessivo", s:"Our students need to improve ___ speaking.", a:["their"], w:"Em inglês, o possessivo quase nunca é omitido."},
+   {t:"bank", q:"Traduza", pt:"As áreas em que eu mais tenho dificuldade são fala e gramática.", a:"The areas where I struggle most are speaking and grammar", x:["is","more"], w:"Plural concorda com are. Struggle é o verbo nativo para “patinar”."},
+   {t:"mc", q:"Escolha a forma certa", s:"Everyone ___ their homework.", o:["has done","have done","has did"], w:"Everyone é singular gramaticalmente, mas aceita their."}
+  ]},
+  {id:"u3l2", title:"Tempos avançados", ex:[
+   {t:"mc", q:"Escolha a forma certa", s:"I ___ here since 2019.", o:["have lived","live","am living"], w:"Since pede present perfect. “Moro aqui desde” não usa presente em inglês."},
+   {t:"type", q:"Complete com uma palavra", s:"How long ___ you been teaching?", a:["have"], w:"How long have you been doing...?"},
+   {t:"mc", q:"Escolha a forma certa", s:"I ___ him yesterday.", o:["saw","have seen","have saw"], w:"Tempo definido no passado (yesterday) pede simple past."},
+   {t:"mc", q:"Como se diz “Faz três anos que dou aula”?", o:["I've been teaching for three years.","It makes three years that I teach.","I teach for three years."], w:"Present perfect continuous + for."},
+   {t:"mc", q:"Escolha a forma certa", s:"If I ___ more time, I would study more.", o:["had","have","would have"], w:"Second conditional: if + past, would + verbo."},
+   {t:"type", q:"Registro formal: complete com o verbo review", s:"I suggest that he ___ the report.", a:["review","should review"], w:"Subjuntivo: suggest that he review (sem -s)."},
+   {t:"mc", q:"Inversão C2", s:"Hardly ___ the meeting started when the power went out.", o:["had","did","was"], w:"Hardly had... when... com inversão."},
+   {t:"bank", q:"Traduza", pt:"Não só ela terminou o projeto, como também treinou a equipe.", a:"Not only did she finish the project but she also trained the team", x:["finished","does"], w:"Not only + inversão (did she finish)."}
+  ]}
+ ]},
+ {id:"u4", color:"red", title:"Nuance e registro", desc:"Palavras não têm tradução, contextos têm", lessons:[
+  {id:"u4l1", title:"Escalas de sentido", ex:[
+   {t:"mc", q:"O time perdeu um cliente e ficou sem ânimo (contexto de trabalho). Melhor escolha:", o:["demotivated","unwilling","tired"], w:"Demotivated é o termo corporativo. Unwilling = sem vontade de fazer."},
+   {t:"mc", q:"Escolha o verbo", s:"The high price ___ me off.", o:["put","took","made"], w:"Put someone off = desestimular."},
+   {t:"mc", q:"Unwilling significa:", o:["relutante, sem disposição","desanimado","cansado"], w:"É sobre vontade, não emoção."},
+   {t:"type", q:"Complete com uma palavra", s:"She discouraged me ___ applying.", a:["from"], w:"Discourage someone from doing something."},
+   {t:"mc", q:"Tom mais literário para “abatido, com tristeza”:", o:["disheartened","demotivated","put off"], w:"Disheartened tem carga emocional e soa mais escrito."},
+   {t:"mc", q:"Qual expressão costuma sinalizar desacordo FIRME?", o:["With all due respect, ...","I see it slightly differently.","I take your point, but..."], w:"Apesar da aparência, with all due respect costuma anunciar discordância forte."},
+   {t:"mc", q:"A forma mais diplomática de discordar:", o:["I'm not sure I'd go quite that far.","You're wrong.","That's not true."], w:"Hedging: suaviza sem perder a posição."},
+   {t:"match", q:"Ligue cada palavra ao sentido", p:[["discouraged","perdi o ânimo"],["demotivated","sem motivação no trabalho"],["put off","desestimulado de fazer algo"],["fed up","de saco cheio"]]}
+  ]},
+  {id:"u4l2", title:"Colocações C2", ex:[
+   {t:"type", q:"Complete (domínio do idioma)", s:"He has an excellent ___ of English.", a:["command"], w:"Command of a language: a colocação C2."},
+   {t:"mc", q:"Escolha a colocação", s:"Students need daily ___ to English.", o:["exposure","contact","touch"], w:"Exposure to a language. “Manter contato” é tradução literal."},
+   {t:"mc", q:"Escolha a preposição", s:"Any tips ___ improving my pronunciation?", o:["on","of","in"], w:"Tips on something."},
+   {t:"mc", q:"Escolha o verbo", s:"I ___ a mistake in the report.", o:["made","did","committed"], w:"Make a mistake. Commit fica para crime/erro grave formal."},
+   {t:"mc", q:"Como se diz “realizar uma reunião”?", o:["hold a meeting","realize a meeting","make a meeting"], w:"Hold a meeting."},
+   {t:"type", q:"Complete (estabelecer um prazo)", s:"Can we ___ a deadline for Friday?", a:["set"], w:"Set a deadline."},
+   {t:"mc", q:"Como se diz “Posso levantar uma preocupação?”", o:["Can I raise a concern?","Can I lift a concern?","Can I rise a concern?"], w:"Raise (transitivo) a concern / a question. Rise é intransitivo."},
+   {t:"bank", q:"Traduza", pt:"Podemos marcar uma reunião para a próxima semana?", a:"Can we schedule a meeting for next week", x:["mark","to"], w:"Marcar uma reunião = schedule / set up a meeting. Nunca mark."}
+  ]}
+ ]},
+ {id:"u5", color:"plum", title:"Teacher's Lens", desc:"Pedagogia para adultos corporativos", lessons:[
+  {id:"u5l1", title:"Eliciting e correção", ex:[
+   {t:"mc", q:"O aluno pergunta: “Como se diz desencorajado?”. Melhor primeira resposta:", o:["“Give me the whole sentence. What's the situation?”","“Discouraged.”","“Procura no tradutor.”"], w:"Context First: o contexto elimina os sentidos que não se aplicam."},
+   {t:"mc", q:"Numa atividade de fluência, o aluno diz “discuss about”. O que fazer?", o:["Anotar no Live Language Doc e tratar depois","Interromper e corrigir na hora","Ignorar para sempre"], w:"Correção adiada preserva a fluência e a imagem do aluno."},
+   {t:"mc", q:"O que é uma CCQ?", o:["Uma pergunta curta para checar se o aluno entendeu o conceito","Uma correção por escrito","Um teste de nivelamento"], w:"Concept Checking Question."},
+   {t:"mc", q:"Melhor CCQ para “I used to smoke.”:", o:["“Do I smoke now?”","“Do you understand ‘used to’?”","“What's the past of ‘use’?”"], w:"Boa CCQ é fechada e testa o conceito. “Do you understand?” não testa nada."},
+   {t:"mc", q:"Ask → Pause → Nominate. Qual é a ordem?", o:["Pergunta, pausa, nome","Nome, pergunta, pausa","Pausa, nome, pergunta"], w:"Assim todos processam a pergunta, não só quem foi chamado."},
+   {t:"mc", q:"Eliciting significa:", o:["Levar o aluno a produzir ou descobrir a língua","Explicar a regra primeiro","Pedir a tradução"], w:"Quando o aluno descobre, a regra fixa melhor."},
+   {t:"mc", q:"Recast é:", o:["Repetir a frase do aluno já corrigida, sem interromper","Dar uma nota","Pedir que repita cinco vezes"], w:"Correção implícita que mantém o fluxo da conversa."},
+   {t:"mc", q:"Por que o correction contract funciona com adultos?", o:["Respeita a autonomia e a preferência deles","Porque dispensa correção","Porque é exigência do CELTA"], w:"Andragogia: adultos querem participar das decisões sobre o próprio aprendizado."}
+  ]},
+  {id:"u5l2", title:"TBL e engajamento", ex:[
+   {t:"mc", q:"Ordem do ciclo TBL (Willis):", o:["Pre-task → Task → Planning → Report → Language focus","Presentation → Practice → Production","Language focus → Task → Report"], w:"PPP começa pela forma. TBL começa pela tarefa."},
+   {t:"mc", q:"No TBL, quando vem o foco na forma?", o:["Depois da tarefa","Antes de tudo","Nunca"], w:"A necessidade surge na tarefa, e a forma é trabalhada depois."},
+   {t:"mc", q:"Tarefa mais autêntica para adultos corporativos:", o:["Simular a reunião real da semana deles","Completar lacunas de um livro","Decorar uma lista de verbos"], w:"Relevância imediata é o motor do adulto."},
+   {t:"mc", q:"Grupo com chefe e subordinado, filtro afetivo alto. O que fazer?", o:["Usar correção adiada e sem nomes (Live Language Doc)","Corrigir o chefe na frente do subordinado","Deixar só o chefe falar"], w:"Preservar a imagem de cada um baixa o filtro afetivo."},
+   {t:"mc", q:"Retrieval practice no início da aula:", o:["“What do you remember from last class?”","“Let me review everything for you.”","“Open your books on page 10.”"], w:"Lembrar ativamente fixa mais do que reler."},
+   {t:"mc", q:"Recap pós-aula ideal:", o:["3 acertos, 3 correções, 3 expressões","A transcrição completa da aula","Uma lista de 50 palavras"], w:"Curto, pessoal e acionável."},
+   {t:"mc", q:"TTT significa:", o:["Teacher Talking Time, que deve ser baixo","Total Teaching Time","Task Timing Technique"], w:"Quanto menos o professor fala, mais o aluno pratica."},
+   {t:"mc", q:"Adultos aprendem melhor quando...", o:["veem aplicação imediata no trabalho","memorizam regras","não recebem feedback"], w:"Princípio central da andragogia (Knowles)."}
+  ]}
+ ]}
+];
+UNITS.forEach(u=>u.lessons.forEach(l=>l.ex.forEach((e,i)=>{ e.id = l.id+"-"+(i+1); e.unit = u.id; })));
+const EX_BY_ID = {};
+UNITS.forEach(u=>u.lessons.forEach(l=>l.ex.forEach(e=>EX_BY_ID[e.id]=e)));
+
+const LEVELS = [[0,"🌱 Aprendiz de Chunks"],[300,"🔎 Caçador de Falsos Cognatos"],[800,"🧲 Domador de Preposições"],[1500,"📚 Mestre das Colocações"],[2500,"🎯 Arquiteto de Nuances"],[4000,"🎓 Professor CELTA-ready"],[6000,"👑 C2 Master Coach"]];
+const DAILY_GOAL = 50, WEEKLY_GOAL = 350, HEARTS = 3, BOSS_SECONDS = 180, BOSS_SIZE = 8, BOSS_PASS = 6;
+const KIND = {mc:"Escolha", type:"Complete", bank:"Monte a frase", match:"Ligue os pares"};
+
+/* ---------- Trilha: XP, streak, levels ---------- */
+function dayKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
+function weekKey(d){ const t = new Date(d); t.setDate(t.getDate() - ((t.getDay()+6)%7)); return dayKey(t); }
+function addXP(n){ if(n<=0) return; const k = dayKey(new Date()); state.xp[k] = (state.xp[k]||0) + n; markDay(); }
+function diasTxt(n){ return n + (n===1 ? " dia" : " dias"); }
+function totalXP(){ return Object.values(state.xp||{}).reduce((a,b)=>a+b,0); }
+function todayXP(){ return (state.xp||{})[dayKey(new Date())] || 0; }
+function weekXP(){ const wk = weekKey(new Date()); let s = 0; for(const k in state.xp){ const [y,m,d] = k.split("-").map(Number); if(weekKey(new Date(y,m-1,d))===wk) s += state.xp[k]; } return s; }
+function streak(){
+  const set = new Set(state.days); const d = new Date();
+  if(!set.has(dayKey(d))) d.setDate(d.getDate()-1);
+  let n = 0; const freezes = new Set();
+  for(let i=0;i<400;i++){
+    if(set.has(dayKey(d))) n++;
+    else { const wk = weekKey(d); if(freezes.has(wk) || n===0) break; freezes.add(wk); }
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+function levelInfo(){
+  const xp = totalXP(); let i = 0;
+  while(i+1 < LEVELS.length && xp >= LEVELS[i+1][0]) i++;
+  const next = LEVELS[i+1];
+  return {name:LEVELS[i][1], next, pct: next ? (xp-LEVELS[i][0])/(next[0]-LEVELS[i][0])*100 : 100, left: next ? next[0]-xp : 0};
+}
+const ACHIEVEMENTS = [
+  {t:"Primeira lição", ok:()=>Object.keys(state.lessons).length>=1},
+  {t:"Lição perfeita", ok:()=>Object.values(state.lessons).some(l=>l.perfect)},
+  {t:"Ofensiva de 3 dias", ok:()=>streak()>=3},
+  {t:"Ofensiva de 7 dias", ok:()=>streak()>=7},
+  {t:"Primeiro Boss derrotado", ok:()=>Object.values(state.boss).some(b=>b.won)},
+  {t:"Meta diária batida", ok:()=>Object.values(state.xp).some(v=>v>=DAILY_GOAL)},
+  {t:"500 XP", ok:()=>totalXP()>=500},
+  {t:"Trilha do Módulo 1 completa", ok:()=>UNITS.every(u=>state.boss[u.id] && state.boss[u.id].won)}
+];
+
+/* ---------- Trilha: path ---------- */
+function lessonUnlocked(u, i){ return i===0 || !!state.lessons[u.lessons[i-1].id]; }
+function bossUnlocked(u){ return u.lessons.every(l=>!!state.lessons[l.id]); }
+function nextStep(){
+  for(const u of UNITS){
+    for(const l of u.lessons) if(!state.lessons[l.id]) return {kind:"lesson", u, l};
+    if(!(state.boss[u.id] && state.boss[u.id].won)) return {kind:"boss", u};
+  }
+  return null;
+}
+const OFFSETS = ["0px","48px","-48px"];
+function renderTrilha(){
+  const lv = levelInfo();
+  $("#gLevel").textContent = lv.name;
+  $("#gLevelBar").style.width = lv.pct+"%";
+  $("#gLevelNext").textContent = lv.next ? `Faltam ${lv.left} XP para ${lv.next[1]}` : "Nível máximo!";
+  $("#gStreak").textContent = diasTxt(streak());
+  const t = todayXP(), w = weekXP();
+  $("#gToday").textContent = t; $("#gTodayBar").style.width = Math.min(100, t/DAILY_GOAL*100)+"%";
+  $("#gWeek").textContent = w; $("#gWeekBar").style.width = Math.min(100, w/WEEKLY_GOAL*100)+"%";
+  const nMist = state.mistakes.filter(id=>EX_BY_ID[id]).length;
+  const rv = $("#gReview"); rv.textContent = `Revisar erros (${nMist})`; rv.disabled = nMist===0;
+  const nx = nextStep(); const nb = $("#gNext");
+  nb.textContent = nx ? (nx.kind==="boss" ? `Enfrentar o Boss: ${nx.u.title}` : `Continuar: ${nx.l.title}`) : "Trilha completa! Refazer uma lição";
+  nb.onclick = ()=>{ if(!nx) return startLesson(UNITS[0], UNITS[0].lessons[0]); nx.kind==="boss" ? startBoss(nx.u) : startLesson(nx.u, nx.l); };
+
+  const bd = $("#gBadges"); bd.innerHTML = "";
+  ACHIEVEMENTS.forEach(a=>{ const on = a.ok(); bd.append(el("span",{class:"badge"+(on?" on":"")}, (on?"★ ":"☆ ")+esc(a.t))); });
+
+  const path = $("#path"); path.innerHTML = "";
+  const cur = nextStep();
+  UNITS.forEach((u, ui)=>{
+    const box = el("div",{class:"unit u-"+u.color});
+    const doneN = u.lessons.filter(l=>state.lessons[l.id]).length;
+    const won = state.boss[u.id] && state.boss[u.id].won;
+    box.append(el("div",{class:"unit-head"},`<div><span class="label" style="color:inherit;opacity:.85">Unidade ${ui+1}</span><h3>${esc(u.title)}</h3><p>${esc(u.desc)}</p></div><span class="pill">${won?"dominada":doneN+"/"+u.lessons.length+" lições"}</span>`));
+    const nodes = el("div",{class:"nodes"});
+    u.lessons.forEach((l, li)=>{
+      const rec = state.lessons[l.id], open = lessonUnlocked(u, li);
+      const isCur = cur && cur.kind==="lesson" && cur.l===l;
+      const w = el("div",{class:"nodewrap",style:"--x:"+OFFSETS[li%OFFSETS.length]});
+      if(isCur) w.append(el("span",{class:"startflag"},"Começar"));
+      const b = el("button",{class:"node"+(!open?" locked":"")+(rec&&rec.perfect?" perfect":"")+(isCur?" current":""),type:"button","aria-label":l.title+(rec?" (concluída)":open?"":" (bloqueada)")}, rec ? (rec.perfect?"★":"✓") : open ? String(li+1) : "🔒");
+      if(open) b.addEventListener("click", ()=>startLesson(u, l)); else b.disabled = true;
+      w.append(b, el("span",{class:"nodelabel"}, esc(l.title) + (rec && rec.best!=null ? `<br><span class="mono">${rec.best}%</span>` : "")));
+      nodes.append(w);
+    });
+    const bOpen = bossUnlocked(u), isCurB = cur && cur.kind==="boss" && cur.u===u;
+    const bw = el("div",{class:"nodewrap"});
+    if(isCurB) bw.append(el("span",{class:"startflag"},"Boss liberado"));
+    const bb = el("button",{class:"node boss"+(!bOpen?" locked":"")+(won?" perfect":"")+(isCurB?" current":""),type:"button","aria-label":"Boss Fight "+u.title}, won ? "★ BOSS" : bOpen ? "BOSS" : "🔒");
+    if(bOpen) bb.addEventListener("click", ()=>startBoss(u)); else bb.disabled = true;
+    const best = state.boss[u.id] && state.boss[u.id].best;
+    bw.append(bb, el("span",{class:"nodelabel"}, `Boss Fight · ${BOSS_SIZE} questões em 3 min`+(best!=null?`<br><span class="mono">recorde ${best}/${BOSS_SIZE}</span>`:"")));
+    nodes.append(bw);
+    box.append(nodes);
+    path.append(box);
+  });
+}
+$("#gReview").addEventListener("click", startReview);
+
+/* ---------- Trilha: player ---------- */
+function shuffle(a){ const b = a.slice(); for(let i=b.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [b[i],b[j]] = [b[j],b[i]]; } return b; }
+function norm(s){ return String(s).toLowerCase().replace(/[’‘`]/g,"'").replace(/[.,!?;:"“”]/g,"").replace(/\s+/g," ").trim(); }
+
+let S = null; // current session
+function openPlayer(session){
+  S = Object.assign({i:0, hearts:HEARTS, correct:0, answered:0, wrong:0, xp:0, start:Date.now(), picked:null, checked:false, total:session.queue.length}, session);
+  document.body.style.overflow = "hidden";
+  $("#player").className = "player u-"+S.color;
+  $("#player").hidden = false;
+  $("#player").focus();
+  $("#pClose").textContent = "×"; $("#pClose").classList.remove("confirm");
+  if(S.mode==="boss"){ S.left = BOSS_SECONDS; S.timer = setInterval(()=>{ S.left--; renderTop(); if(S.left<=0) finish(); }, 1000); }
+  renderEx();
+}
+function closePlayer(){
+  if(S && S.timer) clearInterval(S.timer);
+  S = null; $("#player").hidden = true; document.body.style.overflow = "";
+  renderTrilha(); renderChecklist(); renderMeter();
+}
+$("#pClose").addEventListener("click", ()=>{
+  const b = $("#pClose");
+  if(!S || S.done || b.classList.contains("confirm")) return closePlayer();
+  b.classList.add("confirm"); b.textContent = "Sair? O progresso desta lição se perde";
+  setTimeout(()=>{ if(S && !S.done){ b.classList.remove("confirm"); b.textContent = "×"; } }, 3500);
+});
+function renderTop(){
+  const pct = S.done ? 100 : Math.min(100, (S.mode==="boss" ? S.answered : S.correct) / S.total * 100);
+  $("#pBar").style.width = pct+"%";
+  const h = $("#pHearts");
+  if(S.mode==="boss"){ const m = Math.max(0,S.left); h.textContent = `⏱ ${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`; h.className = "p-stat"; }
+  else if(S.mode==="lesson"){ h.textContent = "♥".repeat(S.hearts) + "♡".repeat(HEARTS-S.hearts); h.className = "p-stat hearts"; }
+  else { h.textContent = `${S.correct}/${S.total}`; h.className = "p-stat"; }
+}
+function setFoot(kind, html, label, enabled){
+  const f = $("#pFoot"); f.className = "p-foot"+(kind?" "+kind:"");
+  $("#pFb").innerHTML = html || "";
+  const b = $("#pBtn"); b.textContent = label; b.disabled = !enabled;
+}
+function renderEx(){
+  renderTop();
+  const e = S.queue[S.i]; S.picked = null; S.checked = false;
+  const body = $("#pBody"); body.innerHTML = "";
+  body.append(el("span",{class:"p-kind"}, esc((S.mode==="boss"?"Boss Fight · ":S.mode==="review"?"Revisão · ":"")+KIND[e.t])));
+  body.append(el("h3",{class:"p-q"}, esc(e.q)));
+  if(e.pt) body.append(el("p",{class:"p-pt"}, esc(e.pt)));
+  if(e.s) body.append(el("p",{class:"p-s"}, esc(e.s).replace("___",'<span class="blank">___</span>')));
+  setFoot("", "", "Verificar", false);
+  $("#player").focus();
+  $("#pBody").parentElement.scrollTop = 0;
+  if(e.t==="mc") renderMC(e, body);
+  else if(e.t==="type") renderType(e, body);
+  else if(e.t==="bank") renderBank(e, body);
+  else if(e.t==="match") renderMatch(e, body);
+}
+function renderMC(e, body){
+  const box = el("div",{class:"opts"});
+  shuffle(e.o.map((t,i)=>({t, ok:i===0}))).forEach((o,i)=>{
+    const b = el("button",{class:"opt",type:"button","aria-pressed":"false"}, `<span class="k">${i+1}</span><span>${esc(o.t)}</span>`);
+    if(o.ok) b.dataset.ok = "1";
+    b.addEventListener("click", ()=>{ if(S.checked) return; box.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); S.picked = o; S.pickedBtn = b; setFoot("", "", "Verificar", true); });
+    box.append(b);
+  });
+  body.append(box);
+}
+function renderType(e, body){
+  const inp = el("input",{type:"text",class:"p-input",id:"pInput",autocomplete:"off",autocapitalize:"off",spellcheck:"false","aria-label":"Sua resposta",placeholder:"Digite a palavra que falta"});
+  inp.addEventListener("input", ()=>{ S.picked = inp.value; setFoot("", "", "Verificar", inp.value.trim().length>0); });
+  body.append(inp); setTimeout(()=>inp.focus(), 30);
+}
+function renderBank(e, body){
+  const area = el("div",{class:"tokarea","aria-label":"Sua frase"});
+  const bank = el("div",{class:"tokbank"});
+  const tiles = shuffle(e.a.split(" ").concat(e.x||[]));
+  S.picked = [];
+  tiles.forEach(w=>{
+    const t = el("button",{class:"tok",type:"button"}, esc(w));
+    t.addEventListener("click", ()=>{
+      if(S.checked) return;
+      t.classList.add("used");
+      const c = el("button",{class:"tok",type:"button"}, esc(w));
+      const item = {w, c, t}; S.picked.push(item);
+      c.addEventListener("click", ()=>{ if(S.checked) return; S.picked = S.picked.filter(p=>p!==item); c.remove(); t.classList.remove("used"); setFoot("", "", "Verificar", S.picked.length>0); });
+      area.append(c); setFoot("", "", "Verificar", true);
+    });
+    bank.append(t);
+  });
+  body.append(area, bank);
+}
+function renderMatch(e, body){
+  const grid = el("div",{class:"matchgrid"});
+  const left = shuffle(e.p.map((p,i)=>({t:p[0], i}))), right = shuffle(e.p.map((p,i)=>({t:p[1], i})));
+  let selL = null, found = 0; S.matchErr = 0;
+  const colL = el("div",{class:"opts"}), colR = el("div",{class:"opts"});
+  const mk = (o, side)=>{
+    const b = el("button",{class:"opt",type:"button","aria-pressed":"false"}, esc(o.t));
+    b.addEventListener("click", ()=>{
+      if(b.classList.contains("ok")) return;
+      if(side==="L"){ colL.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); selL = {o, b}; return; }
+      if(!selL) return;
+      if(selL.o.i === o.i){
+        [selL.b, b].forEach(x=>{ x.classList.add("ok"); x.setAttribute("aria-pressed","false"); x.disabled = true; });
+        selL = null; found++;
+        if(found === e.p.length){ S.picked = {matched:true}; check(); }
+      } else {
+        S.matchErr++; b.classList.add("no"); setTimeout(()=>b.classList.remove("no"), 450);
+      }
+    });
+    return b;
+  };
+  left.forEach(o=>colL.append(mk(o,"L"))); right.forEach(o=>colR.append(mk(o,"R")));
+  grid.append(colL, colR); body.append(grid);
+  setFoot("", '<p class="note">Toque numa palavra à esquerda e depois no par dela à direita.</p>', "Verificar", false);
+}
+function answerText(e){ return e.t==="mc" ? e.o[0] : e.t==="type" ? e.a[0] : e.t==="bank" ? e.a : ""; }
+function check(){
+  const e = S.queue[S.i]; let ok = false;
+  if(e.t==="mc") ok = S.picked && S.picked.ok;
+  else if(e.t==="type") ok = e.a.some(a=>norm(a)===norm(S.picked||""));
+  else if(e.t==="bank") ok = norm(S.picked.map(p=>p.w).join(" ")) === norm(e.a);
+  else if(e.t==="match") ok = S.matchErr === 0;
+  S.checked = true; S.answered++;
+  const firstTry = !S.seen || !S.seen.has(e.id);
+  (S.seen = S.seen || new Set()).add(e.id);
+  if(e.t==="mc"){ document.querySelectorAll("#pBody .opt").forEach(b=>{ b.disabled = true; b.setAttribute("aria-pressed","false"); if(b.dataset.ok) b.classList.add("ok"); }); if(!ok && S.pickedBtn) S.pickedBtn.classList.add("no"); }
+  if(e.t==="type") $("#pInput").disabled = true;
+
+  if(ok || e.t==="match"){
+    // match exercises always complete; mistakes there only reduce XP
+    S.correct++;
+    const gain = S.mode==="boss" ? 15 : S.mode==="review" ? 5 : (firstTry && ok ? 10 : 5);
+    S.xp += gain;
+    if(S.mode==="review") state.mistakes = state.mistakes.filter(id=>id!==e.id);
+    const head = ok ? pick(["Correto!","Excelente!","Perfeito!","Mandou bem!"]) : `Concluído, com ${S.matchErr} ${S.matchErr===1?"erro":"erros"}`;
+    setFoot(ok?"good":"bad", `<h4>${head} <span class="mono" style="font-size:14px">+${gain} XP</span></h4>${e.w?`<p>${esc(e.w)}</p>`:""}`, "Continuar", true);
+  } else {
+    S.wrong++;
+    if(!state.mistakes.includes(e.id)) state.mistakes.push(e.id);
+    if(S.mode==="lesson"){ S.hearts--; S.queue.push(e); }
+    const ans = answerText(e);
+    setFoot("bad", `<h4>Resposta correta:</h4><p><b>${esc(ans)}</b></p>${e.w?`<p>${esc(e.w)}</p>`:""}`, "Continuar", true);
+  }
+  renderTop();
+  $("#pBtn").focus();
+}
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function advance(){
+  if(S.mode==="lesson" && S.hearts<=0) return finish(true);
+  S.i++;
+  if(S.i >= S.queue.length) return finish();
+  renderEx();
+}
+$("#pBtn").addEventListener("click", ()=>{
+  if(!S) return;
+  if(S.done) return closePlayer();
+  if(S.checked) return advance();
+  check();
+});
+$("#player").addEventListener("keydown", ev=>{
+  if(!S) return;
+  if(ev.key==="Enter" && ev.target !== $("#pBtn") && !$("#pBtn").disabled){ ev.preventDefault(); $("#pBtn").click(); }
+  const e = S.queue[S.i];
+  if(!S.checked && e && e.t==="mc" && /^[1-9]$/.test(ev.key) && ev.target.tagName!=="INPUT"){ const o = document.querySelectorAll("#pBody .opt")[Number(ev.key)-1]; if(o) o.click(); }
+});
+function finish(outOfHearts){
+  if(S.timer) clearInterval(S.timer);
+  S.done = true;
+  const secs = Math.round((Date.now()-S.start)/1000);
+  const acc = S.answered ? Math.round((S.answered - S.wrong) / S.answered * 100) : 0;
+  let hero = "", sub = "", bonus = 0;
+  if(S.mode==="lesson"){
+    if(outOfHearts){ hero = "Seus corações acabaram"; sub = "Os erros foram para a sua revisão. Tente de novo: a segunda vez sempre fixa mais."; }
+    else {
+      const perfect = S.wrong===0;
+      bonus = 20 + (perfect ? 10 : 0);
+      const prev = state.lessons[S.lesson.id] || {};
+      state.lessons[S.lesson.id] = {done:true, perfect: prev.perfect || perfect, best: Math.max(prev.best||0, acc), at:new Date().toISOString()};
+      hero = perfect ? "Lição perfeita!" : "Lição concluída!"; sub = perfect ? "Nenhum erro. Bônus de perfeição." : "Os erros foram para a sua revisão.";
+    }
+  } else if(S.mode==="boss"){
+    const won = S.correct >= BOSS_PASS;
+    const prev = state.boss[S.unit.id] || {};
+    state.boss[S.unit.id] = {won: prev.won || won, best: Math.max(prev.best||0, S.correct), at:new Date().toISOString()};
+    if(won && !prev.won) bonus = 50;
+    hero = won ? "Boss derrotado!" : "O Boss venceu desta vez"; sub = won ? `${S.correct}/${BOSS_SIZE} acertos. Unidade dominada.` : `${S.correct}/${BOSS_SIZE} acertos. Você precisa de ${BOSS_PASS}. Revise os erros e tente de novo.`;
+  } else {
+    hero = "Revisão concluída"; sub = `${state.mistakes.filter(id=>EX_BY_ID[id]).length} erros ainda na fila.`;
+  }
+  const total = S.xp + bonus;
+  addXP(total); scheduleSave();
+  const t = todayXP();
+  const body = $("#pBody"); body.innerHTML = "";
+  body.append(el("div",{class:"endhero"}, esc(hero)));
+  body.append(el("p",{class:"muted",style:"text-align:center"}, esc(sub)));
+  body.append(el("div",{class:"endgrid"},
+    `<div class="endtile"><span class="label">XP</span><div class="big">+${total}</div></div>
+     <div class="endtile"><span class="label">Precisão</span><div class="big">${acc}%</div></div>
+     <div class="endtile"><span class="label">Tempo</span><div class="big">${Math.floor(secs/60)}:${String(secs%60).padStart(2,"0")}</div></div>`));
+  body.append(el("p",{style:"text-align:center"}, t >= DAILY_GOAL ? `<b>Meta diária batida!</b> ${t} XP hoje · ofensiva de ${diasTxt(streak())}` : `Hoje: ${t}/${DAILY_GOAL} XP · ofensiva de ${diasTxt(streak())}`));
+  renderTop();
+  setFoot("", "", "Continuar", true);
+  $("#pBtn").focus();
+  $("#pClose").textContent = "×"; $("#pClose").classList.remove("confirm");
+}
+
+function startLesson(u, l){ openPlayer({mode:"lesson", unit:u, lesson:l, color:u.color, queue:l.ex.slice()}); }
+function startBoss(u){
+  const pool = [].concat(...u.lessons.map(l=>l.ex)).filter(e=>e.t!=="match");
+  openPlayer({mode:"boss", unit:u, color:u.color, queue:shuffle(pool).slice(0, BOSS_SIZE)});
+}
+function startReview(){
+  const ids = state.mistakes.filter(id=>EX_BY_ID[id]);
+  if(!ids.length) return;
+  openPlayer({mode:"review", color:"amber", queue:shuffle(ids).slice(0,10).map(id=>EX_BY_ID[id])});
 }
 
 /* ---------- boot ---------- */

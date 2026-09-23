@@ -9,6 +9,7 @@ Abra o `index.html` no navegador (ou publique com GitHub Pages). O progresso fic
 | Seção | Conteúdo |
 |---|---|
 | Hoje | Checklist do Módulo 1, plano semanal e diagnóstico |
+| Trilha | Lições estilo Duolingo: 5 unidades, 10 lições, 80 exercícios com correção automática, corações, XP, níveis, ofensiva, conquistas, Boss Fights e revisão de erros |
 | Error Log | As 16 correções do texto diagnóstico e os seus próprios erros |
 | Quiz | Retrieval practice com o Error Log |
 | Nuance Lab | Escalas de sentido ("desencorajado", desacordo diplomático) e colocações |
@@ -20,3 +21,14 @@ Abra o `index.html` no navegador (ou publique com GitHub Pages). O progresso fic
 
 - **Módulo 1: Precision & Nuance** (em andamento)
 - Módulo 2: The Meeting (TBL, hedging, desacordo diplomático)
+
+## Gamificação (Trilha)
+
+| Atividade | XP |
+|---|---|
+| Acerto na 1ª tentativa | 10 |
+| Acerto depois de errar / revisão de erro | 5 |
+| Lição concluída / lição perfeita | +20 / +10 |
+| Boss Fight (cada acerto) / vitória | 15 / +50 |
+
+Meta diária: 50 XP. Meta semanal: 350 XP. A ofensiva tem 1 folga por semana.
