@@ -1,7 +1,3 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
 <title>Language Lens Studio</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -250,20 +246,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 @media (max-width:520px){body{font-size:16px}.wrap{padding-inline:16px}nav.tabs{margin-inline:-16px;padding-inline:16px}.card{padding:16px}}
 </style>
-<link rel="manifest" href="manifest.webmanifest">
-<meta name="theme-color" content="#2B46B0">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Lens Studio">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<style>
-/* same safe-area padding Claude's artifact viewer adds */
-:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-</style>
-</head>
-<body>
+
 <div class="wrap">
   <header class="top">
     <div class="brand">
@@ -1432,11 +1415,3 @@ try{ const t = sessionStorage.getItem(LS_KEY+":tab"); if(t && document.querySele
 initClaude();
 })();
 </script>
-
-<script>
-if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-  navigator.serviceWorker.register("sw.js").catch(function(){});
-}
-</script>
-</body>
-</html>

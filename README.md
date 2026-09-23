@@ -2,7 +2,25 @@
 
 Plano de estudos para duas metas: levar o inglês ao **C2** e se tornar um **professor de inglês de excelência** para adultos corporativos (online, grupos de 2 a 3).
 
-Abra o `index.html` no navegador (ou publique com GitHub Pages). O progresso fica salvo no navegador.
+## 📱 Instalar no celular
+
+O app é um **PWA**: instala pelo navegador, abre em tela cheia pelo ícone e funciona offline.
+
+1. **Ativar o GitHub Pages (uma vez só):** no GitHub, abra o repositório → **Settings** → **Pages** → em *Build and deployment*, escolha **Deploy from a branch**, selecione o branch `claude/english-c2-teaching-plan-xwaqp4` e a pasta `/ (root)` → **Save**. Em 1 a 2 minutos o app fica em:
+   **https://raulpivoto.github.io/MasterEnglishTeaching/**
+2. **Instalar:**
+   - **Android (Chrome):** abra o link → menu **⋮** → **Instalar app** (ou *Adicionar à tela inicial*).
+   - **iPhone (Safari):** abra o link → botão **Compartilhar** → **Adicionar à Tela de Início**.
+
+O progresso do app fica salvo no próprio celular. Para juntar com o progresso do link do Claude, use **“Levar meu progresso para outro aparelho”** no rodapé: copie o código de um lado e cole no outro.
+
+## 🛠️ Como atualizar
+
+`src/studio.html` é a fonte (a mesma página publicada no Claude). Depois de editar:
+
+```bash
+python build.py   # gera index.html e muda a versão do cache em sw.js
+```
 
 ## O que tem no site
 
