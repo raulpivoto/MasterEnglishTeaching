@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Language Lens Studio</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --paper:#F5F6F3; --surface:#FFFFFF; --sunk:#ECEEE9;
+  --ink:#1A2130; --ink-2:#4A5366; --line:#D6DAD2;
+  --blue:#2B46B0; --blue-soft:#E3E8FA;
+  --red:#B8322A; --red-soft:#F8E4E1;
+  --teal:#17735D; --teal-soft:#DDF1EA;
+  --amber:#9A6412; --amber-soft:#F7EBD3;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#12161F; --surface:#1A202C; --sunk:#0E1219;
+    --ink:#E8EAF0; --ink-2:#A3ABBD; --line:#2C3445;
+    --blue:#8FA3F5; --blue-soft:#1F2847;
+    --red:#F08A80; --red-soft:#3A1E1C;
+    --teal:#6ED3B4; --teal-soft:#15332B;
+    --amber:#E8B866; --amber-soft:#382A12;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#12161F; --surface:#1A202C; --sunk:#0E1219;
+  --ink:#E8EAF0; --ink-2:#A3ABBD; --line:#2C3445;
+  --blue:#8FA3F5; --blue-soft:#1F2847;
+  --red:#F08A80; --red-soft:#3A1E1C;
+  --teal:#6ED3B4; --teal-soft:#15332B;
+  --amber:#E8B866; --amber-soft:#382A12;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+.wrap{max-width:900px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+h1,h2,h3,h4{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,5vw,40px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:26px;font-weight:700}
+h3{font-size:19px;font-weight:700}
+p{margin:0}
+em{font-style:italic}
+code,.mono{font-family:var(--mono);font-size:.86em}
+a{color:var(--blue)}
+.label{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.muted{color:var(--ink-2)}
+.stack{display:flex;flex-direction:column;gap:14px}
+.stack-lg{display:flex;flex-direction:column;gap:28px}
+
+/* header */
+header.top{padding-block:28px 18px;display:flex;flex-direction:column;gap:10px}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.lens{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:3px solid var(--ink);position:relative;flex:none;transform:translateY(6px)}
+.lens::after{content:"";position:absolute;width:14px;height:3px;background:var(--ink);right:-12px;bottom:-4px;transform:rotate(45deg);border-radius:2px}
+.lens span{font-family:var(--display);font-weight:700;font-size:13px}
+.sub{max-width:62ch;color:var(--ink-2)}
+.meter{display:flex;gap:18px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.bar{flex:1 1 220px;height:10px;background:var(--sunk);border-radius:6px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--teal);width:0;transition:width .4s}
+.stat{font-family:var(--mono);font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.stat b{color:var(--ink);font-weight:500}
+#syncState{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+
+/* tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line);margin-inline:-20px;padding-inline:20px}
+.tabrow{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabrow::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:none;color:var(--ink-2);font-family:var(--display);font-weight:500;font-size:15px;padding:12px 12px 11px;cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--blue)}
+.tab:focus-visible,button:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+section.panel{padding-top:28px}
+
+/* generic blocks */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.btn{appearance:none;font-family:var(--display);font-weight:500;font-size:14.5px;border-radius:8px;padding:9px 14px;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--paper)}
+.btn.ok{border-color:var(--teal);color:var(--teal)}
+.btn.warn{border-color:var(--amber);color:var(--amber)}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--sunk);color:var(--ink-2);letter-spacing:.03em}
+.pill.teal{background:var(--teal-soft);color:var(--teal)}
+.pill.amber{background:var(--amber-soft);color:var(--amber)}
+.pill.blue{background:var(--blue-soft);color:var(--blue)}
+.pill.red{background:var(--red-soft);color:var(--red)}
+
+/* proofreading marks */
+.wrong{color:var(--red);text-decoration:line-through;text-decoration-thickness:2px;text-decoration-color:var(--red)}
+.right{color:var(--teal);font-weight:600}
+.caret{font-family:var(--mono);color:var(--teal);margin-right:4px}
+
+/* week */
+.week{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.day{border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.day.today{border-color:var(--blue);box-shadow:0 0 0 2px var(--blue-soft)}
+.day h4{font-size:15px}
+.day p{font-size:14.5px;line-height:1.45}
+.day .ped{color:var(--ink-2)}
+
+/* checklist */
+.check{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid var(--line)}
+.check:last-child{border-bottom:0}
+.check input{width:20px;height:20px;margin-top:4px;accent-color:var(--teal);flex:none}
+.check label{cursor:pointer}
+.check.done label{color:var(--ink-2);text-decoration:line-through;text-decoration-color:var(--line)}
+
+/* error cards */
+.err{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:flex;flex-direction:column;gap:10px}
+.err .said{font-size:18px}
+.err .fix{font-size:18px}
+.err .why{font-size:15.5px;color:var(--ink-2);border-top:1px dashed var(--line);padding-top:10px}
+.err .head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.chip{appearance:none;border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:99px;padding:5px 12px;font-family:var(--display);font-size:13.5px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* tables */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15.5px}
+th,td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-2);font-weight:500;background:var(--sunk)}
+tr:last-child td{border-bottom:0}
+
+/* cline */
+.cline{display:flex;flex-direction:column;gap:0;border-left:3px solid var(--blue);margin-left:6px}
+.cl{position:relative;padding:4px 0 16px 20px}
+.cl::before{content:"";position:absolute;left:-8px;top:10px;width:13px;height:13px;border-radius:50%;background:var(--paper);border:3px solid var(--blue)}
+.cl h4{font-size:17px}
+.cl .ex{font-style:italic}
+.cl.no::before{border-color:var(--red)}
+.cl.no h4{color:var(--red)}
+
+/* technique */
+details.tech{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+details.tech summary{cursor:pointer;padding:16px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center;list-style:none}
+details.tech summary::-webkit-details-marker{display:none}
+details.tech summary h3{font-size:17.5px}
+details.tech[open] summary{border-bottom:1px solid var(--line)}
+details.tech .body{padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+details.tech ol,details.tech ul{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.say{background:var(--blue-soft);border-radius:8px;padding:10px 14px;font-style:italic}
+
+/* forms */
+textarea,input[type="text"],select{width:100%;font-family:var(--body);font-size:16px;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;line-height:1.5}
+textarea{min-height:70px;resize:vertical}
+.field{display:flex;flex-direction:column;gap:6px}
+.field .label b{color:var(--blue);font-weight:500;text-transform:none;letter-spacing:0;font-size:13px}
+.answer{background:var(--sunk);border-radius:10px;padding:16px 18px;white-space:pre-wrap;font-size:16px;line-height:1.6}
+.answer:empty{display:none}
+.note{font-size:14px;color:var(--ink-2)}
+.quizbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:24px;display:flex;flex-direction:column;gap:16px;min-height:220px}
+.quizbox .said{font-size:22px;line-height:1.4}
+.hl{background:var(--amber-soft);border-radius:3px;padding:0 3px}
+.callout{border-left:3px solid var(--amber);background:var(--amber-soft);padding:12px 16px;border-radius:0 8px 8px 0;font-size:15.5px}
+footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-size:13.5px;color:var(--ink-2)}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+@media (max-width:520px){body{font-size:16px}.wrap{padding-inline:16px}nav.tabs{margin-inline:-16px;padding-inline:16px}.card{padding:16px}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="lens" aria-hidden="true"><span>C2</span></div>
+      <h1>Language Lens Studio</h1>
+    </div>
+    <p class="sub">Seu espaço de estudo para duas metas ao mesmo tempo: levar o seu inglês ao C2 e se tornar um professor de excelência para adultos corporativos.</p>
+    <div class="meter">
+      <div class="bar" aria-hidden="true"><i id="progBar"></i></div>
+      <span class="stat">Módulo 1: <b id="progTxt">0%</b></span>
+      <span class="stat">Dias de estudo: <b id="daysTxt">0</b></span>
+      <span id="syncState"></span>
+    </div>
+  </header>
+
+  <nav class="tabs" aria-label="Seções">
+    <div class="tabrow" role="tablist" id="tabrow">
+      <button class="tab" role="tab" data-tab="hoje" aria-selected="true">Hoje</button>
+      <button class="tab" role="tab" data-tab="erros" aria-selected="false">Error Log</button>
+      <button class="tab" role="tab" data-tab="quiz" aria-selected="false">Quiz</button>
+      <button class="tab" role="tab" data-tab="nuance" aria-selected="false">Nuance Lab</button>
+      <button class="tab" role="tab" data-tab="professor" aria-selected="false">Toolkit do Professor</button>
+      <button class="tab" role="tab" data-tab="tarefas" aria-selected="false">Tarefas</button>
+      <button class="tab" role="tab" data-tab="coach" aria-selected="false">Coach</button>
+    </div>
+  </nav>
+
+  <!-- HOJE -->
+  <section class="panel stack-lg" id="p-hoje" data-panel="hoje">
+    <div class="stack">
+      <span class="label">Módulo 1 · em andamento</span>
+      <h2>Precision &amp; Nuance</h2>
+      <p class="muted">Seu inglês: padrões verbais, incontáveis e colocações de precisão. Pedagogia: técnica <em>Context First</em>, correção adiada e ciclo de revisão pós-aula.</p>
+    </div>
+    <div class="card">
+      <div class="stack" id="checklist"></div>
+    </div>
+
+    <div class="stack">
+      <span class="label">Sua semana</span>
+      <div class="week" id="week"></div>
+    </div>
+
+    <div class="stack">
+      <span class="label">Seu diagnóstico</span>
+      <div class="grid2">
+        <div class="card stack">
+          <h3>Onde você está</h3>
+          <p>Entre <b>C1 funcional e C1 sólido</b> na escrita. A comunicação é clara e você arrisca estruturas complexas. O que separa você do C2 não é fluência, é <b>precisão</b>.</p>
+        </div>
+        <div class="card stack">
+          <h3>Seus 4 padrões de interferência</h3>
+          <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px">
+            <li><b>Padrões verbais do português</b> (prioridade nº 1)</li>
+            <li>Contáveis e incontáveis</li>
+            <li>Falsos cognatos</li>
+            <li>Precisão gramatical fina</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <span class="label">Próximo módulo</span>
+      <div class="card stack">
+        <div class="row"><h3>Módulo 2 · The Meeting</h3><span class="pill">em breve</span></div>
+        <p class="muted">Reestruturar a sua aula de conversação no formato TBL (<em>pre-task → task → report → language focus</em>) e dominar <em>hedging</em> e desacordo diplomático. Libera quando você enviar as tarefas do Módulo 1.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ERROR LOG -->
+  <section class="panel stack-lg" id="p-erros" data-panel="erros" hidden>
+    <div class="stack">
+      <span class="label">Language Lens</span>
+      <h2>Error Log</h2>
+      <p class="muted">As 16 correções do seu texto diagnóstico, agrupadas pelos seus padrões de interferência. Cada uma tem a lógica e a forma natural.</p>
+      <div class="filters" id="errFilters"></div>
+    </div>
+    <div class="stack" id="errList"></div>
+
+    <div class="stack">
+      <span class="label">Seus próprios erros</span>
+      <h3>Adicione erros que você notar</h3>
+      <p class="muted">Anote aqui os erros que você perceber em aula, em reuniões ou nos seus áudios. Eles entram no quiz e o seu coach pode lê-los na próxima sessão.</p>
+      <div class="card stack">
+        <div class="grid2">
+          <div class="field"><label class="label" for="myWrong">O que eu disse</label><input type="text" id="myWrong" placeholder="I have difficulty to..."></div>
+          <div class="field"><label class="label" for="myRight">Forma natural</label><input type="text" id="myRight" placeholder="I have difficulty ...ing"></div>
+        </div>
+        <div class="field"><label class="label" for="myWhy">Por quê (opcional)</label><input type="text" id="myWhy" placeholder="difficulty pede -ing"></div>
+        <div class="row"><button class="btn primary" id="myAdd">Adicionar ao Error Log</button><span class="note" id="myMsg"></span></div>
+      </div>
+      <div class="stack" id="myList"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="panel stack-lg" id="p-quiz" data-panel="quiz" hidden>
+    <div class="stack">
+      <span class="label">Retrieval practice</span>
+      <h2>Quiz do Error Log</h2>
+      <p class="muted">Leia a frase, diga em voz alta a forma natural <b>antes</b> de revelar. Lembrar ativamente fixa muito mais do que reler. Meta do módulo: 12 de 16 marcados como “acertei”.</p>
+      <div class="row">
+        <span class="stat">Acertei: <b id="qOk">0</b></span>
+        <span class="stat">Rever: <b id="qRev">0</b></span>
+        <label class="row note" style="gap:6px"><input type="checkbox" id="qOnlyReview"> só os que preciso rever</label>
+      </div>
+    </div>
+    <div class="quizbox" id="quizbox"></div>
+  </section>
+
+  <!-- NUANCE LAB -->
+  <section class="panel stack-lg" id="p-nuance" data-panel="nuance" hidden>
+    <div class="stack">
+      <span class="label">Meaning clines</span>
+      <h2>Nuance Lab</h2>
+      <p class="muted">Palavras não têm tradução, contextos têm. Aqui ficam as escalas de sentido que já estudamos.</p>
+    </div>
+
+    <div class="card stack">
+      <div class="row"><h3>“Desencorajado”</h3><span class="pill blue">tradução com nuance</span></div>
+      <p><b>“Discouraged” estava correto</b>: é o equivalente mais neutro e seguro. Mas o português usa uma palavra para vários sentidos que o inglês separa:</p>
+      <div class="cline">
+        <div class="cl"><h4>discouraged</h4><p>Perdi o ânimo depois de um revés. O sentido geral.</p><p class="ex">I felt discouraged after failing the exam.</p></div>
+        <div class="cl"><h4>disheartened</h4><p>Abatido, com tristeza. Tom mais literário.</p><p class="ex">We were disheartened by the results.</p></div>
+        <div class="cl"><h4>demotivated</h4><p>Sem motivação, sobretudo no trabalho. Muito corporativo.</p><p class="ex">The team is demotivated after the layoffs.</p></div>
+        <div class="cl"><h4>put off / discouraged from</h4><p>Alguém ou algo me desencorajou de fazer algo.</p><p class="ex">The price put me off. / She discouraged me from applying.</p></div>
+        <div class="cl"><h4>I've lost heart · it's deflating · I'm a bit down about it</h4><p>Coloquial, conversa do dia a dia.</p><p class="ex">Honestly, it's pretty deflating.</p></div>
+        <div class="cl no"><h4>unwilling</h4><p>Não é emoção, é falta de vontade: <em>He's unwilling to help</em> = “ele não quer ajudar”.</p></div>
+        <div class="cl no"><h4>less hopeful</h4><p>Fala de expectativa, não de ânimo.</p></div>
+        <div class="cl no"><h4>tired</h4><p>Só em <em>tired of</em> / <em>fed up with</em> (“de saco cheio”). Outro sentimento.</p></div>
+      </div>
+    </div>
+
+    <div class="card stack">
+      <div class="row"><h3>Discordar com diplomacia</h3><span class="pill amber">pragmática</span></div>
+      <p>Uma escala de diretividade, da mais suave à mais direta. Atenção à última: <em>with all due respect</em> costuma sinalizar desacordo <b>forte</b>.</p>
+      <div class="tbl"><table>
+        <thead><tr><th>Expressão</th><th>Como soa para o nativo</th></tr></thead>
+        <tbody>
+          <tr><td><em>I see it slightly differently.</em></td><td>Suave, colaborativo</td></tr>
+          <tr><td><em>I take your point, but...</em></td><td>Reconhece, depois discorda</td></tr>
+          <tr><td><em>I'm not sure I'd go quite that far.</em></td><td>Discorda com elegância</td></tr>
+          <tr><td><em>I don't agree.</em></td><td>Direto</td></tr>
+          <tr><td><em>With all due respect, ...</em></td><td>Desacordo firme, às vezes irritação</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note"><b>Para ensinar:</b> mostre duas reações e pergunte <em>“How does the listener feel in each case?”</em>. Depois, peça que os alunos posicionem cada expressão na escala.</p>
+    </div>
+
+    <div class="card stack">
+      <div class="row"><h3>Colocações do Módulo 1</h3><span class="pill teal">use no dia a dia</span></div>
+      <div class="tbl"><table>
+        <thead><tr><th>Colocação</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td><b>have difficulty</b> + -ing</td><td><em>I have difficulty finding the right word.</em></td></tr>
+          <tr><td><b>ask someone for</b> sth</td><td><em>She asked me for the translation.</em></td></tr>
+          <tr><td><b>command of</b> English</td><td><em>He has an excellent command of English.</em></td></tr>
+          <tr><td><b>convey</b> / <b>capture</b> the meaning</td><td><em>It's hard to capture the nuance.</em></td></tr>
+          <tr><td><b>exposure to</b> English</td><td><em>They need daily exposure to English.</em></td></tr>
+          <tr><td><b>put someone off</b> (doing) sth</td><td><em>The long meetings put him off.</em></td></tr>
+          <tr><td><b>tips on</b> sth</td><td><em>Any tips on improving my speaking?</em></td></tr>
+          <tr><td><b>develop</b> skills</td><td><em>We develop their speaking skills.</em></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+  </section>
+
+  <!-- TOOLKIT -->
+  <section class="panel stack-lg" id="p-professor" data-panel="professor" hidden>
+    <div class="stack">
+      <span class="label">Teacher's Lens</span>
+      <h2>Toolkit do Professor</h2>
+      <p class="muted">Técnicas para adultos corporativos, online, em grupos de 2 a 3. Abra cada uma para ver os passos e o que dizer em aula.</p>
+    </div>
+    <div class="stack" id="techList"></div>
+  </section>
+
+  <!-- TAREFAS -->
+  <section class="panel stack-lg" id="p-tarefas" data-panel="tarefas" hidden>
+    <div class="stack">
+      <span class="label">Transfer task · Módulo 1</span>
+      <h2>Tarefas</h2>
+      <p class="muted">Responda em inglês. Suas respostas ficam salvas aqui e o seu coach pode lê-las na próxima sessão. Se quiser feedback imediato, use o botão de correção.</p>
+    </div>
+
+    <div class="card stack">
+      <h3>Parte A · Produção</h3>
+      <p class="muted">Escreva 6 frases sobre a sua própria realidade de professor, uma para cada item.</p>
+      <div class="stack" id="taskA"></div>
+    </div>
+
+    <div class="card stack">
+      <h3>Parte B · Consultoria</h3>
+      <p class="muted">Monte uma <em>meaning cline</em> para <b>“chateado”</b>: de 4 a 6 opções em inglês, com a diferença de sentido e uma frase de exemplo para cada. Depois, escreva como você apresentaria isso a um aluno usando <em>eliciting</em>.</p>
+      <div class="field"><label class="label" for="taskB1">Meaning cline de “chateado”</label><textarea id="taskB1" rows="7" placeholder="upset: ...&#10;annoyed: ..."></textarea></div>
+      <div class="field"><label class="label" for="taskB2">Como eu ensinaria (eliciting)</label><textarea id="taskB2" rows="5" placeholder="First, I would..."></textarea></div>
+    </div>
+
+    <div class="row">
+      <button class="btn primary" id="taskCheck" hidden>Corrigir minhas tarefas</button>
+      <button class="btn" id="taskStop" hidden>Parar</button>
+      <span class="note" id="taskSaved"></span>
+    </div>
+    <div class="answer" id="taskOut" aria-live="polite"></div>
+  </section>
+
+  <!-- COACH -->
+  <section class="panel stack-lg" id="p-coach" data-panel="coach" hidden>
+    <div class="stack">
+      <span class="label">Language Lens + Teacher's Lens</span>
+      <h2>Coach</h2>
+      <p class="muted">Escreva uma frase ou um parágrafo e escolha o que você precisa. A resposta segue o mesmo método das nossas sessões.</p>
+    </div>
+    <div class="card stack">
+      <div class="field">
+        <label class="label" for="coachMode">O que você precisa</label>
+        <select id="coachMode">
+          <option value="fix">Corrigir meu inglês (Language Lens)</option>
+          <option value="teach">Como ensinar este ponto (Teacher's Lens)</option>
+          <option value="nuance">Traduzir com nuance (português → inglês)</option>
+        </select>
+      </div>
+      <div class="field">
+        <label class="label" for="coachIn" id="coachInLabel">Seu texto em inglês</label>
+        <textarea id="coachIn" rows="5"></textarea>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="coachGo">Perguntar ao coach</button>
+        <button class="btn" id="coachStop" hidden>Parar</button>
+        <span class="note" id="coachNote"></span>
+      </div>
+    </div>
+    <div class="answer" id="coachOut" aria-live="polite"></div>
+    <p class="note" id="coachOff" hidden>O coach funciona quando esta página é aberta no Claude. Aqui, use o Nuance Lab e traga suas dúvidas para a próxima sessão.</p>
+  </section>
+
+  <footer>Language Lens Studio · Módulo 1 de um plano contínuo. Suas marcações e respostas ficam salvas <span id="whereSaved">neste navegador</span>.</footer>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- content ---------- */
+const PATTERNS = {
+  verb:"Padrões verbais", count:"Contáveis", cognate:"Falsos cognatos", grammar:"Precisão gramatical", colloc:"Colocações"
+};
+const ERRORS = [
+  {id:"e1",p:"verb",wrong:"I have more difficulty to perform",right:"I have the most difficulty performing",why:"Difficulty pede -ing (difficulty doing something). O português “dificuldade de/em fazer” puxa o infinitivo. Comparando várias áreas, use o superlativo: the most."},
+  {id:"e2",p:"grammar",wrong:"The area I think... is speaking, grammar and...",right:"The areas where I struggle most are...",why:"Três áreas, então sujeito e verbo no plural. Struggle é o verbo nativo para “patinar”."},
+  {id:"e3",p:"grammar",wrong:"brazilian portuguese",right:"Brazilian Portuguese",why:"Nacionalidades e idiomas sempre levam maiúscula em inglês."},
+  {id:"e4",p:"verb",wrong:"my student asked the translation of",right:"my student asked me for the translation of",why:"Ask no sentido de “pedir” precisa de for. “Perguntou a tradução” dispensa a preposição em português."},
+  {id:"e5",p:"grammar",wrong:"I honestly don't know if it is...",right:"I honestly wasn't sure whether it was...",why:"Narrando algo de ontem, os tempos acompanham o passado. Whether soa mais preciso que if quando há alternativas."},
+  {id:"e6",p:"grammar",wrong:"the more natural way (entre 4 opções)",right:"the most natural option",why:"Com mais de duas opções, use o superlativo."},
+  {id:"e7",p:"colloc",wrong:"my own knowledge of the English Language",right:"my command of English",why:"Command of a language é a colocação C2 por excelência. Language não leva maiúscula."},
+  {id:"e8",p:"count",wrong:"listen to audios",right:"listen to audio clips / recordings",why:"Marca registrada de brasileiro. Audio é incontável, como information, advice e feedback."},
+  {id:"e9",p:"verb",wrong:"we discuss and do exercises",right:"we discuss them / have a discussion",why:"Discuss é transitivo direto e precisa de objeto (lembre do discuss about)."},
+  {id:"e10",p:"cognate",wrong:"develop their habilities",right:"develop their skills",why:"Habilities não existe. Abilities existe, mas develop skills é a colocação natural."},
+  {id:"e11",p:"colloc",wrong:"tips about how they could improve speaking",right:"tips on how to improve their speaking",why:"Tips on é a colocação padrão. Em inglês, o possessivo quase nunca é omitido."},
+  {id:"e12",p:"verb",wrong:"to reply the exact same meaning",right:"to convey / capture the exact meaning",why:"Reply significa “responder” e exige to. Para transmitir sentido: convey, ou capture the nuance."},
+  {id:"e13",p:"verb",wrong:"the expressions they ask me for translation",right:"the expressions they ask me to translate",why:"Estrutura: ask someone to do something."},
+  {id:"e14",p:"grammar",wrong:"is to reply... and engaging...",right:"is to convey... and to get...",why:"Paralelismo: depois de is to..., os itens da lista têm a mesma forma."},
+  {id:"e15",p:"verb",wrong:"engaging the student to review",right:"getting / encouraging students to review",why:"Engage não aceita someone to do. Use encourage, get ou motivate."},
+  {id:"e16",p:"colloc",wrong:"keep having contact with English",right:"get daily exposure to English",why:"“Manter contato” é tradução literal. A colocação natural é exposure to a language."}
+];
+
+const WEEK = [
+  {d:1,name:"Segunda",lang:"Léxico: colocações e sinônimos de precisão",ped:"Lexical Approach: apresentar chunks, não palavras soltas"},
+  {d:2,name:"Terça",lang:"Pronúncia: connected speech, stress, entonação",ped:"Backchaining, drilling significativo, gestos"},
+  {d:3,name:"Quarta",lang:"Escrita e registro, do coloquial ao diplomático",ped:"Correção: delayed vs. immediate, recasts, autocorreção"},
+  {d:4,name:"Quinta",lang:"Fala e pragmática: hedging, softening, understatement",ped:"Aula CLT/TBL: pre-task → task → report → language focus"},
+  {d:5,name:"Sexta",lang:"Revisão do seu Error Log da semana",ped:"Microteaching: plano de aula com feedback estilo CELTA"},
+  {d:6,name:"Fim de semana",lang:"Revisão espaçada e input autêntico",ped:"Reflexão: What would I do differently?"}
+];
+
+const CHECKS = [
+  {id:"c1",t:"Ler o Error Log inteiro e entender a lógica de cada correção",tab:"erros"},
+  {id:"c2",t:"Chegar a 12 de 16 “acertei” no Quiz",auto:true,tab:"quiz"},
+  {id:"c3",t:"Estudar a escala de “desencorajado” no Nuance Lab",tab:"nuance"},
+  {id:"c4",t:"Fazer a Parte A das Tarefas (6 frases)",auto:true,tab:"tarefas"},
+  {id:"c5",t:"Fazer a Parte B das Tarefas (“chateado” + plano de eliciting)",auto:true,tab:"tarefas"},
+  {id:"c6",t:"Usar a técnica Context First numa aula real",tab:"professor"},
+  {id:"c7",t:"Usar o Live Language Doc numa atividade de fluência",tab:"professor"},
+  {id:"c8",t:"Enviar um recap pós-aula (3 acertos · 3 correções · 3 expressões)",tab:"professor"},
+  {id:"c9",t:"Fazer o “correction contract” com um grupo",tab:"professor"}
+];
+
+const TECH = [
+  {id:"t1",title:"Context First",tag:"pedidos de tradução",body:
+   `<p>Para quando o aluno pergunta “Teacher, como se diz...?”.</p>
+    <ol><li><b>Peça contexto.</b> <span class="say">Great question. Give me the whole sentence. What situation are you thinking of?</span> Metade da dúvida some aqui.</li>
+    <li><b>Ofereça uma escala de opções</b> (<em>meaning cline</em>) em vez de uma resposta única, e pergunte <em>“Which one fits your situation?”</em>.</li>
+    <li><b>Pesquise ao vivo</b>, compartilhando a tela. Isso ensina o aluno a pesquisar sozinho.</li></ol>
+    <p><b>Ferramentas:</b> Reverso Context e Linguee (frases reais PT↔EN), Oxford Learner's e Cambridge Dictionary, Oxford Collocations Dictionary, YouGlish (pronúncia em vídeos reais).</p>
+    <div class="callout">Você não precisa saber tudo na hora. <em>“Let me check the most natural option, and I'll send it to you after class”</em> é postura profissional.</div>`},
+  {id:"t2",title:"Live Language Doc",tag:"correção adiada",body:
+   `<ol><li>Abra um documento compartilhado com duas colunas: <b>What you said</b> e <b>A more natural way</b>.</li>
+    <li><b>Não interrompa.</b> Enquanto eles falam, anote frases reais, com erros e também com acertos bons.</li>
+    <li>Depois da tarefa, os próprios alunos preenchem a segunda coluna. Você só complementa.</li></ol>
+    <p><b>Por que funciona:</b> preserva a fluência, gera <em>noticing</em> e ninguém é corrigido na frente do colega no meio da fala.</p>`},
+  {id:"t3",title:"Correction contract",tag:"primeira aula",body:
+   `<p>Na primeira aula, pergunte a cada aluno como ele prefere ser corrigido:</p>
+    <div class="say">How would you like me to correct you? Right away, at the end of the activity, or in writing after class?</div>
+    <p>Adultos se sentem respeitados, e você ganha a confiança do grupo.</p>`},
+  {id:"t4",title:"Ask → Pause → Nominate",tag:"online",body:
+   `<p>A latência atrapalha a troca de turnos online. Faça a pergunta, espere 3 segundos e só então diga o nome.</p>
+    <div class="say">What would you say to a client who's unhappy with the delay? ... (pause) ... Marina?</div>
+    <p>Assim todos processam a pergunta, não só quem foi chamado.</p>`},
+  {id:"t5",title:"Recap pós-aula",tag:"revisão",body:
+   `<p>Envie em até 1 hora após a aula, a partir do Live Language Doc:</p>
+    <ul><li><b>3 things you said well</b></li><li><b>3 things to fix</b></li><li><b>3 new expressions</b></li></ul>`},
+  {id:"t6",title:"Retrieval nos primeiros 5 minutos",tag:"revisão",body:
+   `<div class="say">What do you remember from last class?</div>
+    <p>Quando o aluno sabe que vai ser perguntado, ele revisa. <em>Retrieval practice</em> é uma das técnicas de memorização com mais evidência científica.</p>`},
+  {id:"t7",title:"Desafio de áudio no WhatsApp",tag:"contato diário",body:
+   `<p>Três vezes por semana, o aluno envia um áudio de 60 segundos sobre o dia de trabalho. Você responde com <b>uma</b> correção e <b>um</b> elogio.</p>
+    <p>Leva pouco tempo e está ligado à rotina real deles.</p>`},
+  {id:"t8",title:"Flashcards com os erros do aluno",tag:"contato diário",body:
+   `<p>Crie decks no Anki ou Quizlet com os erros do próprio aluno (frente: a frase dele; verso: a forma natural). Material pessoal é muito mais lembrado que material genérico.</p>`},
+  {id:"t9",title:"Andragogia: o que adultos corporativos precisam",tag:"base teórica",body:
+   `<ul><li>Saber <b>por que</b> estão aprendendo: <em>“Onde eu uso isso na segunda-feira?”</em></li>
+    <li>Usar a <b>própria vida profissional</b> como material: reuniões, e-mails, apresentações reais.</li>
+    <li>Ver <b>progresso visível</b>: <em>can-do statements</em>, antes e depois.</li>
+    <li>Em grupos de 2 a 3, cuidado com o <b>filtro afetivo</b>, especialmente se houver hierarquia entre os alunos.</li></ul>`},
+  {id:"t10",title:"Telling vs. Eliciting",tag:"base",body:
+   `<p>Exemplo com <em>discuss about</em>: escreva no quadro <em>“We talked about the budget”</em> e <em>“We discussed the budget”</em>.</p>
+    <div class="say">What's the difference in structure?</div>
+    <p>Depois, uma CCQ (<em>concept checking question</em>): <em>“Do we need a preposition after ‘discuss’?”</em>. Quando o aluno descobre a regra sozinho, ela fixa melhor.</p>`}
+];
+
+const TASK_A = [
+  {id:"a1",item:"have difficulty + -ing"},
+  {id:"a2",item:"ask someone for"},
+  {id:"a3",item:"command of English"},
+  {id:"a4",item:"convey"},
+  {id:"a5",item:"exposure to"},
+  {id:"a6",item:"put someone off"}
+];
+
+/* ---------- state + storage ---------- */
+const LS_KEY = "language-lens-studio:v1";
+const blank = () => ({done:{}, quiz:{}, tasks:{}, myErrors:[], days:[]});
+let state = blank();
+let db = null, docRef = null;
+let writing = Promise.resolve();
+let saveTimer = null;
+
+function readLocal(){ try{ const s = localStorage.getItem(LS_KEY); return s ? JSON.parse(s) : null; }catch(e){ return null; } }
+function writeLocal(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+function merge(src){ const b = blank(); return Object.assign(b, src || {}); }
+
+function setSync(t){ document.getElementById("syncState").textContent = t; }
+
+function scheduleSave(){
+  writeLocal();
+  if(!docRef) return;
+  clearTimeout(saveTimer);
+  setSync("salvando…");
+  saveTimer = setTimeout(()=>{
+    const body = JSON.parse(JSON.stringify(state));
+    body.updatedAt = new Date().toISOString();
+    writing = writing.then(()=>docRef.set(body)).then(()=>setSync("salvo"), e=>{
+      setSync(e && e.code === "quota_exceeded" ? "espaço cheio" : "salvo só neste navegador");
+    });
+  }, 700);
+}
+
+function markDay(){
+  const d = new Date(); const key = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  if(!state.days.includes(key)){ state.days.push(key); if(state.days.length>400) state.days.shift(); }
+}
+
+/* ---------- helpers ---------- */
+const $ = s => document.querySelector(s);
+function el(tag, attrs, html){ const n = document.createElement(tag); if(attrs) for(const k in attrs){ if(k==="class") n.className = attrs[k]; else n.setAttribute(k, attrs[k]); } if(html!=null) n.innerHTML = html; return n; }
+function esc(s){ return String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function mdLite(s){ return esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g,"$1<em>$2</em>").replace(/^#{1,4}\s*(.+)$/gm,"<strong>$1</strong>"); }
+
+function allErrors(){ return ERRORS.concat(state.myErrors.map(m=>({id:m.id,p:"mine",wrong:m.wrong,right:m.right,why:m.why||""}))); }
+
+/* ---------- derived progress ---------- */
+function autoDone(id){
+  if(id==="c2") return ERRORS.filter(e=>state.quiz[e.id]==="ok").length >= 12;
+  if(id==="c4") return TASK_A.every(t=>(state.tasks[t.id]||"").trim().length>8);
+  if(id==="c5") return (state.tasks.b1||"").trim().length>20 && (state.tasks.b2||"").trim().length>20;
+  return !!state.done[id];
+}
+function renderMeter(){
+  const n = CHECKS.filter(c=>autoDone(c.id)).length;
+  const pct = Math.round(n / CHECKS.length * 100);
+  $("#progBar").style.width = pct+"%";
+  $("#progTxt").textContent = pct+"%";
+  $("#daysTxt").textContent = state.days.length;
+}
+
+/* ---------- tabs ---------- */
+function showTab(name){
+  document.querySelectorAll(".tab").forEach(b=>b.setAttribute("aria-selected", b.dataset.tab===name ? "true":"false"));
+  document.querySelectorAll("[data-panel]").forEach(p=>p.hidden = p.dataset.panel!==name);
+  try{ sessionStorage.setItem(LS_KEY+":tab", name); }catch(e){}
+  if(name==="quiz") renderQuiz();
+}
+$("#tabrow").addEventListener("click", e=>{ const b = e.target.closest(".tab"); if(b) showTab(b.dataset.tab); });
+
+/* ---------- Hoje ---------- */
+function renderChecklist(){
+  const box = $("#checklist"); box.innerHTML = "";
+  CHECKS.forEach(c=>{
+    const done = autoDone(c.id);
+    const row = el("div",{class:"check"+(done?" done":"")});
+    const cb = el("input",{type:"checkbox",id:"chk-"+c.id});
+    cb.checked = done;
+    if(c.auto){ cb.disabled = true; }
+    cb.addEventListener("change", ()=>{ state.done[c.id] = cb.checked; if(cb.checked) markDay(); scheduleSave(); renderChecklist(); renderMeter(); });
+    const lab = el("label",{for:"chk-"+c.id}, esc(c.t) + (c.auto ? ' <span class="pill">automático</span>' : ""));
+    const go = el("button",{class:"btn",type:"button",style:"margin-left:auto;padding:4px 10px;font-size:13px"},"abrir");
+    go.addEventListener("click", ()=>{ showTab(c.tab); window.scrollTo({top:0}); });
+    row.append(cb, lab, go);
+    box.append(row);
+  });
+}
+function renderWeek(){
+  const box = $("#week"); box.innerHTML = "";
+  let today = new Date().getDay(); if(today===0) today = 6;
+  WEEK.forEach(w=>{
+    const c = el("div",{class:"day"+(w.d===today?" today":"")});
+    c.innerHTML = `<div class="row" style="justify-content:space-between"><h4>${w.name}</h4>${w.d===today?'<span class="pill blue">hoje</span>':""}</div>
+      <p><span class="label" style="display:block">Inglês</span>${esc(w.lang)}</p>
+      <p class="ped"><span class="label" style="display:block">Pedagogia</span>${esc(w.ped)}</p>`;
+    box.append(c);
+  });
+}
+
+/* ---------- Error Log ---------- */
+let errFilter = "all";
+function renderErrFilters(){
+  const box = $("#errFilters"); box.innerHTML = "";
+  const opts = [["all","Todos"]].concat(Object.entries(PATTERNS)).concat(state.myErrors.length?[["mine","Meus erros"]]:[]);
+  opts.forEach(([k,v])=>{
+    const b = el("button",{class:"chip",type:"button","aria-pressed":String(errFilter===k)}, esc(v));
+    b.addEventListener("click", ()=>{ errFilter = k; renderErrFilters(); renderErrors(); });
+    box.append(b);
+  });
+}
+function errCard(e){
+  const tag = e.p==="mine" ? "Meu erro" : PATTERNS[e.p];
+  const q = state.quiz[e.id];
+  const c = el("div",{class:"err"});
+  c.innerHTML = `<div class="head"><span class="pill ${e.p==="mine"?"blue":""}">${esc(tag)}</span>${q==="ok"?'<span class="pill teal">acertei</span>':q==="review"?'<span class="pill amber">rever</span>':""}</div>
+    <p class="said"><span class="wrong">${esc(e.wrong)}</span></p>
+    <p class="fix"><span class="caret">‸</span><span class="right">${esc(e.right)}</span></p>
+    ${e.why?`<p class="why">${esc(e.why)}</p>`:""}`;
+  return c;
+}
+function renderErrors(){
+  const box = $("#errList"); box.innerHTML = "";
+  allErrors().filter(e=>errFilter==="all"||e.p===errFilter).forEach(e=>box.append(errCard(e)));
+  const mine = $("#myList"); mine.innerHTML = "";
+  state.myErrors.slice().reverse().forEach(m=>{
+    const c = errCard({id:m.id,p:"mine",wrong:m.wrong,right:m.right,why:m.why});
+    const del = el("button",{class:"btn",type:"button",style:"align-self:flex-start;font-size:13px;padding:4px 10px"},"remover");
+    del.addEventListener("click", ()=>{ state.myErrors = state.myErrors.filter(x=>x.id!==m.id); delete state.quiz[m.id]; scheduleSave(); renderErrFilters(); renderErrors(); });
+    c.append(del); mine.append(c);
+  });
+}
+$("#myAdd").addEventListener("click", ()=>{
+  const w = $("#myWrong").value.trim(), r = $("#myRight").value.trim(), y = $("#myWhy").value.trim();
+  if(!w || !r){ $("#myMsg").textContent = "Preencha o que você disse e a forma natural."; return; }
+  state.myErrors.push({id:"m"+Date.now().toString(36), wrong:w, right:r, why:y, at:new Date().toISOString()});
+  markDay(); scheduleSave();
+  $("#myWrong").value = ""; $("#myRight").value = ""; $("#myWhy").value = "";
+  $("#myMsg").textContent = "Adicionado. Já aparece no quiz.";
+  renderErrFilters(); renderErrors(); renderMeter();
+});
+
+/* ---------- Quiz ---------- */
+let qIdx = 0, qRevealed = false, qDeck = [];
+function buildDeck(){
+  const only = $("#qOnlyReview").checked;
+  qDeck = allErrors().filter(e=>!only || state.quiz[e.id]!=="ok");
+  if(qIdx >= qDeck.length) qIdx = 0;
+}
+function renderQuizStats(){
+  const vals = allErrors().map(e=>state.quiz[e.id]);
+  $("#qOk").textContent = vals.filter(v=>v==="ok").length;
+  $("#qRev").textContent = vals.filter(v=>v==="review").length;
+}
+function renderQuiz(){
+  buildDeck(); renderQuizStats();
+  const box = $("#quizbox"); box.innerHTML = "";
+  if(!qDeck.length){ box.innerHTML = `<h3>Nada para rever agora.</h3><p class="muted">Você marcou todos como “acertei”. Desmarque o filtro para praticar tudo de novo.</p>`; return; }
+  const e = qDeck[qIdx];
+  box.append(el("div",{class:"row",style:"justify-content:space-between"},`<span class="label">${qIdx+1} de ${qDeck.length}</span><span class="pill">${esc(e.p==="mine"?"Meu erro":PATTERNS[e.p])}</span>`));
+  box.append(el("p",{class:"muted"},"Como um nativo diria isto?"));
+  box.append(el("p",{class:"said"},`<span class="wrong">${esc(e.wrong)}</span>`));
+  if(qRevealed){
+    box.append(el("p",{class:"said"},`<span class="caret">‸</span><span class="right">${esc(e.right)}</span>`));
+    if(e.why) box.append(el("p",{class:"note"},esc(e.why)));
+    const r = el("div",{class:"row"});
+    const ok = el("button",{class:"btn ok",type:"button"},"Acertei");
+    const rv = el("button",{class:"btn warn",type:"button"},"Rever depois");
+    ok.addEventListener("click", ()=>answer(e,"ok"));
+    rv.addEventListener("click", ()=>answer(e,"review"));
+    r.append(ok, rv); box.append(r);
+  } else {
+    const b = el("button",{class:"btn primary",type:"button",style:"align-self:flex-start"},"Mostrar a forma natural");
+    b.addEventListener("click", ()=>{ qRevealed = true; renderQuiz(); });
+    box.append(b);
+  }
+}
+function answer(e, v){
+  state.quiz[e.id] = v; markDay(); scheduleSave();
+  qRevealed = false; qIdx = (qIdx+1) % Math.max(1, qDeck.length);
+  renderQuiz(); renderChecklist(); renderMeter();
+}
+$("#qOnlyReview").addEventListener("change", ()=>{ qIdx = 0; qRevealed = false; renderQuiz(); });
+
+/* ---------- Toolkit ---------- */
+function renderTech(){
+  const box = $("#techList"); box.innerHTML = "";
+  TECH.forEach(t=>{
+    const d = el("details",{class:"tech"});
+    d.innerHTML = `<summary><h3>${esc(t.title)}</h3><span class="pill">${esc(t.tag)}</span></summary><div class="body">${t.body}</div>`;
+    box.append(d);
+  });
+}
+
+/* ---------- Tarefas ---------- */
+function renderTasks(){
+  const box = $("#taskA"); box.innerHTML = "";
+  TASK_A.forEach((t,i)=>{
+    const f = el("div",{class:"field"});
+    f.innerHTML = `<label class="label" for="task-${t.id}">Frase ${i+1} · <b>${esc(t.item)}</b></label><textarea id="task-${t.id}" rows="2"></textarea>`;
+    box.append(f);
+    const ta = f.querySelector("textarea"); ta.value = state.tasks[t.id] || "";
+    ta.addEventListener("input", ()=>onTaskInput(t.id, ta.value));
+  });
+  [["b1","#taskB1"],["b2","#taskB2"]].forEach(([k,s])=>{ const ta = $(s); ta.value = state.tasks[k] || ""; });
+}
+function onTaskInput(k, v){
+  state.tasks[k] = v; state.tasks.updatedAt = new Date().toISOString();
+  markDay(); scheduleSave(); renderChecklist(); renderMeter();
+  $("#taskSaved").textContent = docRef ? "Salvo. Seu coach pode ler na próxima sessão." : "Salvo neste navegador.";
+}
+$("#taskB1").addEventListener("input", e=>onTaskInput("b1", e.target.value));
+$("#taskB2").addEventListener("input", e=>onTaskInput("b2", e.target.value));
+
+/* ---------- Claude (coach) ---------- */
+const COACH_BASE = `Você é um Master Coach de Idiomas bilíngue e especialista em metodologia TESOL/CELTA. O aluno é um professor brasileiro de inglês (nível C1, meta C2) que dá aulas online para adultos corporativos em grupos de 2 a 3. Os padrões de interferência dele são: padrões verbais do português (ex.: "difficulty to", "ask the translation"), incontáveis ("audios"), falsos cognatos ("habilities") e precisão gramatical fina. Responda em português, com exemplos em inglês. Seja direto e organizado, sem introduções longas. Use **negrito** para destacar formas corretas. Não use tabelas.`;
+const MODES = {
+  fix:{label:"Seu texto em inglês", ph:"Write a sentence or paragraph in English...", prompt:t=>`${COACH_BASE}\n\nTarefa: faça o "Language Lens" do texto abaixo.\n1. Liste cada erro ou escolha pouco natural: forma usada → forma natural, e a lógica em uma linha (aponte se for interferência do português).\n2. Reescreva o texto inteiro em inglês C2 natural.\n3. Termine com "Teacher's Lens": em 2 a 3 frases, como ele explicaria o ponto mais importante a um aluno usando eliciting.\n\nTexto:\n"""${t}"""`},
+  teach:{label:"O ponto que você quer ensinar", ph:"Ex.: present perfect vs. simple past; 'make' vs. 'do'; phrasal verbs de reuniões...", prompt:t=>`${COACH_BASE}\n\nTarefa: faça o "Teacher's Lens" para o ponto abaixo, pensado para 2 a 3 adultos corporativos online.\n1. A lógica do ponto em 2 frases simples.\n2. Um passo a passo de eliciting (o que escrever/mostrar e o que perguntar), com 2 CCQs.\n3. Uma tarefa curta de prática ligada ao trabalho deles.\n4. O erro mais comum de brasileiros neste ponto e como corrigir sem matar a fluência.\n\nPonto:\n"""${t}"""`},
+  nuance:{label:"Palavra ou frase em português, com o contexto", ph:"Ex.: “desencorajado”: meu aluno quer dizer que o time está sem ânimo depois de perder um cliente.", prompt:t=>`${COACH_BASE}\n\nTarefa: tradução com nuance (português → inglês).\n1. Se o contexto for insuficiente, diga quais sentidos a palavra pode ter.\n2. Monte uma "meaning cline" com 4 a 6 opções em inglês: para cada uma, o sentido, o registro (informal/neutro/formal/corporativo) e uma frase de exemplo.\n3. Aponte opções que parecem certas mas não são (e por quê).\n4. Dê a melhor escolha para o contexto informado.\n5. "Teacher's Lens": como apresentar isso ao aluno em 2 a 3 frases.\n\nPedido:\n"""${t}"""`}
+};
+function syncCoachMode(){ const m = MODES[$("#coachMode").value]; $("#coachInLabel").textContent = m.label; $("#coachIn").placeholder = m.ph; }
+$("#coachMode").addEventListener("change", syncCoachMode);
+syncCoachMode();
+
+function errCopy(code){
+  return ({
+    not_granted:"O coach precisa da sua permissão para usar o Claude. Recarregue a página para permitir.",
+    sampling_disabled:"O coach não está disponível para esta conta.",
+    rate_limited:"Muitas perguntas em pouco tempo. Tente de novo daqui a pouco.",
+    session_expired:"Sua sessão expirou. Entre de novo no Claude.",
+    prompt_too_large:"Texto longo demais. Envie um trecho menor.",
+    refused:"O coach não respondeu a esse pedido. Reformule a pergunta.",
+    empty_completion:"O coach não gerou resposta. Tente com um texto mais curto."
+  })[code] || "Não foi possível falar com o coach agora. Tente de novo.";
+}
+const HIDE = ["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"];
+
+async function ask(sample, prompt, out, goBtn, stopBtn, noteEl){
+  const ctl = new AbortController();
+  goBtn.disabled = true; stopBtn.hidden = false; noteEl.textContent = "";
+  out.textContent = "Pensando…";
+  stopBtn.onclick = ()=>ctl.abort();
+  try{
+    const r = await sample(prompt, {signal:ctl.signal, onText:({text})=>{ out.innerHTML = mdLite(text); }});
+    out.innerHTML = mdLite(r.text);
+    if(r.truncated) noteEl.textContent = "A resposta foi cortada. Envie um trecho menor.";
+    markDay(); scheduleSave(); renderMeter();
+  }catch(e){
+    out.innerHTML = e && e.text ? mdLite(e.text) : "";
+    if(e && e.code !== "cancelled") noteEl.textContent = errCopy(e.code);
+    if(e && HIDE.includes(e.code)){ goBtn.hidden = true; }
+  }finally{
+    goBtn.disabled = false; stopBtn.hidden = true;
+  }
+}
+
+async function initClaude(){
+  const hasClaude = !!(window.claude && typeof window.claude.use === "function");
+  const [dbNs, sample] = hasClaude ? await Promise.all([
+    window.claude.use("db").catch(()=>null),
+    window.claude.use("sample").catch(()=>null)
+  ]) : [null, null];
+
+  // storage
+  if(dbNs){
+    db = dbNs;
+    try{
+      docRef = db.doc("study/state");
+      const snap = await docRef.get();
+      if(snap.exists){ state = merge(snap.data()); writeLocal(); }
+      else { const local = readLocal(); if(local){ state = merge(local); scheduleSave(); } }
+      $("#whereSaved").textContent = "na sua conta, em qualquer dispositivo";
+      setSync("sincronizado");
+      renderAll();
+    }catch(e){ docRef = null; setSync(""); }
+  }
+
+  // coach
+  if(sample){
+    $("#coachGo").onclick = ()=>{
+      const t = $("#coachIn").value.trim();
+      if(!t){ $("#coachNote").textContent = "Escreva algo primeiro."; return; }
+      ask(sample, MODES[$("#coachMode").value].prompt(t), $("#coachOut"), $("#coachGo"), $("#coachStop"), $("#coachNote"));
+    };
+    const tb = $("#taskCheck"); tb.hidden = false;
+    tb.onclick = ()=>{
+      const a = TASK_A.map((t,i)=>`${i+1}. [${t.item}] ${state.tasks[t.id]||"(em branco)"}`).join("\n");
+      const prompt = `${COACH_BASE}\n\nCorrija as tarefas do Módulo 1 abaixo.\nParte A: para cada frase, diga se o item-alvo foi usado corretamente, corrija o que for preciso (forma usada → forma natural + lógica em uma linha) e dê uma versão C2.\nParte B: avalie a meaning cline de "chateado" (sentidos, registro, exemplos; aponte opções que faltam, como upset, annoyed, disappointed, hurt, bummed, fed up) e avalie o plano de eliciting como um tutor CELTA: um ponto forte, um ponto a melhorar e uma pergunta CCQ sugerida.\nTermine com uma nota de 0 a 10 para cada parte.\n\nParte A:\n${a}\n\nParte B, meaning cline:\n${state.tasks.b1||"(em branco)"}\n\nParte B, plano de eliciting:\n${state.tasks.b2||"(em branco)"}`;
+      ask(sample, prompt, $("#taskOut"), tb, $("#taskStop"), $("#taskSaved"));
+    };
+  } else {
+    $("#coachGo").disabled = true;
+    $("#coachOff").hidden = false;
+  }
+}
+
+function renderAll(){
+  renderChecklist(); renderWeek(); renderMeter(); renderErrFilters(); renderErrors(); renderTech(); renderTasks(); renderQuizStats();
+  if(!$("#p-quiz").hidden) renderQuiz();
+}
+
+/* ---------- boot ---------- */
+state = merge(readLocal());
+renderAll();
+try{ const t = sessionStorage.getItem(LS_KEY+":tab"); if(t && document.querySelector(`[data-panel="${t}"]`)) showTab(t); }catch(e){}
+initClaude();
+})();
+</script>
+</body>
+</html>
