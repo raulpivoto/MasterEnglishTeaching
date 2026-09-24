@@ -2,6 +2,16 @@
 
 Plano de estudos para duas metas: levar o inglês ao **C2** e se tornar um **professor de inglês de excelência** para adultos corporativos (online, grupos de 2 a 3).
 
+## 🎓 Plano de formação: 3 trilhas
+
+| Trilha | Documento | Módulos |
+|---|---|---|
+| 1 | [Dominância Teórica e Prática para Fluência C2+ (Mastery)](formacao/01-fluencia-c2.md) | 12 |
+| 2 | [Metodologia e Abordagens de Ensino de Inglês (ELT/TESOL)](formacao/02-metodologia-elt.md) | 15 |
+| 3 | [Pedagogia Crítica de Paulo Freire Aplicada ao Ensino de Idiomas](formacao/03-freire-idiomas.md) | 10 |
+
+Cada módulo traz objetivo, conceitos-chave, obras de referência e uma aplicação prática. No site, a aba **Formação** mostra as trilhas com acompanhamento por módulo, e a aba **Trilha** tem lições curtas separadas pelas mesmas três trilhas.
+
 ## 📱 Instalar no celular
 
 O app é um **PWA**: instala pelo navegador, abre em tela cheia pelo ícone e funciona offline.
@@ -16,10 +26,11 @@ O progresso do app fica salvo no próprio celular. Para juntar com o progresso d
 
 ## 🛠️ Como atualizar
 
-`src/studio.html` é a fonte (a mesma página publicada no Claude). Depois de editar:
+Fontes: `src/studio.html` (a página) e `formacao/*.md` (as trilhas). Depois de editar:
 
 ```bash
-python build.py   # gera index.html e muda a versão do cache em sw.js
+pip install markdown   # uma vez
+python build.py        # gera dist/studio.html (Claude) e index.html (app), e muda a versão do cache em sw.js
 ```
 
 ## O que tem no site
@@ -27,6 +38,7 @@ python build.py   # gera index.html e muda a versão do cache em sw.js
 | Seção | Conteúdo |
 |---|---|
 | Hoje | Checklist do Módulo 1, plano semanal e diagnóstico |
+| Formação | O plano completo das 3 trilhas (37 módulos), com acompanhamento de estudo e aplicação prática |
 | Trilha | 7 unidades estilo Duolingo (padrões verbais, léxico, gramática C2, pragmática, pronúncia, aquisição/metodologia, Paulo Freire): 14 sessões de teoria + 140 exercícios de nível C2 com correção automática, corações, XP, níveis, ofensiva, conquistas, Boss Fights e revisão de erros |
 | Error Log | As 16 correções do texto diagnóstico e os seus próprios erros |
 | Quiz | Retrieval practice com o Error Log |
