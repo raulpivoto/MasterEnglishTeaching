@@ -246,6 +246,23 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
 .endtile{border:2px solid var(--line);border-radius:12px;padding:12px;text-align:center;background:var(--surface)}
 .endtile .big{font-family:var(--display);font-weight:700;font-size:24px;font-variant-numeric:tabular-nums}
 .endhero{font-family:var(--display);font-weight:700;font-size:clamp(28px,6vw,40px);text-align:center;text-wrap:balance}
+.node.theory{width:58px;height:54px;font-size:20px;border-radius:14px;background:var(--u-soft);color:var(--u);box-shadow:0 5px 0 color-mix(in srgb,var(--u) 40%,transparent)}
+.node.theory.read{background:var(--u-soft);color:var(--u)}
+.node.theory.locked{background:var(--sunk);color:var(--ink-2);box-shadow:0 5px 0 var(--line)}
+.theory-body{display:flex;flex-direction:column;gap:12px;font-size:17px;line-height:1.6}
+.theory-body ul,.theory-body ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px}
+.theory-body table{font-size:15px}
+.theory-body blockquote{margin:0;padding:12px 16px;border-left:3px solid var(--u,var(--blue));background:var(--surface);border-radius:0 8px 8px 0;font-style:italic}
+.src{font-size:14px;color:var(--ink-2)}
+details.consult{border:1px dashed var(--line);border-radius:10px;padding:10px 14px;background:var(--surface);display:flex;flex-direction:column;gap:10px}
+details.consult summary{cursor:pointer;font-family:var(--display);font-size:14.5px;color:var(--ink-2)}
+details.consult h4{font-size:15.5px;margin-top:12px}
+details.consult .theory-body{font-size:15.5px}
+.spotline{display:flex;flex-wrap:wrap;gap:8px}
+.tok[aria-pressed="true"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:0 3px 0 var(--blue)}
+.tok.ok{border-color:var(--teal);background:var(--teal-soft);color:var(--teal);box-shadow:none}
+.tok.no{border-color:var(--red);background:var(--red-soft);box-shadow:none}
+.tok:disabled{cursor:default}
 @media (max-width:520px){.p-top,.p-inner{padding-inline:16px}.p-foot{padding-inline:16px}.bigbtn{width:100%}}
 @media (prefers-reduced-motion: reduce){*{transition:none!important}}
 @media (max-width:520px){body{font-size:16px}.wrap{padding-inline:16px}nav.tabs{margin-inline:-16px;padding-inline:16px}.card{padding:16px}}
@@ -342,7 +359,7 @@ footer{margin-top:48px;padding-top:16px;border-top:1px solid var(--line);font-si
     <div class="stack">
       <span class="label">Módulo 1 · lições de 5 minutos</span>
       <h2>Trilha</h2>
-      <p class="muted">Lições curtas com correção automática. Cada lição tem 8 exercícios e 3 corações. Erros voltam no fim da lição e entram na sua revisão. Vença o Boss Fight de cada unidade para dominar o conteúdo.</p>
+      <p class="muted">Sete unidades, do inglês C2 à pedagogia, incluindo Paulo Freire. Antes de cada lição há uma <b>sessão de teoria</b>, com a base teórica e os autores. Cada lição tem 10 exercícios de nível C2 e 3 corações. Os erros voltam no fim da lição e entram na sua revisão. O Boss Fight de cada unidade tem 10 questões em 4 minutos, e você precisa acertar 8.</p>
     </div>
     <div class="gstats">
       <div class="gtile"><span class="label">Nível</span><span class="big" id="gLevel" style="font-size:19px"></span><div class="mini"><i id="gLevelBar"></i></div><span class="note" id="gLevelNext"></span></div>
@@ -660,7 +677,7 @@ const TASK_A = [
 
 /* ---------- state + storage ---------- */
 const LS_KEY = "language-lens-studio:v1";
-const blank = () => ({done:{}, quiz:{}, tasks:{}, myErrors:[], days:[], xp:{}, lessons:{}, boss:{}, mistakes:[]});
+const blank = () => ({done:{}, quiz:{}, tasks:{}, myErrors:[], days:[], xp:{}, lessons:{}, boss:{}, mistakes:[], theory:{}});
 let state = blank();
 let db = null, docRef = null;
 let writing = Promise.resolve();
@@ -963,6 +980,7 @@ function mergeStates(a, b){
   for(const k in b.lessons){ const x = m.lessons[k], y = b.lessons[k]; m.lessons[k] = x ? {done:true, perfect:!!(x.perfect||y.perfect), best:Math.max(x.best||0,y.best||0), at:x.at||y.at} : y; }
   for(const k in b.boss){ const x = m.boss[k], y = b.boss[k]; m.boss[k] = x ? {won:!!(x.won||y.won), best:Math.max(x.best||0,y.best||0), at:x.at||y.at} : y; }
   m.mistakes = Array.from(new Set(m.mistakes.concat(b.mistakes)));
+  for(const k in b.theory) m.theory[k] = m.theory[k] || b.theory[k];
   return m;
 }
 $("#expBtn").addEventListener("click", ()=>{
@@ -991,126 +1009,328 @@ function renderAll(){
 }
 
 /* ---------- Trilha: content ---------- */
-// mc: o[0] is the correct option (shuffled on screen). type: a = accepted answers. bank: a = target sentence, x = distractor tiles.
+// Exercise types:
+//  mc    o[0] is the correct option (shuffled on screen)
+//  multi o = [[text, isCorrect], ...]  (select all that apply)
+//  type  a = accepted answers
+//  bank  a = target sentence, x = distractor tiles
+//  spot  s = sentence, a = wrong word(s) the learner may tap, fix = corrected sentence
+//  match p = [[left, right], ...]
+// Each lesson has a theory session (cards) that unlocks it.
 const UNITS = [
- {id:"u1", color:"blue", title:"Padrões verbais", desc:"O padrão nº 1 do seu Error Log", lessons:[
-  {id:"u1l1", title:"-ing, to e for", ex:[
-   {t:"type", q:"Complete com a forma certa de find", s:"I have difficulty ___ the right word.", a:["finding"], w:"Difficulty pede -ing: have difficulty doing something."},
-   {t:"mc", q:"Qual frase soa natural?", o:["She asked me for the translation.","She asked me the translation.","She asked to me the translation."], w:"Ask no sentido de “pedir” leva for: ask someone for something."},
-   {t:"bank", q:"Traduza", pt:"Nós discutimos o orçamento.", a:"We discussed the budget", x:["about","on"], w:"Discuss é transitivo direto: sem about."},
-   {t:"mc", q:"Escolha a forma natural", s:"Could you ___ again?", o:["explain it to me","explain me it","explain to me it"], w:"Explain something to someone. Nunca explain me."},
-   {t:"type", q:"Complete com uma palavra", s:"My manager encouraged me ___ apply for the role.", a:["to"], w:"Encourage someone to do something."},
-   {t:"mc", q:"Qual verbo completa melhor?", s:"It's hard to ___ the exact meaning of “saudade”.", o:["convey","reply","answer"], w:"Convey = transmitir um sentido. Reply = responder (e pede to)."},
-   {t:"bank", q:"Traduza", pt:"Ela me pediu para traduzir o e-mail.", a:"She asked me to translate the email", x:["for","translating"], w:"Ask someone to do something."},
-   {t:"match", q:"Ligue o português ao padrão em inglês", p:[["ter dificuldade em","have difficulty -ing"],["pedir a tradução","ask for the translation"],["discutir o tema","discuss the topic"],["responder ao e-mail","reply to the email"]]}
+ {id:"t1", color:"blue", title:"Padrões verbais", desc:"Complementação e regência: o padrão nº 1 do seu Error Log", lessons:[
+  {id:"t1a", title:"Complementação verbal", theory:{title:"Complementação verbal: -ing, to, that", cards:[
+   {h:"Por que isso denuncia o brasileiro", b:`<p>Em português, quase todo verbo aceita <b>“de/em + infinitivo”</b> ou <b>“que + subjuntivo”</b>. Em inglês, cada verbo tem um <b>padrão de complementação</b> fixo, e esse padrão é <b>lexical</b>: não se deduz por lógica, aprende-se junto com o verbo.</p><p>Por isso o erro sobrevive até o C1: a gramática está “certa” na cabeça em português, mas o padrão do verbo inglês é outro.</p><p class="src">Base teórica: a gramática de valência (Quirk et al., <em>A Comprehensive Grammar of the English Language</em>, 1985) chama isso de <em>verb complementation</em>.</p>`},
+   {h:"Os 5 padrões principais", b:`<table><tr><th>Padrão</th><th>Verbos típicos</th></tr>
+    <tr><td>V + <b>-ing</b></td><td>avoid, consider, deny, risk, postpone, can't help, mind, involve</td></tr>
+    <tr><td>V + <b>to</b> + verbo</td><td>agree, afford, fail, manage, refuse, tend, hesitate, decline</td></tr>
+    <tr><td>V + objeto + <b>to</b> + verbo</td><td>ask, encourage, urge, persuade, allow, enable, expect, invite</td></tr>
+    <tr><td>V + objeto + verbo base</td><td>make, let, have (causativo), help (também com to)</td></tr>
+    <tr><td>V + <b>that</b> + oração</td><td>suggest, recommend, insist, demand, propose</td></tr></table>`},
+   {h:"A armadilha do “to” preposição", b:`<p>Em alguns chunks, <b>to</b> é preposição, não partícula de infinitivo. Depois de preposição, sempre <b>-ing</b>:</p><ul><li>look forward <b>to hearing</b></li><li>object <b>to paying</b></li><li>be committed <b>to delivering</b></li><li>be used / get used <b>to working</b></li><li>when it comes <b>to negotiating</b></li></ul><p><b>Teste rápido:</b> se cabe um substantivo depois (“look forward to <em>the meeting</em>”), o <em>to</em> é preposição, então use -ing.</p>`},
+   {h:"Quando o padrão muda o sentido", b:`<table><tr><th>Verbo</th><th>+ -ing</th><th>+ to</th></tr>
+    <tr><td>stop</td><td>parar de fazer</td><td>parar <em>para</em> fazer</td></tr>
+    <tr><td>try</td><td>experimentar (como solução)</td><td>esforçar-se, tentar</td></tr>
+    <tr><td>remember / forget</td><td>lembrar de algo que fez</td><td>lembrar de fazer (tarefa)</td></tr>
+    <tr><td>regret</td><td>arrepender-se de ter feito</td><td>lamentar informar (formal)</td></tr>
+    <tr><td>go on</td><td>continuar a mesma coisa</td><td>passar para outra coisa</td></tr></table>
+    <p><em>Try restarting it</em> (experimente reiniciar) × <em>I tried to restart it</em> (tentei, com esforço).</p>`},
+   {h:"Verbos que NÃO aceitam objeto + to", b:`<p><b>suggest, recommend, explain, insist, demand, propose</b> não entram no padrão “alguém + to”:</p><p><span class="wrong">He suggested me to apply.</span><br><span class="right">He suggested (that) I apply.</span> / <span class="right">He suggested applying.</span></p><p>O verbo na oração com <em>that</em> fica no <b>subjuntivo mandativo</b> (forma base, sem -s). No inglês britânico também se usa <em>should apply</em>.</p>`},
+   {h:"Teacher's Lens", b:`<ul><li>Ensine o verbo <b>como chunk</b>: “avoid + -ing”, nunca “avoid” sozinho (Lexical Approach).</li><li>Use o <b>teste do substantivo</b> para o <em>to</em> preposição: o aluno descobre a regra (<em>eliciting</em>).</li><li>CCQ para <em>stop to / stop -ing</em>: “He stopped to smoke. Is he smoking now? (Yes)”.</li></ul>`}
+  ]}, ex:[
+   {t:"mc", q:"Ele terminou a apresentação e parou para responder perguntas.", o:["He stopped to answer questions.","He stopped answering questions.","He stopped for answering questions.","He stopped to answering questions."], w:"Stop + to = parar para fazer outra coisa. Stop + -ing = parar de fazer."},
+   {t:"type", q:"Complete com a forma certa de hear", s:"We look forward to ___ from you.", a:["hearing"], w:"Aqui to é preposição: look forward to + -ing."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"She suggested me to apply for the position.", a:["me","to"], fix:"She suggested (that) I apply / suggested applying for the position.", w:"Suggest não aceita objeto + to."},
+   {t:"multi", q:"Quais verbos aceitam “objeto + to + verbo”? Marque todos.", o:[["urge",true],["persuade",true],["suggest",false],["enable",true],["insist",false]], w:"Urge, persuade e enable seguem o padrão V + obj + to. Suggest e insist pedem that-clause."},
+   {t:"mc", q:"A internet caiu. Escolha a melhor sugestão:", s:"Try ___ the router. That usually fixes it.", o:["restarting","to restart","restart","to restarting"], w:"Try + -ing = experimentar uma solução."},
+   {t:"type", q:"Registro formal: complete com inform", s:"I regret ___ you that your application was unsuccessful.", a:["to inform"], w:"Regret + to = lamentar informar (formal). Regret + -ing = arrepender-se."},
+   {t:"mc", q:"Escolha a forma certa", s:"She's still not used to ___ in English all day.", o:["working","work","have worked","be working"], w:"Be used to + -ing (to é preposição)."},
+   {t:"bank", q:"Traduza", pt:"O gerente nos fez refazer o relatório.", a:"The manager made us redo the report", x:["to","redoing"], w:"Make + objeto + verbo base (sem to)."},
+   {t:"mc", q:"Qual versão está correta?", o:["The new policy will enable us to reduce costs.","The new policy will enable to reduce costs.","The new policy will enable reducing costs.","The new policy will enable that we reduce costs."], w:"Enable exige objeto: enable someone to do something."},
+   {t:"type", q:"Complete com take (duas formas são aceitas)", s:"He denied ___ the files.", a:["taking","having taken"], w:"Deny + -ing. Having taken reforça que a ação é anterior."}
   ]},
-  {id:"u1l2", title:"Preposições traiçoeiras", ex:[
-   {t:"mc", q:"Qual frase soa natural?", o:["We need to discuss the proposal.","We need to discuss about the proposal.","We need to discuss on the proposal."], w:"Discuss já contém a ideia de “sobre”."},
-   {t:"type", q:"Complete com uma palavra", s:"Please reply ___ the client by Friday.", a:["to"], w:"Reply to someone/something."},
-   {t:"mc", q:"Como se diz “Ela entrou na sala”?", o:["She entered the room.","She entered in the room.","She entered on the room."], w:"Enter é transitivo direto. O “em” do português não vai junto."},
-   {t:"type", q:"Complete com uma palavra", s:"It depends ___ the budget.", a:["on"], w:"Depend on. O “de” do português leva muita gente a dizer depend of."},
-   {t:"mc", q:"Escolha a forma certa", s:"I'm looking forward ___ you.", o:["to meeting","to meet","meeting"], w:"Aqui to é preposição, então vem -ing: look forward to doing."},
-   {t:"bank", q:"Traduza", pt:"Ele insistiu em pagar a conta.", a:"He insisted on paying the bill", x:["in","to","pay"], w:"Insist on doing something."},
-   {t:"mc", q:"Qual frase NÃO tem interferência do português?", o:["I'm married to Ana.","I'm married with Ana.","I'm married of Ana."], w:"Married to someone."},
-   {t:"type", q:"Complete com uma palavra", s:"How can I get my students ___ review after class?", a:["to"], w:"Get someone to do something (= fazer alguém fazer algo)."}
+  {id:"t1b", title:"Regência e preposições", theory:{title:"Preposições dependentes e regência", cards:[
+   {h:"O que é regência em inglês", b:`<p>Muitos verbos, adjetivos e substantivos exigem uma <b>preposição fixa</b> (<em>dependent preposition</em>). Ela <b>não se traduz</b>, coleciona-se: <em>depend <b>on</b></em> (“depender <b>de</b>”), <em>consist <b>of</b></em> (“consistir <b>em</b>”), <em>married <b>to</b></em> (“casado <b>com</b>”).</p><p>A transferência do português é previsível: o brasileiro traduz a preposição, e o resultado é <em>depend of</em>, <em>consist in</em>, <em>married with</em>.</p>`},
+   {h:"Transitivos diretos no inglês", b:`<p>Estes verbos pedem preposição em português, mas <b>não</b> em inglês:</p><p><b>discuss</b> (discutir sobre) · <b>enter</b> (entrar em) · <b>attend</b> (assistir a) · <b>approach</b> (aproximar-se de) · <b>answer</b> (responder a) · <b>reach</b> (chegar a) · <b>lack</b> (carecer de) · <b>marry</b> (casar com) · <b>resemble</b> (parecer-se com) · <b>emphasize</b> (enfatizar) · <b>contact</b> (entrar em contato com) · <b>join</b> (juntar-se a)</p>`},
+   {h:"Substantivo × verbo", b:`<p>O substantivo muitas vezes leva preposição, e o verbo não:</p><table><tr><th>Substantivo</th><th>Verbo</th></tr><tr><td>an emphasis <b>on</b></td><td>emphasize something</td></tr><tr><td>a request <b>for</b></td><td>request something</td></tr><tr><td>a demand <b>for</b></td><td>demand something</td></tr><tr><td>a discussion <b>about/of</b></td><td>discuss something</td></tr><tr><td>an increase <b>in</b></td><td>increase something / by 10%</td></tr></table>`},
+   {h:"Adjetivos e verbos com preposição fixa", b:`<ul><li>good <b>at</b> · capable <b>of</b> · aware <b>of</b> · keen <b>on</b> · similar <b>to</b> · responsible <b>for</b> · fed up <b>with</b></li><li>depend <b>on</b> · insist <b>on</b> · consist <b>of</b> · succeed <b>in</b> · specialize <b>in</b> · comply <b>with</b></li><li>arrive <b>at</b> (lugar pequeno) / <b>in</b> (cidade, país), <b>nunca</b> arrive to</li></ul>`},
+   {h:"Teacher's Lens", b:`<ul><li>Não peça para decorar listas: faça o aluno <b>notar</b> as preposições em textos reais (Schmidt, <em>noticing</em>), com marca-texto.</li><li>Monte um “mapa de armadilhas PT → EN” com os erros do próprio grupo.</li><li>Prática de alta frequência: frases curtas e pessoais (“What does your job consist of?”).</li></ul>`}
+  ]}, ex:[
+   {t:"multi", q:"Quais frases estão corretas? Marque todas.", o:[["We need to discuss the budget.",true],["Let's discuss about it later.",false],["She approached the client directly.",true],["The report lacks of detail.",false],["He joined the call late.",true]], w:"Discuss, approach, lack e join são transitivos diretos."},
+   {t:"type", q:"Complete com a preposição", s:"There has been a sharp increase ___ demand.", a:["in"], w:"O substantivo increase leva in. O verbo, não."},
+   {t:"mc", q:"Escolha a preposição", s:"The CEO placed great emphasis ___ transparency.", o:["on","in","at","about"], w:"Emphasis on (substantivo). Mas emphasize transparency (verbo, sem on)."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"We arrived to the office at nine.", a:["to"], fix:"We arrived at the office at nine.", w:"Arrive at (lugar) ou in (cidade, país). Nunca arrive to."},
+   {t:"type", q:"Complete com a preposição", s:"The success of the project depends ___ everyone's commitment.", a:["on","upon"], w:"Depend on/upon. O “de” do português leva ao erro depend of."},
+   {t:"mc", q:"Como se diz “Ela é casada com um canadense”?", o:["She's married to a Canadian.","She's married with a Canadian.","She married with a Canadian.","She has married to a Canadian."], w:"Be married to someone. Ou, como verbo: she married a Canadian."},
+   {t:"type", q:"Complete com a preposição", s:"The training consists ___ three modules.", a:["of"], w:"Consist of = ser composto de. Consist in (raro, formal) = residir em."},
+   {t:"mc", q:"Escolha a preposição", s:"He specializes ___ corporate law.", o:["in","on","at","for"], w:"Specialize in."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"Please contact with the supplier by Friday.", a:["with"], fix:"Please contact the supplier by Friday.", w:"Contact é transitivo direto. (Get in touch with, sim.)"},
+   {t:"mc", q:"Qual pedido está correto?", o:["We'd like to request an extension.","We'd like to request for an extension.","We'd like to request about an extension.","We'd like to make a request of an extension."], w:"Request (verbo) é direto. A request for (substantivo)."}
   ]}
  ]},
- {id:"u2", color:"teal", title:"Incontáveis e falsos cognatos", desc:"Adeus, “audios” e “habilities”", lessons:[
-  {id:"u2l1", title:"Incontáveis", ex:[
-   {t:"mc", q:"Escolha a forma natural", s:"In class, we listen to ___.", o:["audio clips","audios","an audio"], w:"Audio é incontável. Para contar: audio clips, recordings."},
-   {t:"mc", q:"Escolha a forma certa", s:"Can you give me some ___?", o:["advice","advices","an advice"], w:"Advice é incontável. Um conselho = a piece of advice ou a tip."},
-   {t:"type", q:"Complete (conselho)", s:"I have two pieces of ___ for you.", a:["advice"], w:"Pieces of advice torna o incontável contável."},
-   {t:"mc", q:"Qual frase está correta?", o:["The information is on the slide.","The informations are on the slide.","An information is on the slide."], w:"Information é incontável: sem plural e sem an."},
-   {t:"bank", q:"Traduza", pt:"Tenho uma boa notícia.", a:"I have some good news", x:["a","new","notice"], w:"News é incontável (e singular): some good news ou a piece of good news."},
-   {t:"type", q:"Complete (bagagem)", s:"How much ___ do you have?", a:["luggage","baggage"], w:"Luggage/baggage são incontáveis: how much, não how many."},
-   {t:"mc", q:"Escolha a forma certa", s:"The company bought new ___.", o:["equipment","equipments","an equipment"], w:"Equipment é incontável. Para contar: pieces of equipment."},
-   {t:"match", q:"Ligue o incontável a uma alternativa contável", p:[["advice","a tip"],["information","a fact"],["audio","a recording"],["news","an update"]]}
+ {id:"t2", color:"teal", title:"Léxico de precisão", desc:"Incontáveis, falsos cognatos e colocações", lessons:[
+  {id:"t2a", title:"Incontáveis e falsos cognatos", theory:{title:"Incontáveis e falsos cognatos", cards:[
+   {h:"Contável × incontável é gramática, não lógica", b:`<p>Em inglês, alguns substantivos são <b>incontáveis</b> mesmo quando, em português, parecem contáveis: <b>advice, information, feedback, research, evidence, equipment, furniture, luggage, software, homework, news, knowledge, progress</b>.</p><p>Consequências: sem plural, sem <em>a/an</em>, usam <em>much / little / a great deal of</em>, e o verbo fica no singular (<em>The news <b>is</b> good</em>).</p><p>Para contar, use um <b>partitivo</b>: <em>a piece of advice</em>, <em>a piece of evidence</em>, <em>a research project</em>, <em>an item of news</em>.</p>`},
+   {h:"Palavras com dois sentidos", b:`<table><tr><th>Incontável</th><th>Contável</th></tr>
+    <tr><td>experience (vivência)</td><td>an experience (um episódio)</td></tr>
+    <tr><td>paper (papel)</td><td>a paper (um artigo acadêmico)</td></tr>
+    <tr><td>business (negócios)</td><td>a business (uma empresa)</td></tr>
+    <tr><td>time (tempo)</td><td>a time (uma vez)</td></tr>
+    <tr><td>work (trabalho)</td><td>a work (uma obra)</td></tr></table>`},
+   {h:"Falsos cognatos clássicos", b:`<table><tr><th>Inglês</th><th>Significa</th><th>Para dizer…</th></tr>
+    <tr><td>actually</td><td>na verdade</td><td>atualmente = currently</td></tr>
+    <tr><td>eventually</td><td>por fim, com o tempo</td><td>eventualmente = occasionally</td></tr>
+    <tr><td>pretend</td><td>fingir</td><td>pretender = intend, plan</td></tr>
+    <tr><td>assist</td><td>ajudar</td><td>assistir a = attend, watch</td></tr>
+    <tr><td>realize</td><td>perceber</td><td>realizar = carry out, hold</td></tr>
+    <tr><td>sensible</td><td>sensato</td><td>sensível = sensitive</td></tr>
+    <tr><td>library</td><td>biblioteca</td><td>livraria = bookshop</td></tr>
+    <tr><td>parents</td><td>pais</td><td>parentes = relatives</td></tr></table>`},
+   {h:"Falsos amigos de nível C2", b:`<ul><li><b>compromise</b> = acordo com concessões / comprometer (a segurança). Compromisso = <em>commitment</em> ou <em>appointment</em>.</li><li><b>deception</b> = engano, fraude. Decepção = <em>disappointment</em>.</li><li><b>injury</b> = lesão. Injúria = <em>insult, defamation</em>.</li><li><b>prejudice</b> = preconceito. Prejuízo = <em>loss, damage</em>.</li><li><b>casualty</b> = vítima. Casualidade = <em>chance, coincidence</em>.</li><li><b>support</b> = apoiar. Suportar = <em>stand, bear, put up with</em>.</li><li><b>ingenuous</b> = ingênuo. <b>ingenious</b> = engenhoso.</li></ul>`},
+   {h:"Teacher's Lens", b:`<ul><li>Não liste 50 falsos cognatos: trabalhe os que <b>o grupo realmente erra</b> (Error Log do aluno).</li><li>Use <b>pares mínimos de sentido</b>: “I'm disappointed” × “I was deceived”, com CCQs (“Did someone lie to you?”).</li><li>Incontáveis: ensine com o <b>partitivo em contexto</b> (“Can I give you a piece of advice?”).</li></ul>`}
+  ]}, ex:[
+   {t:"mc", q:"“Estou decepcionado com o resultado.”", o:["I'm disappointed with the result.","I'm deceived by the result.","I'm deceptioned with the result.","I'm delusioned with the result."], w:"Deceive = enganar. Decepcionado = disappointed."},
+   {t:"multi", q:"Quais frases estão corretas? Marque todas.", o:[["We've made a lot of progress.",true],["She gave me a useful advice.",false],["Two pieces of evidence were missing.",true],["Can you send me the informations?",false],["We need more research on this.",true]], w:"Progress, advice, evidence, information e research são incontáveis."},
+   {t:"type", q:"“Não suporto reuniões longas.”", s:"I can't ___ long meetings.", a:["stand","bear","put up with","stomach"], w:"Suportar = stand / bear / put up with. Support = apoiar."},
+   {t:"mc", q:"“Tenho um compromisso com o dentista às 3.”", o:["I have an appointment with the dentist at 3.","I have a compromise with the dentist at 3.","I have a commitment with the dentist at 3.","I have an engagement with the dentist at 3."], w:"Hora marcada = appointment. Compromise = acordo com concessões."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"Eventually I go to the gym, maybe twice a month.", a:["Eventually"], fix:"Occasionally I go to the gym, maybe twice a month.", w:"Eventually = por fim. Eventualmente = occasionally."},
+   {t:"mc", q:"“Ele é muito sensível a críticas.”", o:["He's very sensitive to criticism.","He's very sensible to criticism.","He's very sensitive with criticism.","He's very sensible with criticism."], w:"Sensitive = sensível. Sensible = sensato."},
+   {t:"mc", q:"Escolha a forma certa", s:"The software ___ updated every week.", o:["is","are","have been","were"], w:"Software é incontável: verbo no singular."},
+   {t:"mc", q:"Em qual frase business é CONTÁVEL?", o:["She runs a small business.","Business is booming.","We do business in Chile.","I'm here on business."], w:"A business = uma empresa. Nos outros casos, business = negócios (incontável)."},
+   {t:"type", q:"“Os prejuízos da empresa foram enormes.”", s:"The company's ___ were huge.", a:["losses"], w:"Prejuízo financeiro = loss. Prejudice = preconceito."},
+   {t:"match", q:"Ligue o falso amigo ao sentido real", p:[["injury","lesão"],["prejudice","preconceito"],["ingenious","engenhoso"],["casualty","vítima"]]}
   ]},
-  {id:"u2l2", title:"Falsos cognatos", ex:[
-   {t:"mc", q:"Escolha a forma natural", s:"We develop our students' ___.", o:["skills","habilities","hability"], w:"Habilities não existe. Develop skills é a colocação."},
-   {t:"mc", q:"Actually significa:", o:["na verdade","atualmente","de vez em quando"], w:"Atualmente = currently / nowadays."},
-   {t:"type", q:"Traduza “pretendo”", s:"I ___ to travel next year.", a:["intend","plan","mean"], w:"Pretend = fingir. Pretender = intend / plan."},
-   {t:"mc", q:"Eventually significa:", o:["no fim, com o tempo","eventualmente, às vezes","imediatamente"], w:"Eventualmente (às vezes) = occasionally."},
-   {t:"mc", q:"Como se diz “Ele assistiu à reunião”?", o:["He attended the meeting.","He assisted the meeting.","He assisted to the meeting."], w:"Assist = ajudar. Assistir a um evento = attend."},
-   {t:"type", q:"Traduza “parentes”", s:"My ___ live in Recife.", a:["relatives"], w:"Parents = pais. Parentes = relatives."},
-   {t:"mc", q:"Como se diz “realizar um projeto”?", o:["carry out a project","realize a project","make a project"], w:"Realize = perceber, dar-se conta."},
-   {t:"match", q:"Ligue o falso cognato ao sentido real", p:[["pretend","fingir"],["library","biblioteca"],["sensible","sensato"],["push","empurrar"]]}
+  {id:"t2b", title:"Colocações", theory:{title:"Colocações: o segredo da naturalidade", cards:[
+   {h:"O que é uma colocação", b:`<p>Colocação é uma combinação de palavras que os nativos <b>preferem por frequência</b>, não por regra. “Make a mistake” e “do a mistake” são ambos gramaticais, mas só o primeiro é o que se diz.</p><p class="src">“You shall know a word by the company it keeps.” (J. R. Firth, 1957)</p><p>No C2, a gramática perfeita com a colocação errada ainda soa estrangeira. A colocação é o que separa o “correto” do “natural”.</p>`},
+   {h:"Tipos de colocação", b:`<table><tr><th>Tipo</th><th>Exemplos</th></tr>
+    <tr><td>verbo + substantivo</td><td>reach an agreement, meet a deadline, raise a concern, address an issue, pose a threat</td></tr>
+    <tr><td>adjetivo + substantivo</td><td>heavy traffic, sharp increase, steep learning curve, strong coffee</td></tr>
+    <tr><td>advérbio + adjetivo</td><td>highly unlikely, deeply concerned, bitterly disappointed, fully aware</td></tr>
+    <tr><td>substantivo + substantivo</td><td>a sense of urgency, a round of applause</td></tr></table>
+    <p><b>Intensificadores:</b> <em>very</em> com adjetivos graduáveis (very tired); <em>utterly, absolutely, completely</em> com não graduáveis (utterly exhausted).</p>`},
+   {h:"Verbos delexicais", b:`<p>São verbos “vazios” de sentido, que dependem do substantivo:</p><ul><li><b>make</b>: a decision, progress, an effort, a suggestion, a mistake</li><li><b>do</b>: research, business, damage, harm, someone a favour</li><li><b>take</b>: a break, a risk, responsibility, a look</li><li><b>give</b>: a presentation, feedback, a hand</li></ul><p>(“Take a decision” é aceito no inglês britânico. “Make” é universal.)</p>`},
+   {h:"Colocações corporativas", b:`<p>meet / miss a deadline · draw up a contract · hold / chair a meeting · run a business · launch a product · cut costs · boost sales · address concerns · bridge the gap · streamline a process · reach a consensus · set a target</p>`},
+   {h:"The Lexical Approach", b:`<p>Michael Lewis (<em>The Lexical Approach</em>, 1993) propôs que a língua “consiste em léxico gramaticalizado, não em gramática lexicalizada”. Ou seja: aprendemos <b>chunks</b> (colocações, expressões fixas, frases prontas) e depois extraímos padrões deles.</p><p><b>Implicações para a aula:</b> registrar chunks inteiros (nunca palavras soltas), trabalhar com dicionários de colocação e corpus (SkELL, Ludwig), e fazer o aluno <em>notar</em> as colocações em textos reais.</p>`}
+  ]}, ex:[
+   {t:"mc", q:"Escolha o verbo", s:"We're unlikely to ___ the deadline.", o:["meet","reach","achieve","fulfil"], w:"Meet (ou miss) a deadline."},
+   {t:"type", q:"“É altamente improvável.”", s:"It's ___ unlikely that they'll accept the offer.", a:["highly"], w:"Highly unlikely: advérbio + adjetivo."},
+   {t:"mc", q:"Escolha o intensificador", s:"I'm ___ exhausted after the workshop.", o:["utterly","highly","deeply","strongly"], w:"Exhausted é não graduável: utterly, absolutely, completely."},
+   {t:"multi", q:"Quais colocações são naturais? Marque todas.", o:[["address a concern",true],["do a mistake",false],["take a risk",true],["make research",false],["pose a threat",true]], w:"Make a mistake, do research."},
+   {t:"type", q:"“Precisamos diminuir a distância entre vendas e marketing.”", s:"We need to ___ the gap between sales and marketing.", a:["bridge","close"], w:"Bridge / close the gap."},
+   {t:"mc", q:"“Quem vai presidir a reunião?”", s:"Who's going to ___ the meeting?", o:["chair","preside","command","direct"], w:"Chair a meeting. Preside pede over: preside over."},
+   {t:"mc", q:"Escolha o adjetivo", s:"There was a ___ increase in costs last quarter.", o:["sharp","tall","heavy","thick"], w:"A sharp / steep / significant increase."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"We have to do a decision about the budget today.", a:["do"], fix:"We have to make a decision about the budget today.", w:"Make a decision."},
+   {t:"type", q:"Complete com o verbo", s:"Could you ___ me some feedback on my presentation?", a:["give"], w:"Give feedback."},
+   {t:"bank", q:"Traduza", pt:"Precisamos cortar custos sem comprometer a qualidade.", a:"We need to cut costs without compromising quality", x:["compromise","reducing","engaging"], w:"Cut costs. Compromise quality = pôr a qualidade em risco."}
   ]}
  ]},
- {id:"u3", color:"amber", title:"Precisão gramatical", desc:"Os detalhes que separam C1 de C2", lessons:[
-  {id:"u3l1", title:"Superlativo, tempos e paralelismo", ex:[
-   {t:"mc", q:"Entre quatro opções:", s:"This is the ___ natural option.", o:["most","more","much"], w:"Mais de duas opções pede superlativo."},
-   {t:"type", q:"Complete (se, com alternativas)", s:"Yesterday I wasn't sure ___ it was the best option.", a:["whether","if"], w:"Whether soa mais preciso quando há alternativas. If também é aceito."},
-   {t:"mc", q:"Narrando o que aconteceu ontem:", s:"I told the student I ___ sure.", o:["wasn't","am not","don't"], w:"Correlação de tempos: a narrativa no passado puxa o verbo para o passado."},
-   {t:"mc", q:"Escolha a grafia certa", o:["Brazilian Portuguese","Brazilian portuguese","brazilian Portuguese"], w:"Nacionalidades e idiomas sempre com maiúscula."},
-   {t:"mc", q:"Mantenha o paralelismo", s:"My goals are to improve my speaking and ___ my vocabulary.", o:["to expand","expanding","I expand"], w:"Itens de uma lista têm a mesma forma: to improve... and to expand."},
-   {t:"type", q:"Complete com o possessivo", s:"Our students need to improve ___ speaking.", a:["their"], w:"Em inglês, o possessivo quase nunca é omitido."},
-   {t:"bank", q:"Traduza", pt:"As áreas em que eu mais tenho dificuldade são fala e gramática.", a:"The areas where I struggle most are speaking and grammar", x:["is","more"], w:"Plural concorda com are. Struggle é o verbo nativo para “patinar”."},
-   {t:"mc", q:"Escolha a forma certa", s:"Everyone ___ their homework.", o:["has done","have done","has did"], w:"Everyone é singular gramaticalmente, mas aceita their."}
+ {id:"t3", color:"amber", title:"Gramática C2", desc:"Inversão, ênfase, subjuntivo e condicionais mistas", lessons:[
+  {id:"t3a", title:"Inversão e ênfase", theory:{title:"Inversão e ênfase", cards:[
+   {h:"Inversão negativa", b:`<p>Quando uma expressão negativa ou restritiva abre a frase, o inglês usa a <b>ordem de pergunta</b> (auxiliar + sujeito). O efeito é formal e enfático: aparece em discursos, apresentações e escrita persuasiva.</p><p><b>Never · Rarely · Seldom · Hardly…when · No sooner…than · Not only…but also · Not until · Only after/when/then · Under no circumstances · At no time · Little</b></p>`},
+   {h:"Como montar", b:`<ul><li><em>Never <b>have I</b> seen such results.</em></li><li><em>Not until the audit <b>did we</b> realize the scale.</em> (a inversão fica na oração principal)</li><li><em>Only when the data arrived <b>did we</b> act.</em></li><li><em>No sooner <b>had we</b> launched <b>than</b> the rival cut prices.</em></li><li><em>Little <b>did they</b> know…</em></li></ul><p>Sem auxiliar na frase normal? Use <b>do/does/did</b>: “We realized” → “did we realize”.</p>`},
+   {h:"Condicionais invertidas", b:`<p>Muito comuns em e-mails corporativos formais:</p><table><tr><th>Normal</th><th>Invertida</th></tr><tr><td>If you should need anything…</td><td><b>Should you</b> need anything…</td></tr><tr><td>If I had known…</td><td><b>Had I</b> known…</td></tr><tr><td>If we were to lose this client…</td><td><b>Were we</b> to lose this client…</td></tr></table>`},
+   {h:"Cleft sentences: o “é que” do inglês", b:`<p>Para focar uma informação, o português usa “é que” / “foi … que”. O inglês usa <b>cleft sentences</b>:</p><ul><li><b>It-cleft:</b> <em>It was the CFO who approved it.</em></li><li><b>Wh-cleft:</b> <em>What we need is more time.</em></li><li><b>All-cleft:</b> <em>All I'm asking for is a clear deadline.</em></li><li><em>The reason why we failed is that…</em></li></ul>`},
+   {h:"Teacher's Lens", b:`<ul><li>Ensine pela <b>função</b> (ênfase, formalidade), não pela regra: mostre um trecho de discurso de CEO e pergunte “What effect does this create?”.</li><li>Drill de <b>transformação</b>: frase neutra → versão enfática.</li><li>Alerta de registro: inversão em conversa casual soa teatral.</li></ul>`}
+  ]}, ex:[
+   {t:"type", q:"Forma formal de “Se tiver alguma dúvida…”", s:"___ you have any questions, please do not hesitate to contact me.", a:["should"], w:"Should you… = If you should… (condicional invertida)."},
+   {t:"mc", q:"Escolha a forma certa", s:"Not until the audit ___ the error.", o:["did we discover","we discovered","we did discover","had discovered we"], w:"Not until + oração, e a inversão vai na oração principal."},
+   {t:"type", q:"“Se eu soubesse do atraso, teria avisado o cliente.”", s:"___ I known about the delay, I would have told the client.", a:["had"], w:"Had I known = If I had known."},
+   {t:"mc", q:"Escolha a palavra", s:"No sooner had we launched the product ___ the competitor cut prices.", o:["than","when","then","that"], w:"No sooner … than. (Hardly … when.)"},
+   {t:"bank", q:"Traduza", pt:"Em hipótese alguma você deve compartilhar esta senha.", a:"Under no circumstances should you share this password", x:["must","shouldn't"], w:"Under no circumstances + inversão (should you)."},
+   {t:"mc", q:"Qual é a versão enfática correta?", o:["What really matters is the client's trust.","The thing really matters is the client's trust.","That really matters is the client's trust.","Is the client's trust what really matters."], w:"Wh-cleft: What + oração + is + foco."},
+   {t:"type", q:"“Foi a Maria que encontrou o erro.”", s:"It was Maria ___ found the mistake.", a:["who","that"], w:"It-cleft: It was X who/that…"},
+   {t:"spot", q:"Toque na palavra que está na posição errada", s:"Only after the meeting we realized the scale of the problem.", a:["we","realized"], fix:"Only after the meeting did we realize the scale of the problem.", w:"Only after… pede inversão: did we realize."},
+   {t:"mc", q:"Escolha a forma certa", s:"Little ___ that the deal was about to collapse.", o:["did they know","they knew","knew they","they did know"], w:"Little did they know… (inversão com did)."},
+   {t:"type", q:"“Se perdêssemos este cliente…” (forma formal)", s:"___ we to lose this client, revenue would drop by 30%.", a:["were"], w:"Were we to… = If we were to…"}
   ]},
-  {id:"u3l2", title:"Tempos avançados", ex:[
-   {t:"mc", q:"Escolha a forma certa", s:"I ___ here since 2019.", o:["have lived","live","am living"], w:"Since pede present perfect. “Moro aqui desde” não usa presente em inglês."},
-   {t:"type", q:"Complete com uma palavra", s:"How long ___ you been teaching?", a:["have"], w:"How long have you been doing...?"},
-   {t:"mc", q:"Escolha a forma certa", s:"I ___ him yesterday.", o:["saw","have seen","have saw"], w:"Tempo definido no passado (yesterday) pede simple past."},
-   {t:"mc", q:"Como se diz “Faz três anos que dou aula”?", o:["I've been teaching for three years.","It makes three years that I teach.","I teach for three years."], w:"Present perfect continuous + for."},
-   {t:"mc", q:"Escolha a forma certa", s:"If I ___ more time, I would study more.", o:["had","have","would have"], w:"Second conditional: if + past, would + verbo."},
-   {t:"type", q:"Registro formal: complete com o verbo review", s:"I suggest that he ___ the report.", a:["review","should review"], w:"Subjuntivo: suggest that he review (sem -s)."},
-   {t:"mc", q:"Inversão C2", s:"Hardly ___ the meeting started when the power went out.", o:["had","did","was"], w:"Hardly had... when... com inversão."},
-   {t:"bank", q:"Traduza", pt:"Não só ela terminou o projeto, como também treinou a equipe.", a:"Not only did she finish the project but she also trained the team", x:["finished","does"], w:"Not only + inversão (did she finish)."}
+  {id:"t3b", title:"Subjuntivo e condicionais mistas", theory:{title:"Subjuntivo, condicionais mistas e orações reduzidas", cards:[
+   {h:"Subjuntivo mandativo", b:`<p>Depois de <b>suggest, recommend, insist, demand, request, propose</b> e de <b>it is essential / vital / imperative that</b>, o verbo fica na <b>forma base</b>: sem -s, sem <em>to</em>, e <em>be</em> para todas as pessoas.</p><p><em>It is essential that every employee <b>be</b> trained.</em><br><em>The board insisted that he <b>resign</b>.</em></p><p>No inglês britânico, também se usa <em>should</em> + verbo.</p>`},
+   {h:"Passado de irrealidade", b:`<p>Depois de <b>wish, if only, would rather, it's (high) time</b>, o passado indica irrealidade no presente:</p><ul><li><em>I'd rather you <b>didn't</b> mention it.</em></li><li><em>It's high time we <b>changed</b> the policy.</em></li><li><em>I wish I <b>had</b> studied more.</em> (past perfect = arrependimento sobre o passado)</li></ul><p><em>If I were</em> é o padrão formal; <em>if I was</em>, informal.</p>`},
+   {h:"Condicionais mistas", b:`<table><tr><th>Tipo</th><th>Exemplo</th></tr><tr><td>passado → presente</td><td>If I <b>had accepted</b> the job, I <b>would be living</b> in London now.</td></tr><tr><td>presente → passado</td><td>If I <b>weren't</b> so busy, I <b>would have gone</b> to the conference.</td></tr></table><p>CCQs: “Did I accept the job? (No.) Am I in London now? (No.)”</p>`},
+   {h:"Orações reduzidas de particípio", b:`<p>Condensam orações e são marca de escrita C2:</p><ul><li><em><b>Having finished</b> the report, she left.</em></li><li><em><b>Built</b> in 1920, the building…</em></li><li><em><b>Not knowing</b> what to say, he…</em></li></ul><p><b>Regra de ouro:</b> o sujeito implícito tem de ser o sujeito da oração principal. Caso contrário, é um <em>dangling participle</em>: <span class="wrong">Walking into the office, the phone rang.</span> (O telefone entrou no escritório?)</p>`},
+   {h:"Teacher's Lens", b:`<ul><li>Condicionais mistas: use <b>linhas do tempo</b> desenhadas e CCQs de sim/não.</li><li>Subjuntivo: mostre o contraste com a interferência (“suggest him to”) e peça que o aluno encontre o padrão em e-mails reais.</li><li>Dangling participles: exemplos engraçados geram <em>noticing</em> e ficam na memória.</li></ul>`}
+  ]}, ex:[
+   {t:"type", q:"Complete com resign", s:"The board insisted that the CEO ___ immediately.", a:["resign","should resign"], w:"Subjuntivo mandativo: forma base (resign), sem -s."},
+   {t:"mc", q:"Escolha a forma certa", s:"It's high time we ___ the onboarding process.", o:["updated","update","will update","have updated"], w:"It's high time + passado."},
+   {t:"mc", q:"Escolha a forma certa", s:"If I had accepted the offer, I ___ in London now.", o:["would be living","would have lived","will be living","had lived"], w:"Condicional mista: passado (had accepted) → presente (would be living now)."},
+   {t:"type", q:"Complete com not tell", s:"I'd rather you ___ anyone yet.", a:["didn't tell","did not tell"], w:"Would rather + outra pessoa + passado."},
+   {t:"mc", q:"Qual frase tem um dangling participle (erro)?", o:["Walking into the office, the phone started ringing.","Walking into the office, she heard the phone.","Having signed the contract, we celebrated.","Founded in 1990, the company now has 500 staff."], w:"O sujeito de walking seria the phone: erro."},
+   {t:"mc", q:"Escolha a forma certa", s:"It is vital that every participant ___ on time.", o:["be","being","to be","been"], w:"It is vital that + subjuntivo (be)."},
+   {t:"type", q:"“Tendo terminado o relatório, ela o enviou ao diretor.”", s:"___ the report, she sent it to the director.", a:["having finished"], w:"Having + particípio: ação anterior, mesmo sujeito."},
+   {t:"mc", q:"Escolha a forma certa", s:"If she weren't so busy, she ___ to the conference last week.", o:["would have come","would come","will have come","had come"], w:"Condicional mista: presente (weren't) → passado (would have come)."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"The manager suggested him to take a few days off.", a:["him","to"], fix:"The manager suggested (that) he take a few days off.", w:"Suggest + that + subjuntivo."},
+   {t:"bank", q:"Traduza", pt:"Se eu tivesse estudado mais, estaria mais confiante agora.", a:"If I had studied more I would be more confident now", x:["will","been"], w:"Condicional mista: had studied (passado) → would be (agora)."}
   ]}
  ]},
- {id:"u4", color:"red", title:"Nuance e registro", desc:"Palavras não têm tradução, contextos têm", lessons:[
-  {id:"u4l1", title:"Escalas de sentido", ex:[
-   {t:"mc", q:"O time perdeu um cliente e ficou sem ânimo (contexto de trabalho). Melhor escolha:", o:["demotivated","unwilling","tired"], w:"Demotivated é o termo corporativo. Unwilling = sem vontade de fazer."},
-   {t:"mc", q:"Escolha o verbo", s:"The high price ___ me off.", o:["put","took","made"], w:"Put someone off = desestimular."},
-   {t:"mc", q:"Unwilling significa:", o:["relutante, sem disposição","desanimado","cansado"], w:"É sobre vontade, não emoção."},
-   {t:"type", q:"Complete com uma palavra", s:"She discouraged me ___ applying.", a:["from"], w:"Discourage someone from doing something."},
-   {t:"mc", q:"Tom mais literário para “abatido, com tristeza”:", o:["disheartened","demotivated","put off"], w:"Disheartened tem carga emocional e soa mais escrito."},
-   {t:"mc", q:"Qual expressão costuma sinalizar desacordo FIRME?", o:["With all due respect, ...","I see it slightly differently.","I take your point, but..."], w:"Apesar da aparência, with all due respect costuma anunciar discordância forte."},
-   {t:"mc", q:"A forma mais diplomática de discordar:", o:["I'm not sure I'd go quite that far.","You're wrong.","That's not true."], w:"Hedging: suaviza sem perder a posição."},
-   {t:"match", q:"Ligue cada palavra ao sentido", p:[["discouraged","perdi o ânimo"],["demotivated","sem motivação no trabalho"],["put off","desestimulado de fazer algo"],["fed up","de saco cheio"]]}
+ {id:"t4", color:"red", title:"Pragmática e registro", desc:"Polidez, hedging e formalidade", lessons:[
+  {id:"t4a", title:"Polidez e hedging", theory:{title:"Pragmática: face, polidez e hedging", cards:[
+   {h:"Por que a pragmática pesa mais que a gramática", b:`<p>Pragmática é o significado em contexto: o que se <b>quer dizer</b>, além do que se diz. Jenny Thomas (1983) chamou de <b>pragmatic failure</b> a falha em transmitir ou entender a intenção por trás das palavras.</p><p>O nativo perdoa um erro gramatical, porque o reconhece como erro de língua. Um erro pragmático, ele interpreta como <b>traço de personalidade</b>: grosseria, arrogância, frieza.</p>`},
+   {h:"Teoria da polidez (Brown & Levinson, 1987)", b:`<ul><li><b>Face positiva:</b> o desejo de ser aprovado e apreciado.</li><li><b>Face negativa:</b> o desejo de não sofrer imposição, de ter liberdade de ação.</li></ul><p>Pedidos, críticas e discordâncias são <b>atos que ameaçam a face</b> (FTAs). Estratégias:</p><ul><li><b>Bald on-record:</b> direto (“Send the report.”)</li><li><b>Polidez positiva:</b> aproximar, elogiar, incluir (“We're all in this together…”)</li><li><b>Polidez negativa:</b> reconhecer a imposição (“Sorry to bother you, but could you possibly…”)</li><li><b>Off-record:</b> indireta (“It's a bit cold in here.”)</li></ul>`},
+   {h:"Hedging: suavizar sem perder a posição", b:`<ul><li><b>Modais:</b> might, could, may</li><li><b>Verbos:</b> seem, appear, tend to, suggest</li><li><b>Advérbios:</b> perhaps, arguably, somewhat, slightly</li><li><b>Frases:</b> to some extent, as far as I can tell, it would seem that</li><li><b>Distanciamento no tempo:</b> I was wondering… / I wanted to ask…</li><li><b>Pergunta negativa:</b> Wouldn't it be better to…?</li></ul>`},
+   {h:"Understatement: o que dizem × o que querem dizer", b:`<table><tr><th>Eles dizem</th><th>Eles querem dizer</th></tr><tr><td>That's not ideal.</td><td>Isso é um problema sério.</td></tr><tr><td>I'm not sure that's the best idea.</td><td>Acho uma má ideia.</td></tr><tr><td>With the greatest respect…</td><td>Acho que você está errado.</td></tr><tr><td>Quite good. (britânico)</td><td>Razoável, sem entusiasmo.</td></tr><tr><td>I'll bear it in mind.</td><td>Provavelmente não vou fazer.</td></tr></table>`},
+   {h:"A transferência brasileira", b:`<p>“Me manda o relatório, por favor” é cordial em português. Traduzido literalmente, <em>“Send me the report, please”</em> soa como <b>ordem</b> em inglês: o <em>please</em> não neutraliza o imperativo.</p><p>Alternativas: <em>Could you send me…?</em> · <em>Would you mind sending…?</em> · <em>When you get a chance, could you…?</em> · <em>I was wondering if you could…</em></p>`},
+   {h:"Teacher's Lens", b:`<ul><li><b>Escala de diretividade:</b> os alunos ordenam frases da mais direta à mais indireta.</li><li><b>Role-play com status variável:</b> o mesmo pedido para um colega, para o chefe e para um cliente.</li><li>Pergunta-chave: <em>“How would the listener feel?”</em></li></ul>`}
+  ]}, ex:[
+   {t:"mc", q:"Pedido mais adequado a um cliente sênior:", o:["I was wondering if you could possibly send the figures by Friday.","Send me the figures by Friday, please.","I want the figures by Friday.","You must send the figures by Friday."], w:"Distanciamento (was wondering) + hedge (possibly): polidez negativa."},
+   {t:"mc", q:"Um colega britânico diz: “That's not ideal.” Ele provavelmente quer dizer:", o:["Isso é um problema sério.","Está quase perfeito.","Não tem importância.","Ele concorda totalmente."], w:"Understatement: a forma branda esconde uma avaliação dura."},
+   {t:"multi", q:"Quais recursos são hedging? Marque todos.", o:[["arguably",true],["to some extent",true],["definitely",false],["it would seem that",true],["obviously",false]], w:"Definitely e obviously reforçam a certeza, não suavizam."},
+   {t:"mc", q:"Para Brown & Levinson, “I'm sorry to bother you, but…” é uma estratégia de:", o:["polidez negativa","polidez positiva","off-record","bald on-record"], w:"Reconhece a imposição sobre o ouvinte: face negativa."},
+   {t:"mc", q:"“It's a bit cold in here” (querendo que fechem a janela) é:", o:["estratégia off-record (indireta)","polidez positiva","bald on-record","hedging epistêmico"], w:"O pedido fica implícito: off-record."},
+   {t:"type", q:"Suavize “This is wrong.”", s:"This ___ not be entirely accurate.", a:["may","might","could"], w:"Modal + not entirely: hedging duplo."},
+   {t:"mc", q:"O que é pragmatic failure (Thomas, 1983)?", o:["Falha em transmitir ou entender a intenção por trás das palavras","Errar a conjugação verbal","Pronunciar mal uma palavra","Usar vocabulário técnico demais"], w:"É a falha de sentido em contexto, não de forma."},
+   {t:"mc", q:"Em Brown & Levinson, face negativa é:", o:["o desejo de não sofrer imposição","a imagem negativa que os outros têm de nós","o desejo de ser aprovado","a vergonha depois de um erro"], w:"Face positiva = ser aprovado. Face negativa = liberdade de ação."},
+   {t:"bank", q:"Traduza", pt:"Você se importaria de revisar isso quando tiver um tempinho?", a:"Would you mind reviewing this when you get a chance", x:["to","review","have"], w:"Would you mind + -ing."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"Would you mind to send me the agenda?", a:["to","send"], fix:"Would you mind sending me the agenda?", w:"Mind + -ing."}
   ]},
-  {id:"u4l2", title:"Colocações C2", ex:[
-   {t:"type", q:"Complete (domínio do idioma)", s:"He has an excellent ___ of English.", a:["command"], w:"Command of a language: a colocação C2."},
-   {t:"mc", q:"Escolha a colocação", s:"Students need daily ___ to English.", o:["exposure","contact","touch"], w:"Exposure to a language. “Manter contato” é tradução literal."},
-   {t:"mc", q:"Escolha a preposição", s:"Any tips ___ improving my pronunciation?", o:["on","of","in"], w:"Tips on something."},
-   {t:"mc", q:"Escolha o verbo", s:"I ___ a mistake in the report.", o:["made","did","committed"], w:"Make a mistake. Commit fica para crime/erro grave formal."},
-   {t:"mc", q:"Como se diz “realizar uma reunião”?", o:["hold a meeting","realize a meeting","make a meeting"], w:"Hold a meeting."},
-   {t:"type", q:"Complete (estabelecer um prazo)", s:"Can we ___ a deadline for Friday?", a:["set"], w:"Set a deadline."},
-   {t:"mc", q:"Como se diz “Posso levantar uma preocupação?”", o:["Can I raise a concern?","Can I lift a concern?","Can I rise a concern?"], w:"Raise (transitivo) a concern / a question. Rise é intransitivo."},
-   {t:"bank", q:"Traduza", pt:"Podemos marcar uma reunião para a próxima semana?", a:"Can we schedule a meeting for next week", x:["mark","to"], w:"Marcar uma reunião = schedule / set up a meeting. Nunca mark."}
+  {id:"t4b", title:"Registro", theory:{title:"Registro: do coloquial ao diplomático", cards:[
+   {h:"O que é registro", b:`<p>Registro é a variação da língua conforme a situação. Halliday descreve três variáveis:</p><ul><li><b>Field:</b> o assunto e a atividade.</li><li><b>Tenor:</b> a relação entre os participantes (status, distância, formalidade).</li><li><b>Mode:</b> o canal (falado, escrito, e-mail, chat).</li></ul><p>No trabalho, é o <b>tenor</b> que mais define o nível de formalidade.</p>`},
+   {h:"Marcas de formalidade em inglês", b:`<ul><li><b>Vocabulário latino</b> em vez de phrasal verbs: obtain (get), commence (start), enquire (ask), postpone (put off), investigate (look into)</li><li><b>Nominalização:</b> “The implementation of the policy…”</li><li><b>Passiva impessoal:</b> “It has been noted that…”</li><li><b>Ausência de contrações</b></li></ul>`},
+   {h:"Escada de registro", b:`<table><tr><th>Informal</th><th>Neutro</th><th>Formal</th></tr><tr><td>Get back to me.</td><td>Let me know.</td><td>I look forward to hearing from you.</td></tr><tr><td>Sorry!</td><td>I apologize for…</td><td>Please accept our apologies for…</td></tr><tr><td>Here's the file.</td><td>I've attached the file.</td><td>Please find attached the file.</td></tr></table>`},
+   {h:"Armadilhas de brasileiros", b:`<ul><li><b>Formalidade arcaica:</b> “Dear Sir, I hereby…” soa antiquado em e-mails modernos.</li><li><b>Mistura de registros:</b> “Hey guys, we hereby inform…”</li><li><b>Traduções literais:</b> “Waiting your answer” (aguardo sua resposta) → <em>I look forward to your reply</em>.</li><li>O padrão corporativo atual é <b>semiformal</b>: cordial, direto e sem floreios.</li></ul>`},
+   {h:"Teacher's Lens", b:`<ul><li><b>Register ladder:</b> uma mesma mensagem, três destinatários (colega, chefe, cliente novo).</li><li><b>Genre analysis:</b> analisar e-mails reais do aluno (anonimizados) e mapear as marcas de formalidade.</li></ul>`}
+  ]}, ex:[
+   {t:"mc", q:"Equivalente formal de “look into”:", o:["investigate","look over","see about","check out"], w:"Look into = investigate."},
+   {t:"mc", q:"Equivalente informal de “postpone”:", o:["put off","put on","put up","put out"], w:"Put off = adiar."},
+   {t:"mc", q:"Melhor fechamento para um e-mail formal a um cliente novo:", o:["I look forward to hearing from you.","Get back to me ASAP.","Waiting your answer.","Kindly do the needful."], w:"Waiting your answer é tradução literal. Kindly do the needful é um regionalismo."},
+   {t:"spot", q:"Toque na palavra que está errada", s:"I am waiting your reply regarding the proposal.", a:["waiting"], fix:"I am awaiting your reply / waiting for your reply regarding the proposal.", w:"Wait for something ou await something."},
+   {t:"multi", q:"Quais recursos tornam um texto mais formal? Marque todos.", o:[["nominalização",true],["voz passiva impessoal",true],["contrações",false],["phrasal verbs",false],["vocabulário de origem latina",true]], w:"Contrações e phrasal verbs puxam para o informal."},
+   {t:"type", q:"Formal: “We're sorry for the delay.”", s:"Please accept our ___ for the delay.", a:["apologies"], w:"Please accept our apologies for…"},
+   {t:"mc", q:"No modelo de Halliday, tenor se refere a:", o:["a relação entre os participantes","o assunto","o canal (falado ou escrito)","o sotaque"], w:"Field = assunto, tenor = relação, mode = canal."},
+   {t:"mc", q:"Qual frase mistura registros de forma inadequada?", o:["Hey guys, we hereby notify you of the changes.","Hi all, just a quick update on the changes.","Dear colleagues, please find the updated policy attached.","Hi team, here are the changes we discussed."], w:"Hey guys (muito informal) + hereby notify (jurídico)."},
+   {t:"type", q:"Formal: “Can you tell me whether…?”", s:"Could you ___ me whether the contract has been signed?", a:["inform","advise","tell"], w:"Advise / inform someone whether…"},
+   {t:"bank", q:"Traduza em registro formal", pt:"Segue em anexo o relatório atualizado.", a:"Please find attached the updated report", x:["annexed","attach","in"], w:"Please find attached… é a fórmula padrão."}
   ]}
  ]},
- {id:"u5", color:"plum", title:"Teacher's Lens", desc:"Pedagogia para adultos corporativos", lessons:[
-  {id:"u5l1", title:"Eliciting e correção", ex:[
-   {t:"mc", q:"O aluno pergunta: “Como se diz desencorajado?”. Melhor primeira resposta:", o:["“Give me the whole sentence. What's the situation?”","“Discouraged.”","“Procura no tradutor.”"], w:"Context First: o contexto elimina os sentidos que não se aplicam."},
-   {t:"mc", q:"Numa atividade de fluência, o aluno diz “discuss about”. O que fazer?", o:["Anotar no Live Language Doc e tratar depois","Interromper e corrigir na hora","Ignorar para sempre"], w:"Correção adiada preserva a fluência e a imagem do aluno."},
-   {t:"mc", q:"O que é uma CCQ?", o:["Uma pergunta curta para checar se o aluno entendeu o conceito","Uma correção por escrito","Um teste de nivelamento"], w:"Concept Checking Question."},
-   {t:"mc", q:"Melhor CCQ para “I used to smoke.”:", o:["“Do I smoke now?”","“Do you understand ‘used to’?”","“What's the past of ‘use’?”"], w:"Boa CCQ é fechada e testa o conceito. “Do you understand?” não testa nada."},
-   {t:"mc", q:"Ask → Pause → Nominate. Qual é a ordem?", o:["Pergunta, pausa, nome","Nome, pergunta, pausa","Pausa, nome, pergunta"], w:"Assim todos processam a pergunta, não só quem foi chamado."},
-   {t:"mc", q:"Eliciting significa:", o:["Levar o aluno a produzir ou descobrir a língua","Explicar a regra primeiro","Pedir a tradução"], w:"Quando o aluno descobre, a regra fixa melhor."},
-   {t:"mc", q:"Recast é:", o:["Repetir a frase do aluno já corrigida, sem interromper","Dar uma nota","Pedir que repita cinco vezes"], w:"Correção implícita que mantém o fluxo da conversa."},
-   {t:"mc", q:"Por que o correction contract funciona com adultos?", o:["Respeita a autonomia e a preferência deles","Porque dispensa correção","Porque é exigência do CELTA"], w:"Andragogia: adultos querem participar das decisões sobre o próprio aprendizado."}
+ {id:"t5", color:"blue", title:"Pronúncia", desc:"Connected speech, acento e entonação", lessons:[
+  {id:"t5a", title:"Connected speech", theory:{title:"Connected speech", cards:[
+   {h:"Ritmo: stress-timed × syllable-timed", b:`<p>O inglês tende a ser <b>stress-timed</b>: os acentos vêm em intervalos regulares e as sílabas átonas “encolhem” entre eles. O português brasileiro tende mais ao <b>syllable-timed</b>: cada sílaba ocupa um tempo parecido.</p><p>Consequência: no inglês, as sílabas átonas se reduzem ao <b>schwa /ə/</b>, o som vocálico mais frequente da língua.</p><p class="src">A dicotomia vem de Pike (1945) e Abercrombie (1967). Hoje é vista como tendência, não como categoria absoluta.</p>`},
+   {h:"Formas fracas (weak forms)", b:`<table><tr><th>Palavra</th><th>Forte</th><th>Fraca</th></tr><tr><td>to</td><td>/tuː/</td><td>/tə/</td></tr><tr><td>for</td><td>/fɔː/</td><td>/fə/</td></tr><tr><td>of</td><td>/ɒv/</td><td>/əv/</td></tr><tr><td>can</td><td>/kæn/</td><td>/kən/</td></tr><tr><td>was</td><td>/wɒz/</td><td>/wəz/</td></tr><tr><td>and</td><td>/ænd/</td><td>/ən/</td></tr></table><p>A forma forte aparece <b>com ênfase</b> ou <b>no fim da frase</b>: “What are you looking <b>at</b>?” /æt/.</p>`},
+   {h:"Linking", b:`<ul><li><b>Consoante + vogal:</b> turn_off → “tur-noff”</li><li><b>Vogal + vogal:</b> surge um /j/ ou /w/: I_(j)agree, go_(w)out</li><li><b>Linking r</b> (britânico): far_away → “fa-raway”</li></ul>`},
+   {h:"Elisão e assimilação", b:`<p><b>Elisão:</b> sons que caem. /t/ e /d/ entre consoantes: next week → /neks wiːk/, last night, handbag.</p><p><b>Assimilação:</b> um som muda por influência do vizinho: ten boys → /tem bɔɪz/.</p><p><b>Assimilação coalescente:</b> /t/ + /j/ vira /tʃ/, /d/ + /j/ vira /dʒ/: don't you → /dəʊntʃu/, did you → /dɪdʒu/.</p>`},
+   {h:"Interferências do português", b:`<ul><li><b>Epêntese</b> (<em>epenthesis</em>): vogal extra. “stop-i”, “Face-i-book”, “is-treet”.</li><li><b>Final -ed:</b> só soa /ɪd/ depois de /t/ e /d/ (wanted, needed). Depois de som surdo, /t/ (worked); depois de sonoro, /d/ (played).</li><li><b>Palatalização:</b> “tchi” em vez de /t/ antes de /i/.</li></ul>`},
+   {h:"Teacher's Lens", b:`<ul><li><b>Percepção antes de produção:</b> ditados com formas fracas.</li><li><b>Backchaining:</b> drill de trás para frente: “-ter → -ister → minister”.</li><li><b>Gestos:</b> juntar as mãos para mostrar o linking.</li></ul>`}
+  ]}, ex:[
+   {t:"mc", q:"Qual é o som vocálico mais frequente do inglês?", o:["o schwa /ə/","/iː/","/æ/","/ʌ/"], w:"As sílabas átonas se reduzem ao schwa."},
+   {t:"mc", q:"Em “I want to go”, “to” normalmente soa:", o:["/tə/","/tuː/","/tʊ/","/toʊ/"], w:"Forma fraca: átono vira schwa."},
+   {t:"mc", q:"Quantas sílabas tem “worked”?", o:["1: /wɜːkt/","2: /wɜː.kɪd/","2: /wɜː.kəd/","3"], w:"-ed depois de som surdo (/k/) soa /t/: não acrescenta sílaba."},
+   {t:"multi", q:"Em quais verbos o -ed soa /ɪd/? Marque todos.", o:[["wanted",true],["needed",true],["stopped",false],["played",false],["decided",true]], w:"/ɪd/ só depois de /t/ e /d/."},
+   {t:"mc", q:"“Did you” em fala rápida frequentemente vira:", o:["/dɪdʒu/","/dɪd juː/, sempre separado","/dɪtju/","/dɪzu/"], w:"Assimilação coalescente: /d/ + /j/ = /dʒ/."},
+   {t:"mc", q:"Em “next week”, o que costuma acontecer com o /t/?", o:["Cai (elisão).","Vira /d/.","Ganha uma vogal: “nex-tchi”.","Fica mais forte."], w:"/t/ entre consoantes tende a cair."},
+   {t:"mc", q:"“ten boys” → /tem bɔɪz/ é um exemplo de:", o:["assimilação","elisão","linking","intrusão"], w:"O /n/ vira /m/ antes do bilabial /b/."},
+   {t:"type", q:"Em inglês, qual é o nome do fenômeno de acrescentar uma vogal (“stop-i”)?", s:"This is called ___.", a:["epenthesis"], w:"Epenthesis (epêntese)."},
+   {t:"mc", q:"O inglês costuma ser classificado como uma língua:", o:["stress-timed","syllable-timed","mora-timed","tone-timed"], w:"O ritmo é marcado pelos acentos."},
+   {t:"mc", q:"Quando “at” mantém a forma forte /æt/?", o:["No fim da frase: “What are you looking at?”","Sempre.","Antes de vogal.","Depois de verbos."], w:"Palavra funcional no fim da frase = forma forte."}
   ]},
-  {id:"u5l2", title:"TBL e engajamento", ex:[
-   {t:"mc", q:"Ordem do ciclo TBL (Willis):", o:["Pre-task → Task → Planning → Report → Language focus","Presentation → Practice → Production","Language focus → Task → Report"], w:"PPP começa pela forma. TBL começa pela tarefa."},
-   {t:"mc", q:"No TBL, quando vem o foco na forma?", o:["Depois da tarefa","Antes de tudo","Nunca"], w:"A necessidade surge na tarefa, e a forma é trabalhada depois."},
-   {t:"mc", q:"Tarefa mais autêntica para adultos corporativos:", o:["Simular a reunião real da semana deles","Completar lacunas de um livro","Decorar uma lista de verbos"], w:"Relevância imediata é o motor do adulto."},
-   {t:"mc", q:"Grupo com chefe e subordinado, filtro afetivo alto. O que fazer?", o:["Usar correção adiada e sem nomes (Live Language Doc)","Corrigir o chefe na frente do subordinado","Deixar só o chefe falar"], w:"Preservar a imagem de cada um baixa o filtro afetivo."},
-   {t:"mc", q:"Retrieval practice no início da aula:", o:["“What do you remember from last class?”","“Let me review everything for you.”","“Open your books on page 10.”"], w:"Lembrar ativamente fixa mais do que reler."},
-   {t:"mc", q:"Recap pós-aula ideal:", o:["3 acertos, 3 correções, 3 expressões","A transcrição completa da aula","Uma lista de 50 palavras"], w:"Curto, pessoal e acionável."},
-   {t:"mc", q:"TTT significa:", o:["Teacher Talking Time, que deve ser baixo","Total Teaching Time","Task Timing Technique"], w:"Quanto menos o professor fala, mais o aluno pratica."},
-   {t:"mc", q:"Adultos aprendem melhor quando...", o:["veem aplicação imediata no trabalho","memorizam regras","não recebem feedback"], w:"Princípio central da andragogia (Knowles)."}
+  {id:"t5b", title:"Acento e entonação", theory:{title:"Acento e entonação", cards:[
+   {h:"Acento de palavra", b:`<p>O acento pode mudar classe e sentido: <b>RE</b>cord (substantivo) × re<b>CORD</b> (verbo); <b>PRE</b>sent × pre<b>SENT</b>.</p><p>Alguns sufixos puxam o acento para a sílaba <b>imediatamente anterior</b>: <b>-ic, -ity, -ion</b>.</p><p><b>PHO</b>tograph → pho<b>TO</b>graphy → photo<b>GRA</b>phic</p>`},
+   {h:"Acento de frase", b:`<p>Palavras de <b>conteúdo</b> (substantivos, verbos principais, adjetivos, advérbios) recebem acento. Palavras <b>funcionais</b> (artigos, preposições, auxiliares) ficam fracas.</p><p>O <b>acento nuclear</b> (<em>tonic stress</em>) cai na última palavra que traz informação nova: “I bought a new <b>CAR</b>.”</p>`},
+   {h:"Acento contrastivo", b:`<p>Mover o acento muda o sentido:</p><ul><li><b>I</b> didn't say he stole it. (outra pessoa disse)</li><li>I didn't <b>SAY</b> he stole it. (talvez tenha insinuado)</li><li>I didn't say <b>HE</b> stole it. (outra pessoa roubou)</li><li>I didn't say he <b>STOLE</b> it. (talvez tenha pegado emprestado)</li></ul>`},
+   {h:"Entonação", b:`<ul><li><b>Descendente:</b> afirmações, wh-questions, certeza.</li><li><b>Ascendente:</b> yes/no questions, incerteza, listas incompletas.</li><li><b>Fall-rise:</b> reserva, implicação (“The report is <em>fine</em>… [but]”).</li><li><b>Question tags:</b> descendente = espero confirmação; ascendente = pergunta real.</li></ul>`},
+   {h:"Armadilhas de brasileiros", b:`<p>Cognatos puxam o acento do português: com<b>FOR</b>tável → <b>COM</b>fortable /ˈkʌmf.tə.bəl/ (3 sílabas). Outros: de<b>VEL</b>op, de<b>TER</b>mine, <b>CA</b>tegory, ho<b>TEL</b>, e<b>VENT</b>, <b>VEG</b>etable (3 sílabas).</p>`},
+   {h:"Teacher's Lens", b:`<ul><li>Marque o acento com círculos: ○●○.</li><li>Drill de acento contrastivo com a frase dos sete sentidos.</li><li>Palmas para marcar o ritmo da frase.</li></ul>`}
+  ]}, ex:[
+   {t:"mc", q:"Onde cai o acento em “photography”?", o:["phoTOgraphy","PHOtography","photoGRAphy","photograPHY"], w:"Palavras em -graphy acentuam a antepenúltima sílaba: pho-TO-gra-phy."},
+   {t:"mc", q:"“Please record the meeting.” Aqui “record” é:", o:["verbo, com acento na 2ª sílaba","substantivo, com acento na 1ª","adjetivo, com acento na 2ª","verbo, com acento na 1ª"], w:"reCORD (verbo) × REcord (substantivo)."},
+   {t:"mc", q:"“I didn't say HE stole the money.” Sentido:", o:["Outra pessoa roubou.","Eu não disse; talvez tenha escrito.","Ele pegou emprestado.","Ele roubou outra coisa."], w:"O acento contrastivo recai sobre quem."},
+   {t:"mc", q:"Entonação típica de uma wh-question (“Where do you work?”):", o:["descendente","ascendente","fall-rise","plana"], w:"Wh-questions tendem a cair no fim."},
+   {t:"mc", q:"“You've met Ana, haven't you?” com o tag descendente indica:", o:["O falante espera confirmação.","É uma pergunta real, sem expectativa.","Surpresa.","Ironia."], w:"Tag descendente = confirmação. Ascendente = dúvida real."},
+   {t:"mc", q:"Como se acentua “comfortable”?", o:["COMfortable (/ˈkʌmf.tə.bəl/)","comFORtable","comforTAble","comfortaBLE"], w:"Três sílabas, com acento na primeira."},
+   {t:"multi", q:"Quais sufixos puxam o acento para a sílaba imediatamente anterior? Marque todos.", o:[["-ic",true],["-ity",true],["-ion",true],["-ment",false],["-ness",false]], w:"-ment e -ness não mudam o acento da palavra-base."},
+   {t:"mc", q:"Fall-rise em “The report is fine…” sugere:", o:["reserva: está ok, mas há um porém","entusiasmo total","uma pergunta","o fim da conversa"], w:"Fall-rise implica algo não dito."},
+   {t:"mc", q:"Em geral, quais palavras recebem acento na frase?", o:["As de conteúdo: substantivos, verbos principais, adjetivos","Artigos e preposições","Todas igualmente","Só a primeira"], w:"As palavras de conteúdo carregam a informação."},
+   {t:"mc", q:"Onde cai o acento em “determine”?", o:["deTERmine","DEtermine","determINE","DEterMINE"], w:"de-TER-mine: /dɪˈtɜː.mɪn/."}
+  ]}
+ ]},
+ {id:"t6", color:"teal", title:"Aquisição e metodologia", desc:"As teorias por trás de uma aula eficaz", lessons:[
+  {id:"t6a", title:"Teorias de aquisição", theory:{title:"Como se aprende uma segunda língua", cards:[
+   {h:"Krashen: o Monitor Model", b:`<p>Stephen Krashen (anos 1980) propôs cinco hipóteses:</p><ol><li><b>Aquisição × aprendizagem:</b> adquirir (inconsciente) é diferente de aprender regras (consciente).</li><li><b>Ordem natural:</b> estruturas são adquiridas numa ordem previsível.</li><li><b>Monitor:</b> o conhecimento aprendido só serve para “editar” a produção.</li><li><b>Input (i+1):</b> adquirimos com input compreensível ligeiramente acima do nível atual.</li><li><b>Filtro afetivo:</b> ansiedade, baixa autoconfiança e baixa motivação bloqueiam o input.</li></ol><p><b>Críticas:</b> hipóteses difíceis de testar, “i+1” é vago, e só input não basta.</p>`},
+   {h:"Swain: a Output Hypothesis (1985)", b:`<p>Merrill Swain observou alunos de imersão no Canadá que <b>entendiam quase tudo</b>, mas <b>produziam com muitos erros</b>. Conclusão: produzir é necessário.</p><p>Funções do output:</p><ul><li><b>Noticing the gap:</b> ao tentar dizer algo, o aluno percebe o que não sabe.</li><li><b>Teste de hipóteses:</b> o aluno arrisca uma forma e observa a reação.</li><li><b>Função metalinguística:</b> o aluno reflete sobre a própria língua.</li></ul><p><b>Pushed output</b> = tarefas que forçam o aluno além do conforto.</p>`},
+   {h:"Schmidt: a Noticing Hypothesis (1990)", b:`<p>Richard Schmidt argumentou que só vira <b>intake</b> (o que é de fato processado) aquilo que o aprendiz <b>nota conscientemente</b> no input.</p><p>Implicações: destacar formas (<em>input enhancement</em>), comparar a produção do aluno com um modelo e chamar atenção para chunks em textos reais.</p>`},
+   {h:"Long: a Interaction Hypothesis (1996)", b:`<p>Michael Long mostrou que a <b>negociação de sentido</b> torna o input compreensível e chama atenção para a forma:</p><ul><li><b>Clarification request:</b> “Sorry, what do you mean?”</li><li><b>Confirmation check:</b> “You mean the Friday meeting?”</li><li><b>Comprehension check:</b> “Does that make sense?”</li></ul>`},
+   {h:"Vygotsky e o scaffolding", b:`<p><b>ZPD</b> (zona de desenvolvimento proximal): a distância entre o que o aprendiz faz sozinho e o que faz com ajuda.</p><p><b>Scaffolding</b> (Wood, Bruner & Ross, 1976): apoio <b>temporário</b>, retirado à medida que o aprendiz ganha autonomia, como um andaime que sai quando o prédio fica de pé.</p>`},
+   {h:"Teacher's Lens", b:`<p>Uma aula eficaz combina tudo isso:</p><ol><li><b>Input rico</b> (texto ou áudio autêntico).</li><li><b>Noticing</b> (destacar chunks).</li><li><b>Pushed output</b> (tarefa desafiadora).</li><li><b>Interação</b> com negociação de sentido.</li><li><b>Feedback</b>, com filtro afetivo baixo.</li></ol>`}
+  ]}, ex:[
+   {t:"mc", q:"Para Krashen, “i+1” significa:", o:["input compreensível um pouco acima do nível atual","uma regra nova por aula","input + um exercício","um nível acima no CEFR"], w:"O “+1” é o próximo passo do desenvolvimento."},
+   {t:"mc", q:"Qual hipótese nasceu da observação de alunos de imersão que entendiam tudo mas produziam com erros?", o:["Output Hypothesis (Swain)","Affective Filter (Krashen)","Natural Order (Krashen)","ZPD (Vygotsky)"], w:"Swain, 1985: input compreensível não basta."},
+   {t:"mc", q:"Segundo Schmidt, para o input virar intake é preciso:", o:["notá-lo conscientemente","repeti-lo dez vezes","traduzi-lo","ouvi-lo de um nativo"], w:"Noticing Hypothesis."},
+   {t:"multi", q:"Quais são estratégias de negociação de sentido (Long)? Marque todas.", o:[["clarification request",true],["confirmation check",true],["comprehension check",true],["drilling",false],["dictation",false]], w:"São os movimentos conversacionais que resolvem falhas de comunicação."},
+   {t:"mc", q:"Scaffolding significa:", o:["apoio temporário, retirado à medida que o aprendiz ganha autonomia","um currículo em espiral","memorização por repetição","avaliação somativa"], w:"Wood, Bruner & Ross (1976)."},
+   {t:"mc", q:"A distinção entre aquisição e aprendizagem é de:", o:["Krashen","Vygotsky","Swain","Long"], w:"É a primeira das cinco hipóteses do Monitor Model."},
+   {t:"mc", q:"Uma crítica comum ao modelo de Krashen:", o:["as hipóteses são difíceis de testar empiricamente","ele ignora o input","ele foca só em gramática","ele não considera as emoções"], w:"Conceitos como i+1 são difíceis de operacionalizar."},
+   {t:"mc", q:"O aluno fala algo confuso e você responde “Sorry, what do you mean?”. Isso é:", o:["clarification request","recast","explicit correction","metalinguistic feedback"], w:"Pedido de esclarecimento: negociação de sentido."},
+   {t:"mc", q:"Qual opção é pushed output?", o:["Pedir que o aluno reexplique a proposta como se falasse com um diretor","Ouvir um podcast","Ler um artigo","Copiar vocabulário"], w:"Força o aluno a reformular com mais precisão e em outro registro."},
+   {t:"mc", q:"O filtro afetivo sobe quando:", o:["o aluno sente ansiedade ou medo de errar","o input é compreensível","há bastante prática","o aluno está motivado"], w:"Filtro alto = input bloqueado."}
+  ]},
+  {id:"t6b", title:"Feedback e desenho de aulas", theory:{title:"Feedback corretivo e desenho de aulas", cards:[
+   {h:"Os 6 tipos de feedback (Lyster & Ranta, 1997)", b:`<p>Exemplo com o erro “He go to work by bus.”:</p><table><tr><th>Tipo</th><th>O professor diz</th></tr><tr><td>Explicit correction</td><td>No, “goes”.</td></tr><tr><td>Recast</td><td>Oh, he goes to work by bus?</td></tr><tr><td>Clarification request</td><td>Sorry?</td></tr><tr><td>Metalinguistic feedback</td><td>Third person?</td></tr><tr><td>Elicitation</td><td>He…?</td></tr><tr><td>Repetition</td><td>He GO? (entonação de dúvida)</td></tr></table>`},
+   {h:"O achado mais importante", b:`<p>No estudo de Lyster & Ranta, os <b>recasts</b> foram o tipo mais usado pelos professores, mas o que <b>menos gerou uptake</b> (reparo pelo próprio aluno). Muitas vezes o aluno nem percebe que foi corrigido.</p><p>Os <b>prompts</b> (elicitation, metalinguistic feedback, clarification request e repetition) levaram a mais autocorreção.</p><p><b>Implicação:</b> com alunos avançados, prefira prompts, que devolvem o trabalho ao aluno.</p>`},
+   {h:"Accuracy × fluency", b:`<ul><li><b>Atividades de precisão</b> (drills, prática controlada): correção imediata.</li><li><b>Atividades de fluência</b> (debate, role-play): correção <b>adiada</b>. Anote e trabalhe depois, em grupo.</li></ul><p class="src">Harmer, <em>The Practice of English Language Teaching</em>.</p>`},
+   {h:"Formatos de aula", b:`<ul><li><b>PPP:</b> Presentation → Practice → Production. Previsível, mas centrado no professor.</li><li><b>TBL</b> (Willis, 1996): Pre-task → Task cycle (task, planning, report) → Language focus (analysis, practice).</li><li><b>ESA</b> (Harmer): Engage, Study, Activate, em sequências flexíveis (straight arrow, boomerang, patchwork).</li><li><b>Test-Teach-Test:</b> diagnostica antes de ensinar. Ideal para C1+, porque evita ensinar o que o aluno já sabe.</li></ul>`},
+   {h:"Andragogia (Malcolm Knowles)", b:`<p>Seis princípios da aprendizagem adulta:</p><ol><li><b>Need to know:</b> o adulto precisa saber por que vai aprender.</li><li><b>Self-concept:</b> ele quer ser autodirigido.</li><li><b>Experience:</b> a experiência é um recurso.</li><li><b>Readiness:</b> ele aprende o que é relevante para seus papéis sociais.</li><li><b>Orientation:</b> a aprendizagem é centrada em problemas.</li><li><b>Motivation:</b> a motivação é sobretudo interna.</li></ol>`},
+   {h:"Teacher's Lens", b:`<p>Para seus grupos corporativos C1: <b>Test-Teach-Test</b> ou <b>TBL</b>; prompts em vez de recasts puros; correção adiada nas tarefas de fluência; e problemas reais do trabalho como conteúdo (andragogia).</p>`}
+  ]}, ex:[
+   {t:"mc", q:"Aluno: “She don't like it.” Professor: “She…?”. Tipo de feedback:", o:["elicitation","recast","explicit correction","repetition"], w:"O professor pausa e o aluno completa: elicitation."},
+   {t:"mc", q:"Aluno: “I have 30 years.” Professor: “Ah, you're 30!”. Tipo:", o:["recast","elicitation","metalinguistic feedback","clarification request"], w:"Reformula corretamente sem apontar o erro."},
+   {t:"mc", q:"Em Lyster & Ranta (1997), qual tipo foi o mais usado, mas gerou menos uptake?", o:["recasts","elicitation","metalinguistic feedback","explicit correction"], w:"Recasts muitas vezes passam despercebidos."},
+   {t:"mc", q:"Depois de um erro, o professor pergunta “Past tense?”. Tipo:", o:["metalinguistic feedback","clarification request","repetition","recast"], w:"Dá uma pista sobre a regra, sem dar a forma."},
+   {t:"mc", q:"Ordem do ciclo TBL (Willis, 1996):", o:["Pre-task → Task → Planning → Report → Language focus","Presentation → Practice → Production","Language focus → Task → Report","Engage → Study → Activate"], w:"No TBL, o foco na forma vem depois da tarefa."},
+   {t:"mc", q:"Para alunos C1 que já sabem parte do conteúdo, qual formato evita ensinar o que eles já dominam?", o:["Test-Teach-Test","PPP","Drilling","Leitura em voz alta"], w:"O teste inicial revela as lacunas reais."},
+   {t:"multi", q:"Quais são princípios da andragogia de Knowles? Marque todos.", o:[["necessidade de saber o porquê",true],["experiência como recurso",true],["orientação para problemas",true],["motivação exclusivamente externa",false],["dependência do professor",false]], w:"A motivação adulta é sobretudo interna, e o adulto quer autonomia."},
+   {t:"mc", q:"ESA (Harmer) significa:", o:["Engage, Study, Activate","Explain, Show, Apply","Elicit, Summarize, Assess","Engage, Speak, Assess"], w:"Engage, Study, Activate."},
+   {t:"mc", q:"Num debate (atividade de fluência), a correção deve ser, em geral:", o:["adiada","imediata, a cada erro","evitada sempre","só por escrito, durante a fala"], w:"Interromper a fluência aumenta o filtro afetivo."},
+   {t:"mc", q:"Aluno: “I goed there.” Professor: “I goed?” (com entonação de dúvida). Tipo:", o:["repetition","recast","elicitation","explicit correction"], w:"Repete o erro com entonação para chamar atenção."}
+  ]}
+ ]},
+ {id:"t7", color:"plum", title:"Paulo Freire", desc:"Pedagogia crítica, da alfabetização ao ensino de inglês", lessons:[
+  {id:"t7a", title:"Pedagogia do Oprimido", theory:{title:"Paulo Freire: vida e Pedagogia do Oprimido", cards:[
+   {h:"Quem foi Paulo Freire", b:`<p><b>Paulo Reglus Neves Freire</b> (Recife, 1921 – São Paulo, 1997), educador e filósofo.</p><ul><li><b>1963, Angicos (RN):</b> coordenou uma experiência em que cerca de 300 trabalhadores foram alfabetizados em aproximadamente 40 horas.</li><li><b>1964:</b> após o golpe militar, foi preso e depois exilado. Passou pela Bolívia, pelo Chile, pelos EUA (Harvard) e por Genebra (Conselho Mundial de Igrejas).</li><li><b>1980:</b> voltou ao Brasil. Foi secretário de Educação de São Paulo entre 1989 e 1991.</li><li><b>2012:</b> declarado <b>Patrono da Educação Brasileira</b> (Lei 12.612).</li></ul><p><em>Pedagogia do Oprimido</em> está entre os livros de ciências humanas mais citados do mundo.</p>`},
+   {h:"Obras principais", b:`<ul><li><em>Educação como prática da liberdade</em> (1967)</li><li><em>Pedagogia do Oprimido</em> (escrita no Chile em 1968; publicada primeiro em inglês, em 1970; no Brasil, em 1974)</li><li><em>A importância do ato de ler</em> (1981)</li><li><em>Por uma pedagogia da pergunta</em> (com Antonio Faundez, 1985)</li><li><em>Pedagogia da Esperança</em> (1992)</li><li><em>Pedagogia da Autonomia</em> (1996)</li></ul>`},
+   {h:"A educação bancária", b:`<p>Freire critica a concepção <b>“bancária”</b>: o educador <b>“deposita”</b> conteúdos em educandos vistos como recipientes vazios.</p><ul><li>o educador sabe; o educando não sabe</li><li>o educador fala; o educando escuta</li><li>o educador escolhe o conteúdo; o educando se acomoda</li><li>o educador é sujeito; o educando é objeto</li></ul><p><b>Resultado:</b> adaptação ao mundo em vez de transformação. Mata a curiosidade e a criticidade.</p>`},
+   {h:"A educação problematizadora", b:`<p>Em oposição, a educação <b>problematizadora</b> (ou libertadora) se funda no <b>diálogo</b>. Educador e educando são <b>sujeitos</b>, e a realidade é apresentada como <b>problema a ser desvelado</b>.</p><blockquote>“Ninguém educa ninguém, ninguém educa a si mesmo, os homens se educam entre si, mediatizados pelo mundo.”<br><span class="src">Pedagogia do Oprimido</span></blockquote><p>Surgem o <b>educador-educando</b> e o <b>educando-educador</b>: quem ensina também aprende.</p>`},
+   {h:"Conceitos-chave", b:`<ul><li><b>Diálogo:</b> relação horizontal que exige amor, humildade, fé nos homens, esperança e pensar crítico.</li><li><b>Conscientização:</b> passagem da consciência ingênua para a consciência crítica.</li><li><b>Práxis:</b> ação e reflexão dos homens sobre o mundo para transformá-lo.</li><li><b>Leitura do mundo:</b> “A leitura do mundo precede a leitura da palavra” (<em>A importância do ato de ler</em>).</li><li><b>Círculos de cultura:</b> no lugar da sala de aula, com um coordenador no lugar do professor que “dá aula”.</li></ul>`},
+   {h:"O método de alfabetização", b:`<ol><li><b>Levantamento do universo vocabular</b> do grupo, em conversas com a comunidade.</li><li><b>Seleção das palavras geradoras</b>, pela riqueza fonêmica, pela dificuldade progressiva e pelo peso existencial (ex.: TIJOLO, para trabalhadores da construção).</li><li><b>Codificação:</b> situações existenciais em imagens.</li><li><b>Descodificação dialogada</b> nos círculos de cultura.</li><li><b>Decomposição em famílias silábicas</b> (ta-te-ti-to-tu…) e criação de novas palavras pelos próprios educandos.</li></ol>`}
+  ]}, ex:[
+   {t:"mc", q:"Na concepção “bancária” criticada por Freire, o educando é visto como:", o:["um recipiente a ser preenchido","sujeito do conhecimento","coautor do currículo","pesquisador"], w:"O educador “deposita” e o educando “arquiva”."},
+   {t:"mc", q:"Complete: “Ninguém educa ninguém, ninguém educa a si mesmo, os homens se educam entre si, ___”", o:["mediatizados pelo mundo","orientados pelo professor","por meio dos livros","através da disciplina"], w:"Pedagogia do Oprimido."},
+   {t:"mc", q:"Onde ocorreu, em 1963, a experiência que alfabetizou cerca de 300 trabalhadores em aproximadamente 40 horas?", o:["Angicos (RN)","Recife (PE)","Brasília (DF)","Santiago (Chile)"], w:"Angicos, no Rio Grande do Norte."},
+   {t:"mc", q:"Práxis, para Freire, é:", o:["ação e reflexão sobre o mundo para transformá-lo","prática sem teoria","repetição de exercícios","teoria antes de qualquer ação"], w:"Nem ativismo sem reflexão, nem verbalismo sem ação."},
+   {t:"multi", q:"Quais características pertencem à educação problematizadora? Marque todas.", o:[["diálogo",true],["educador e educando como sujeitos",true],["realidade apresentada como problema",true],["narração de conteúdos prontos",false],["memorização mecânica",false]], w:"Narração e memorização são marcas da educação bancária."},
+   {t:"mc", q:"As palavras geradoras eram escolhidas a partir:", o:["do universo vocabular dos próprios educandos","de uma lista oficial do governo","das palavras mais frequentes do português","de textos literários clássicos"], w:"Partir da realidade do educando é o princípio central."},
+   {t:"mc", q:"Conscientização, em Freire, é:", o:["a passagem da consciência ingênua para a consciência crítica","informar o aluno sobre as regras","memorizar conceitos políticos","perceber o próprio erro gramatical"], w:"É um processo, não um conteúdo transmitido."},
+   {t:"mc", q:"Pedagogia do Oprimido foi escrita:", o:["no exílio, no Chile, em 1968","em Recife, antes de 1964","em Harvard, em 1980","em Genebra, em 1990"], w:"Publicada primeiro em inglês (1970); no Brasil, em 1974."},
+   {t:"mc", q:"O “círculo de cultura” substitui:", o:["a sala de aula tradicional, com um coordenador no lugar do professor que “dá aula”","a biblioteca","a prova final","o livro didático"], w:"A mudança de nome marca a mudança de relação."},
+   {t:"mc", q:"“A leitura do mundo precede a leitura da palavra” está em:", o:["A importância do ato de ler (1981)","Pedagogia da Autonomia (1996)","Educação como prática da liberdade (1967)","Pedagogia da Esperança (1992)"], w:"Conferência de 1981, publicada no livro de mesmo nome."}
+  ]},
+  {id:"t7b", title:"Autonomia e Freire no inglês", theory:{title:"Pedagogia da Autonomia e Freire no ensino de inglês", cards:[
+   {h:"Pedagogia da Autonomia (1996)", b:`<p>Subtítulo: <em>Saberes necessários à prática educativa</em>. A frase central:</p><blockquote>“Ensinar não é transferir conhecimento, mas criar as possibilidades para a sua própria produção ou a sua construção.”</blockquote><p>Entre os saberes, Freire diz que ensinar exige: <b>rigorosidade metódica</b>, pesquisa, <b>respeito aos saberes dos educandos</b>, criticidade, ética, <b>reflexão crítica sobre a prática</b>, reconhecimento da identidade cultural, consciência do inacabamento, <b>saber escutar</b>, disponibilidade para o diálogo e querer bem aos educandos.</p>`},
+   {h:"Curiosidade e inacabamento", b:`<ul><li><b>Curiosidade ingênua → curiosidade epistemológica:</b> a curiosidade espontânea do senso comum se torna metodicamente rigorosa e crítica. Ensinar é provocar essa passagem.</li><li><b>Inacabamento:</b> o ser humano é inconcluso e <b>sabe disso</b>. Por isso é educável e pode ter esperança.</li><li><b>Educação não é neutra:</b> toda prática educativa tem uma direção ética e política.</li></ul>`},
+   {h:"Pedagogia da pergunta", b:`<p>Em <em>Por uma pedagogia da pergunta</em> (com Antonio Faundez, 1985), Freire critica a educação “de respostas”, que chega antes das perguntas e acaba castrando a curiosidade.</p><p>O professor não deve só responder: deve <b>provocar e legitimar a pergunta</b> do aluno.</p><p class="src">Em ELT, isso ecoa o <em>eliciting</em>: devolver a pergunta ao aluno antes de dar a resposta.</p>`},
+   {h:"Freire no ensino de inglês", b:`<p>A <b>pedagogia crítica</b> chegou ao ensino de línguas sobretudo com Nina Wallerstein (<em>Language and Culture in Conflict</em>, 1983) e Elsa Auerbach & Wallerstein (<em>ESL for Action: Problem Posing at Work</em>, 1987), com imigrantes adultos nos EUA.</p><p>O <b>problem-posing</b> costuma seguir 5 perguntas sobre um “código” (foto, diálogo, história):</p><ol><li>O que você vê? (descrever)</li><li>Qual é o problema? (definir)</li><li>Você já viveu algo parecido? (relacionar)</li><li>Por que isso acontece? (analisar causas)</li><li>O que pode ser feito? (alternativas e ação)</li></ol>`},
+   {h:"Aplicando a adultos corporativos", b:`<ul><li><b>Tema gerador:</b> uma situação real do aluno (a reunião em que não conseguiu discordar, um e-mail difícil).</li><li><b>Código:</b> a transcrição ou o print, anonimizado.</li><li><b>Vocabulário:</b> emerge da necessidade, não de uma lista.</li><li><b>O aluno é coautor da aula.</b></li><li>Diálogo não é bate-papo: exige <b>rigorosidade metódica</b> e objetivo claro.</li></ul><p>A dimensão política aparece como <b>voz e agência</b>: a legitimidade de falar inglês com sotaque brasileiro, como usuário de <em>English as a Lingua Franca</em>, e não como “imitador imperfeito” do nativo.</p>`},
+   {h:"Críticas e limites", b:`<ul><li><b>Binarismo</b> opressor/oprimido considerado simplificador por alguns críticos.</li><li><b>Linguagem abstrata</b> em trechos da obra.</li><li><b>Transposição:</b> o método nasceu na alfabetização de adultos. Aplicá-lo a outros contextos exige adaptação.</li><li>No debate público brasileiro, há acusações de “doutrinação”. Na academia, Freire segue como uma das referências mais citadas da educação mundial.</li></ul><p><b>Leitura crítica também é freireana:</b> questione o próprio Freire.</p>`}
+  ]}, ex:[
+   {t:"mc", q:"Complete a frase da Pedagogia da Autonomia: “Ensinar não é transferir conhecimento, mas ___”", o:["criar as possibilidades para a sua própria produção ou a sua construção","organizá-lo em conteúdos claros","avaliá-lo com rigor","transmiti-lo com eficiência"], w:"É a tese central do livro."},
+   {t:"mc", q:"Curiosidade epistemológica é:", o:["a curiosidade que se torna metodicamente rigorosa e crítica","a curiosidade espontânea do senso comum","o desinteresse pelo conhecimento","a curiosidade sobre a vida do professor"], w:"Ensinar é provocar a passagem da curiosidade ingênua para a epistemológica."},
+   {t:"mc", q:"“Inacabamento”, para Freire, significa:", o:["o ser humano é inconcluso e sabe disso, por isso é educável","o currículo nunca termina","o aluno não conclui as tarefas","o professor não precisa planejar"], w:"A consciência do inacabamento funda a educabilidade e a esperança."},
+   {t:"mc", q:"Por uma pedagogia da pergunta foi escrita com:", o:["Antonio Faundez","Ira Shor","Moacir Gadotti","Henry Giroux"], w:"Com Ira Shor, Freire escreveu Medo e ousadia (1986)."},
+   {t:"multi", q:"Segundo a Pedagogia da Autonomia, ensinar exige: (marque todos)", o:[["rigorosidade metódica",true],["respeito aos saberes dos educandos",true],["saber escutar",true],["neutralidade absoluta",false],["transferência de conteúdos prontos",false]], w:"Para Freire, a educação não é neutra, e ensinar não é transferir."},
+   {t:"mc", q:"No problem-posing de Auerbach & Wallerstein, qual costuma ser o primeiro passo?", o:["Descrever o “código” (foto, diálogo, história)","Propor soluções","Corrigir a gramática","Aplicar uma prova"], w:"Descrever → definir → relacionar → analisar causas → agir."},
+   {t:"mc", q:"Numa aplicação freireana com alunos corporativos, qual seria o melhor tema gerador?", o:["Uma reunião real em que o aluno não conseguiu discordar do chefe","O capítulo 5 do livro didático","Uma lista de phrasal verbs","Um texto sobre a história do inglês"], w:"O tema gerador vem da realidade vivida pelo educando."},
+   {t:"mc", q:"Para Freire, o diálogo exige:", o:["amor, humildade, fé nos homens, esperança e pensar crítico","neutralidade e distância","que o professor fale mais","consenso sem conflito"], w:"Pedagogia do Oprimido, capítulo 3."},
+   {t:"mc", q:"Qual é uma crítica acadêmica frequente a Freire?", o:["O binarismo opressor/oprimido e a linguagem por vezes abstrata","O excesso de gramática","A ênfase na memorização","O desprezo pelo diálogo"], w:"As outras opções descrevem o oposto do que ele defendia."},
+   {t:"mc", q:"Freire é Patrono da Educação Brasileira desde:", o:["2012","1997","1964","1989"], w:"Lei 12.612/2012."}
   ]}
  ]}
 ];
-UNITS.forEach(u=>u.lessons.forEach(l=>l.ex.forEach((e,i)=>{ e.id = l.id+"-"+(i+1); e.unit = u.id; })));
+UNITS.forEach(u=>u.lessons.forEach(l=>{ l.unit = u.id; l.ex.forEach((e,i)=>{ e.id = l.id+"-"+(i+1); e.unit = u.id; }); }));
 const EX_BY_ID = {};
 UNITS.forEach(u=>u.lessons.forEach(l=>l.ex.forEach(e=>EX_BY_ID[e.id]=e)));
 
 const LEVELS = [[0,"🌱 Aprendiz de Chunks"],[300,"🔎 Caçador de Falsos Cognatos"],[800,"🧲 Domador de Preposições"],[1500,"📚 Mestre das Colocações"],[2500,"🎯 Arquiteto de Nuances"],[4000,"🎓 Professor CELTA-ready"],[6000,"👑 C2 Master Coach"]];
-const DAILY_GOAL = 50, WEEKLY_GOAL = 350, HEARTS = 3, BOSS_SECONDS = 180, BOSS_SIZE = 8, BOSS_PASS = 6;
-const KIND = {mc:"Escolha", type:"Complete", bank:"Monte a frase", match:"Ligue os pares"};
+const DAILY_GOAL = 50, WEEKLY_GOAL = 350, HEARTS = 3, BOSS_SECONDS = 240, BOSS_SIZE = 10, BOSS_PASS = 8;
+const KIND = {mc:"Escolha", type:"Complete", bank:"Monte a frase", match:"Ligue os pares", spot:"Ache o erro", multi:"Marque todas as corretas"};
+const LESSON_BY_ID = {};
+UNITS.forEach(u=>u.lessons.forEach(l=>LESSON_BY_ID[l.id]=l));
 
 /* ---------- Trilha: XP, streak, levels ---------- */
 function dayKey(d){ return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); }
@@ -1145,15 +1365,21 @@ const ACHIEVEMENTS = [
   {t:"Primeiro Boss derrotado", ok:()=>Object.values(state.boss).some(b=>b.won)},
   {t:"Meta diária batida", ok:()=>Object.values(state.xp).some(v=>v>=DAILY_GOAL)},
   {t:"500 XP", ok:()=>totalXP()>=500},
+  {t:"5 sessões de teoria", ok:()=>Object.keys(state.theory).filter(k=>LESSON_BY_ID[k]).length>=5},
+  {t:"Freireano: unidade Paulo Freire dominada", ok:()=>!!(state.boss.t7 && state.boss.t7.won)},
   {t:"Trilha do Módulo 1 completa", ok:()=>UNITS.every(u=>state.boss[u.id] && state.boss[u.id].won)}
 ];
 
 /* ---------- Trilha: path ---------- */
-function lessonUnlocked(u, i){ return i===0 || !!state.lessons[u.lessons[i-1].id]; }
+function theoryUnlocked(u, i){ return i===0 || !!state.lessons[u.lessons[i-1].id]; }
+function lessonUnlocked(u, i){ return theoryUnlocked(u, i) && !!state.theory[u.lessons[i].id]; }
 function bossUnlocked(u){ return u.lessons.every(l=>!!state.lessons[l.id]); }
 function nextStep(){
   for(const u of UNITS){
-    for(const l of u.lessons) if(!state.lessons[l.id]) return {kind:"lesson", u, l};
+    for(const l of u.lessons){
+      if(!state.theory[l.id]) return {kind:"theory", u, l};
+      if(!state.lessons[l.id]) return {kind:"lesson", u, l};
+    }
     if(!(state.boss[u.id] && state.boss[u.id].won)) return {kind:"boss", u};
   }
   return null;
@@ -1171,8 +1397,8 @@ function renderTrilha(){
   const nMist = state.mistakes.filter(id=>EX_BY_ID[id]).length;
   const rv = $("#gReview"); rv.textContent = `Revisar erros (${nMist})`; rv.disabled = nMist===0;
   const nx = nextStep(); const nb = $("#gNext");
-  nb.textContent = nx ? (nx.kind==="boss" ? `Enfrentar o Boss: ${nx.u.title}` : `Continuar: ${nx.l.title}`) : "Trilha completa! Refazer uma lição";
-  nb.onclick = ()=>{ if(!nx) return startLesson(UNITS[0], UNITS[0].lessons[0]); nx.kind==="boss" ? startBoss(nx.u) : startLesson(nx.u, nx.l); };
+  nb.textContent = nx ? (nx.kind==="boss" ? `Enfrentar o Boss: ${nx.u.title}` : nx.kind==="theory" ? `Estudar a teoria: ${nx.l.theory.title}` : `Praticar: ${nx.l.title}`) : "Trilha completa! Refazer uma lição";
+  nb.onclick = ()=>{ if(!nx) return startLesson(UNITS[0], UNITS[0].lessons[0]); nx.kind==="boss" ? startBoss(nx.u) : nx.kind==="theory" ? startTheory(nx.u, nx.l) : startLesson(nx.u, nx.l); };
 
   const bd = $("#gBadges"); bd.innerHTML = "";
   ACHIEVEMENTS.forEach(a=>{ const on = a.ok(); bd.append(el("span",{class:"badge"+(on?" on":"")}, (on?"★ ":"☆ ")+esc(a.t))); });
@@ -1185,10 +1411,20 @@ function renderTrilha(){
     const won = state.boss[u.id] && state.boss[u.id].won;
     box.append(el("div",{class:"unit-head"},`<div><span class="label" style="color:inherit;opacity:.85">Unidade ${ui+1}</span><h3>${esc(u.title)}</h3><p>${esc(u.desc)}</p></div><span class="pill">${won?"dominada":doneN+"/"+u.lessons.length+" lições"}</span>`));
     const nodes = el("div",{class:"nodes"});
+    let k = 0;
     u.lessons.forEach((l, li)=>{
+      const tOpen = theoryUnlocked(u, li), tRead = !!state.theory[l.id];
+      const isCurT = cur && cur.kind==="theory" && cur.l===l;
+      const tw = el("div",{class:"nodewrap",style:"--x:"+OFFSETS[(k++)%OFFSETS.length]});
+      if(isCurT) tw.append(el("span",{class:"startflag"},"Estude primeiro"));
+      const tb = el("button",{class:"node theory"+(!tOpen?" locked":"")+(tRead?" read":"")+(isCurT?" current":""),type:"button","aria-label":"Teoria: "+l.theory.title+(tRead?" (lida)":tOpen?"":" (bloqueada)")}, tOpen ? (tRead ? "✓" : "📖") : "🔒");
+      if(tOpen) tb.addEventListener("click", ()=>startTheory(u, l)); else tb.disabled = true;
+      tw.append(tb, el("span",{class:"nodelabel"}, "Teoria · " + esc(l.theory.title)));
+      nodes.append(tw);
+
       const rec = state.lessons[l.id], open = lessonUnlocked(u, li);
       const isCur = cur && cur.kind==="lesson" && cur.l===l;
-      const w = el("div",{class:"nodewrap",style:"--x:"+OFFSETS[li%OFFSETS.length]});
+      const w = el("div",{class:"nodewrap",style:"--x:"+OFFSETS[(k++)%OFFSETS.length]});
       if(isCur) w.append(el("span",{class:"startflag"},"Começar"));
       const b = el("button",{class:"node"+(!open?" locked":"")+(rec&&rec.perfect?" perfect":"")+(isCur?" current":""),type:"button","aria-label":l.title+(rec?" (concluída)":open?"":" (bloqueada)")}, rec ? (rec.perfect?"★":"✓") : open ? String(li+1) : "🔒");
       if(open) b.addEventListener("click", ()=>startLesson(u, l)); else b.disabled = true;
@@ -1201,7 +1437,7 @@ function renderTrilha(){
     const bb = el("button",{class:"node boss"+(!bOpen?" locked":"")+(won?" perfect":"")+(isCurB?" current":""),type:"button","aria-label":"Boss Fight "+u.title}, won ? "★ BOSS" : bOpen ? "BOSS" : "🔒");
     if(bOpen) bb.addEventListener("click", ()=>startBoss(u)); else bb.disabled = true;
     const best = state.boss[u.id] && state.boss[u.id].best;
-    bw.append(bb, el("span",{class:"nodelabel"}, `Boss Fight · ${BOSS_SIZE} questões em 3 min`+(best!=null?`<br><span class="mono">recorde ${best}/${BOSS_SIZE}</span>`:"")));
+    bw.append(bb, el("span",{class:"nodelabel"}, `Boss Fight · ${BOSS_SIZE} questões em ${BOSS_SECONDS/60} min`+(best!=null?`<br><span class="mono">recorde ${best}/${BOSS_SIZE}</span>`:"")));
     nodes.append(bw);
     box.append(nodes);
     path.append(box);
@@ -1231,15 +1467,16 @@ function closePlayer(){
 }
 $("#pClose").addEventListener("click", ()=>{
   const b = $("#pClose");
-  if(!S || S.done || b.classList.contains("confirm")) return closePlayer();
+  if(!S || S.done || S.mode==="theory" || b.classList.contains("confirm")) return closePlayer();
   b.classList.add("confirm"); b.textContent = "Sair? O progresso desta lição se perde";
   setTimeout(()=>{ if(S && !S.done){ b.classList.remove("confirm"); b.textContent = "×"; } }, 3500);
 });
 function renderTop(){
-  const pct = S.done ? 100 : Math.min(100, (S.mode==="boss" ? S.answered : S.correct) / S.total * 100);
+  const pct = S.done ? 100 : S.mode==="theory" ? (S.i+1) / S.total * 100 : Math.min(100, (S.mode==="boss" ? S.answered : S.correct) / S.total * 100);
   $("#pBar").style.width = pct+"%";
   const h = $("#pHearts");
   if(S.mode==="boss"){ const m = Math.max(0,S.left); h.textContent = `⏱ ${Math.floor(m/60)}:${String(m%60).padStart(2,"0")}`; h.className = "p-stat"; }
+  else if(S.mode==="theory"){ h.textContent = `${Math.min(S.i+1,S.total)}/${S.total}`; h.className = "p-stat"; }
   else if(S.mode==="lesson"){ h.textContent = "♥".repeat(S.hearts) + "♡".repeat(HEARTS-S.hearts); h.className = "p-stat hearts"; }
   else { h.textContent = `${S.correct}/${S.total}`; h.className = "p-stat"; }
 }
@@ -1249,6 +1486,7 @@ function setFoot(kind, html, label, enabled){
   const b = $("#pBtn"); b.textContent = label; b.disabled = !enabled;
 }
 function renderEx(){
+  if(S.mode==="theory") return renderCard();
   renderTop();
   const e = S.queue[S.i]; S.picked = null; S.checked = false;
   const body = $("#pBody"); body.innerHTML = "";
@@ -1263,6 +1501,46 @@ function renderEx(){
   else if(e.t==="type") renderType(e, body);
   else if(e.t==="bank") renderBank(e, body);
   else if(e.t==="match") renderMatch(e, body);
+  else if(e.t==="spot") renderSpot(e, body);
+  else if(e.t==="multi") renderMulti(e, body);
+  const les = S.mode==="lesson" ? S.lesson : S.mode==="review" ? LESSON_BY_ID[e.id.split("-")[0]] : null;
+  if(les && les.theory){
+    const d = el("details",{class:"consult"});
+    d.innerHTML = `<summary>Consultar a teoria: ${esc(les.theory.title)}</summary>` + les.theory.cards.map(c=>`<h4>${esc(c.h)}</h4><div class="theory-body">${c.b}</div>`).join("");
+    wrapTables(d); body.append(d);
+  }
+}
+function wrapTables(root){ root.querySelectorAll("table").forEach(t=>{ const w = el("div",{class:"tbl"}); t.replaceWith(w); w.append(t); }); }
+function renderCard(){
+  renderTop();
+  const c = S.queue[S.i]; S.checked = true;
+  const body = $("#pBody"); body.innerHTML = "";
+  body.append(el("span",{class:"p-kind"}, "Teoria · " + esc(S.lesson.theory.title)));
+  body.append(el("h3",{class:"p-q"}, esc(c.h)));
+  const tb = el("div",{class:"theory-body"}, c.b); wrapTables(tb); body.append(tb);
+  $("#pBody").parentElement.scrollTop = 0;
+  setFoot("", S.i>0 ? '<div><button class="btn" id="pBack" type="button">Voltar</button></div>' : "", S.i===S.total-1 ? "Concluir teoria" : "Continuar", true);
+  const back = $("#pBack"); if(back) back.addEventListener("click", ()=>{ S.i--; renderEx(); });
+  $("#pBtn").focus();
+}
+function renderSpot(e, body){
+  const line = el("div",{class:"spotline"});
+  e.s.split(" ").forEach(w=>{
+    const b = el("button",{class:"tok",type:"button","aria-pressed":"false"}, esc(w));
+    b.addEventListener("click", ()=>{ if(S.checked) return; line.querySelectorAll(".tok").forEach(x=>x.setAttribute("aria-pressed","false")); b.setAttribute("aria-pressed","true"); S.picked = w; S.pickedBtn = b; setFoot("", "", "Verificar", true); });
+    line.append(b);
+  });
+  body.append(line);
+}
+function renderMulti(e, body){
+  const box = el("div",{class:"opts"}); S.picked = new Set();
+  shuffle(e.o.map((o,i)=>({t:o[0], ok:o[1], i}))).forEach((o,n)=>{
+    const b = el("button",{class:"opt",type:"button","aria-pressed":"false"}, `<span class="k">${n+1}</span><span>${esc(o.t)}</span>`);
+    b.dataset.ok = o.ok ? "1" : "";
+    b.addEventListener("click", ()=>{ if(S.checked) return; const on = b.getAttribute("aria-pressed")!=="true"; b.setAttribute("aria-pressed", String(on)); on ? S.picked.add(o.i) : S.picked.delete(o.i); setFoot("", "", "Verificar", S.picked.size>0); });
+    box.append(b);
+  });
+  body.append(box);
 }
 function renderMC(e, body){
   const box = el("div",{class:"opts"});
@@ -1323,18 +1601,22 @@ function renderMatch(e, body){
   grid.append(colL, colR); body.append(grid);
   setFoot("", '<p class="note">Toque numa palavra à esquerda e depois no par dela à direita.</p>', "Verificar", false);
 }
-function answerText(e){ return e.t==="mc" ? e.o[0] : e.t==="type" ? e.a[0] : e.t==="bank" ? e.a : ""; }
+function answerText(e){ return e.t==="mc" ? e.o[0] : e.t==="type" ? e.a[0] : e.t==="bank" ? e.a : e.t==="spot" ? e.fix : e.t==="multi" ? e.o.filter(o=>o[1]).map(o=>o[0]).join(" · ") : ""; }
 function check(){
   const e = S.queue[S.i]; let ok = false;
   if(e.t==="mc") ok = S.picked && S.picked.ok;
   else if(e.t==="type") ok = e.a.some(a=>norm(a)===norm(S.picked||""));
   else if(e.t==="bank") ok = norm(S.picked.map(p=>p.w).join(" ")) === norm(e.a);
   else if(e.t==="match") ok = S.matchErr === 0;
+  else if(e.t==="spot") ok = e.a.some(a=>norm(a)===norm(S.picked||""));
+  else if(e.t==="multi") ok = e.o.every((o,i)=>o[1] === S.picked.has(i));
   S.checked = true; S.answered++;
   const firstTry = !S.seen || !S.seen.has(e.id);
   (S.seen = S.seen || new Set()).add(e.id);
   if(e.t==="mc"){ document.querySelectorAll("#pBody .opt").forEach(b=>{ b.disabled = true; b.setAttribute("aria-pressed","false"); if(b.dataset.ok) b.classList.add("ok"); }); if(!ok && S.pickedBtn) S.pickedBtn.classList.add("no"); }
   if(e.t==="type") $("#pInput").disabled = true;
+  if(e.t==="spot"){ document.querySelectorAll("#pBody .spotline .tok").forEach(b=>{ b.disabled = true; b.setAttribute("aria-pressed","false"); }); if(S.pickedBtn) S.pickedBtn.classList.add(ok?"ok":"no"); }
+  if(e.t==="multi"){ document.querySelectorAll("#pBody .opt").forEach(b=>{ const sel = b.getAttribute("aria-pressed")==="true"; b.disabled = true; b.setAttribute("aria-pressed","false"); if(b.dataset.ok) b.classList.add("ok"); else if(sel) b.classList.add("no"); }); }
 
   if(ok || e.t==="match"){
     // match exercises always complete; mistakes there only reduce XP
@@ -1363,7 +1645,10 @@ function advance(){
 }
 $("#pBtn").addEventListener("click", ()=>{
   if(!S) return;
-  if(S.done) return closePlayer();
+  if(S.done){
+    if(S.mode==="theory"){ const u = S.unit, l = S.lesson; closePlayer(); return startLesson(u, l); }
+    return closePlayer();
+  }
   if(S.checked) return advance();
   check();
 });
@@ -1371,9 +1656,25 @@ $("#player").addEventListener("keydown", ev=>{
   if(!S) return;
   if(ev.key==="Enter" && ev.target !== $("#pBtn") && !$("#pBtn").disabled){ ev.preventDefault(); $("#pBtn").click(); }
   const e = S.queue[S.i];
-  if(!S.checked && e && e.t==="mc" && /^[1-9]$/.test(ev.key) && ev.target.tagName!=="INPUT"){ const o = document.querySelectorAll("#pBody .opt")[Number(ev.key)-1]; if(o) o.click(); }
+  if(!S.checked && e && (e.t==="mc" || e.t==="multi") && /^[1-9]$/.test(ev.key) && ev.target.tagName!=="INPUT"){ const o = document.querySelectorAll("#pBody .opt")[Number(ev.key)-1]; if(o) o.click(); }
 });
+function finishTheory(){
+  S.done = true;
+  const first = !state.theory[S.lesson.id];
+  state.theory[S.lesson.id] = true;
+  if(first) addXP(5); else markDay();
+  scheduleSave();
+  const body = $("#pBody"); body.innerHTML = "";
+  body.append(el("div",{class:"endhero"}, "Teoria concluída"));
+  body.append(el("p",{class:"muted",style:"text-align:center"}, `Agora pratique: a lição “${esc(S.lesson.title)}” está liberada.` + (first ? " +5 XP." : "")));
+  body.append(el("p",{class:"note",style:"text-align:center"}, "Durante a lição, você pode abrir “Consultar a teoria” no fim de cada exercício."));
+  renderTop();
+  setFoot("", '<div><button class="btn" id="pMap" type="button">Voltar ao mapa</button></div>', "Começar a lição", true);
+  $("#pMap").addEventListener("click", closePlayer);
+  $("#pBtn").focus();
+}
 function finish(outOfHearts){
+  if(S.mode==="theory") return finishTheory();
   if(S.timer) clearInterval(S.timer);
   S.done = true;
   const secs = Math.round((Date.now()-S.start)/1000);
@@ -1414,6 +1715,7 @@ function finish(outOfHearts){
   $("#pClose").textContent = "×"; $("#pClose").classList.remove("confirm");
 }
 
+function startTheory(u, l){ openPlayer({mode:"theory", unit:u, lesson:l, color:u.color, queue:l.theory.cards.slice()}); }
 function startLesson(u, l){ openPlayer({mode:"lesson", unit:u, lesson:l, color:u.color, queue:l.ex.slice()}); }
 function startBoss(u){
   const pool = [].concat(...u.lessons.map(l=>l.ex)).filter(e=>e.t!=="match");

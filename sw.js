@@ -1,6 +1,6 @@
 // Service worker: keeps the app working offline.
 // build.py rewrites CACHE on every build so phones pick up new versions.
-const CACHE = "lls-615c5db971";
+const CACHE = "lls-a3dfeb3815";
 const SHELL = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png", "./icons/apple-touch-icon.png", "./icons/favicon-32.png"];
 
 self.addEventListener("install", e => {

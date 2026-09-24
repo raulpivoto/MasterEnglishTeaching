@@ -27,7 +27,7 @@ python build.py   # gera index.html e muda a versão do cache em sw.js
 | Seção | Conteúdo |
 |---|---|
 | Hoje | Checklist do Módulo 1, plano semanal e diagnóstico |
-| Trilha | Lições estilo Duolingo: 5 unidades, 10 lições, 80 exercícios com correção automática, corações, XP, níveis, ofensiva, conquistas, Boss Fights e revisão de erros |
+| Trilha | 7 unidades estilo Duolingo (padrões verbais, léxico, gramática C2, pragmática, pronúncia, aquisição/metodologia, Paulo Freire): 14 sessões de teoria + 140 exercícios de nível C2 com correção automática, corações, XP, níveis, ofensiva, conquistas, Boss Fights e revisão de erros |
 | Error Log | As 16 correções do texto diagnóstico e os seus próprios erros |
 | Quiz | Retrieval practice com o Error Log |
 | Nuance Lab | Escalas de sentido ("desencorajado", desacordo diplomático) e colocações |
@@ -47,6 +47,7 @@ python build.py   # gera index.html e muda a versão do cache em sw.js
 | Acerto na 1ª tentativa | 10 |
 | Acerto depois de errar / revisão de erro | 5 |
 | Lição concluída / lição perfeita | +20 / +10 |
+| Sessão de teoria (1ª leitura) | 5 |
 | Boss Fight (cada acerto) / vitória | 15 / +50 |
 
 Meta diária: 50 XP. Meta semanal: 350 XP. A ofensiva tem 1 folga por semana.
