@@ -14,6 +14,15 @@ Cada módulo traz objetivo, conceitos-chave, obras de referência e uma aplicaç
 
 ## 📱 Instalar no celular
 
+### Android: app de verdade (APK), sem configurar nada
+1. No celular, abra: **https://github.com/raulpivoto/MasterEnglishTeaching/releases/latest/download/LanguageLensStudio.apk**
+2. Toque no arquivo baixado. Se o Android pedir, permita **“instalar apps desta fonte”** para o navegador ou o gerenciador de arquivos.
+3. Pronto: o ícone **Lens Studio** aparece na tela inicial. O app funciona offline.
+
+Cada mudança no site gera uma nova versão automaticamente (GitHub Actions → Releases). Para atualizar, baixe e instale de novo pelo mesmo link: o progresso é mantido.
+
+### iPhone (ou Android sem APK): app instalável pelo navegador (PWA)
+
 O app é um **PWA**: instala pelo navegador, abre em tela cheia pelo ícone e funciona offline.
 
 1. **Ativar o GitHub Pages (uma vez só):** no GitHub, abra o repositório → **Settings** → **Pages** → em *Build and deployment*, escolha **Deploy from a branch**, selecione o branch `claude/english-c2-teaching-plan-xwaqp4` e a pasta `/ (root)` → **Save**. Em 1 a 2 minutos o app fica em:
