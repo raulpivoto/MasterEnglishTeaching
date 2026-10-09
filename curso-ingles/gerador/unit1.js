@@ -218,7 +218,7 @@ const { newPres, icon, svg2png, avatar, PEOPLE, flag, T, head, box, dot, pill, e
   // 12 GRAMMAR 2 ----------------------------------------------------------
   s = pres.addSlide({ masterName: "PAGE" });
   head(pres,s,4,"Grammar","Negatives, questions & short answers");
-  [["+","Affirmative",C.MINTT,"I'm from Brazil.","You're a student."],["–","Negative",C.YELT,"I'm *not* from Japan.","You *aren't* a doctor.\n(or You're *not*)"],["?","Question",C.BLUET,"*Are* you a student?","*Are* you from Canada?"]].forEach((g,i)=>{
+  [["+","Affirmative",C.MINTT,"I'm from Brazil.","You're a student."],["–","Negative",C.YELT,"I'm *not* from Japan.","You *aren't* a doctor."],["?","Question",C.BLUET,"*Are* you a student?","*Are* you from Canada?"]].forEach((g,i)=>{
     const x=0.5+i*3.05;
     box(pres,s,x,1.4,2.9,2.45,g[2]);
     dot(pres,s,x+0.15,1.55,0.5,NAVY,g[0],YEL,20);
