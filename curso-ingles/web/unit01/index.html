@@ -16,6 +16,12 @@ main{max-width:860px;margin:0 auto;padding:0 18px 80px}
 img{display:block}
 .top{padding:28px 0 12px}
 .brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.ph{margin:0;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.ph img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.ph figcaption{position:absolute;left:8px;bottom:8px;background:#fff;color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.ph figcaption b{background:var(--navy);color:var(--yel);border-radius:999px;padding:0 7px;margin-right:6px}
+.banner{border-radius:16px;overflow:hidden;margin:6px 0 4px}
+.banner img{width:100%;aspect-ratio:21/8;object-fit:cover}
 .hero{display:flex;gap:20px;align-items:center;margin:16px 0 8px}
 .tile{flex:none;width:92px;height:92px;border-radius:16px;background:var(--yel);color:var(--navy);font:700 64px/92px var(--head);text-align:center}
 .hero small{display:block;font-weight:700;letter-spacing:.2em;color:var(--grey);font-size:13px}
@@ -129,6 +135,7 @@ footer{margin-top:50px;color:var(--grey);font-size:13px;border-top:1px solid var
 <header class="top">
   <div class="brand">The English Skyrocket · Book 1 · Level A1</div>
   <div class="hero"><div class="tile">1</div><div><small>UNIT</small><h1>Hello! Nice to meet you</h1><p class="sub">Cumprimentar e se apresentar · verbo <i>to be</i> · alfabeto</p></div></div>
+  <div class="banner"><img src="img/photos/cover.jpg" alt="Um aperto de mão"></div>
 </header>
 <nav aria-label="Seções da unidade">
   <a href="#obj">Objectives</a><a href="#warm">1 Warm-up</a><a href="#dia">2 Dialogue</a><a href="#read">Reading</a><a href="#voc">3 Vocabulary</a><a href="#gra">4 Grammar</a><a href="#pra">5 Exercises</a><a href="#spk">6 Speaking</a><a href="#wri">Writing</a><a href="#wrap">Wrap-up</a>
@@ -151,10 +158,10 @@ footer{margin-top:50px;color:var(--grey);font-size:13px;border-top:1px solid var
   <h2>Say hello!</h2>
   <div class="ex" data-ex="warmA"><div class="exh"><b>A</b>Match the greetings (1–4) with the pictures (a–d).</div>
     <div class="grid g4" style="margin:8px 0">
-      <div class="card c4" style="text-align:center"><b>a</b><div style="font-size:40px">🌙</div>8:00 p.m.</div>
-      <div class="card c1" style="text-align:center"><b>b</b><div style="font-size:40px">☀️</div>7:00 a.m.</div>
-      <div class="card c3" style="text-align:center"><b>c</b><div style="font-size:40px">🛏️</div>11:00 p.m.</div>
-      <div class="card c2" style="text-align:center"><b>d</b><div style="font-size:40px">⛅</div>3:00 p.m.</div>
+      <figure class="ph"><img src="img/photos/warmup-a.jpg" alt="Cidade ao anoitecer" loading="lazy"><figcaption><b>a</b> 8:00 p.m.</figcaption></figure>
+      <figure class="ph"><img src="img/photos/warmup-b.jpg" alt="Nascer do sol" loading="lazy"><figcaption><b>b</b> 7:00 a.m.</figcaption></figure>
+      <figure class="ph"><img src="img/photos/warmup-c.jpg" alt="Quarto à noite" loading="lazy"><figcaption><b>c</b> 11:00 p.m.</figcaption></figure>
+      <figure class="ph"><img src="img/photos/warmup-d.jpg" alt="Parque à tarde" loading="lazy"><figcaption><b>d</b> 3:00 p.m.</figcaption></figure>
     </div>
     <div class="item"><span class="no">1</span><span class="q">Good morning <button class="say" data-say="Good morning" aria-label="Ouvir">🔊</button></span><select class="ans" data-a="b"><option value="">–</option><option>a</option><option>b</option><option>c</option><option>d</option></select></div>
     <div class="item"><span class="no">2</span><span class="q">Good afternoon <button class="say" data-say="Good afternoon" aria-label="Ouvir">🔊</button></span><select class="ans" data-a="d"><option value="">–</option><option>a</option><option>b</option><option>c</option><option>d</option></select></div>
@@ -367,7 +374,7 @@ footer{margin-top:50px;color:var(--grey);font-size:13px;border-top:1px solid var
   <h2>Can you do it?</h2>
   <div id="cando"></div>
   <div class="next"><small>NEXT: UNIT 2</small><h3>Where are you from?</h3></div>
-  <footer>The English Skyrocket · Book 1 · A1 · Unit 1. Seu progresso fica salvo apenas neste navegador. Áudios gerados com voz sintética (espeak-ng).</footer>
+  <footer>The English Skyrocket · Book 1 · A1 · Unit 1. Seu progresso fica salvo apenas neste navegador. Áudios gerados com voz sintética (Kokoro). Fotos (Wikimedia Commons): aperto de mão © perzon seo (CC BY 2.0); Singapura © Kok Leng Yeo (CC BY 2.0); nascer do sol © Susanne Nilsson (CC BY-SA 2.0); quarto © PattayaPatrol (CC BY-SA 4.0); parque © Roger Davies (CC BY-SA 2.0).</footer>
 </section>
 </main>
 

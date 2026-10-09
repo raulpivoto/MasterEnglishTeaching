@@ -70,7 +70,7 @@ const NAVY=C.NAVY, YEL=C.YEL, GREY=C.GREY;
     const x=M+i*1.8, y=2.0;
     photo(s,"warmup-"+p[0],x,y,1.65,1.5,()=>{ box(pres,s,x,y,1.65,1.5,p[4]); s.addImage({data:ic[p[1]],x:x+0.52,y:y+0.28,w:0.6,h:0.6,altText:"Time of day "+p[0]}); });
     pill(pres,s,x+0.08,y+0.08,0.32,0.28,NAVY,p[0],YEL,12);
-    s.addText(p[3],{isTextBox:true,x,y:y+1.05,w:1.65,h:0.35,align:"center",fontFace:BF,fontSize:13,bold:true,color:NAVY,margin:0});
+    pill(pres,s,x+0.25,y+1.1,1.15,0.3,C.WHITE,p[3],NAVY,12);
   });
   ["Good morning","Good afternoon","Good evening","Good night"].forEach((g,i)=>{
     const x=M+(i%2)*3.6, y=3.75+Math.floor(i/2)*0.5;
@@ -314,6 +314,17 @@ const NAVY=C.NAVY, YEL=C.YEL, GREY=C.GREY;
   T(s,"*1* Good evening! I'm Carlos. I'm from Brazil. C-A-R-L-O-S.\n*2* Hi! I'm Emma, E-M-M-A. I'm from England.\n*3* Hello! My name's Yuki, Y-U-K-I. I'm from Japan. See you later!",{x:M+0.2,y:8.0,w:6.6,h:1.8,base:{fontSize:12.5},hl:NAVY});
   T(s,"Áudios 1.1 a 1.6: o diálogo, os perfis, o vocabulário e o alfabeto desta unidade. Grave a sua voz lendo cada bloco duas vezes: devagar e em velocidade natural.",{x:M,y:10.1,w:CW,h:0.7,base:{fontSize:11.5,color:GREY}});
   s.addNotes("Script para o professor gravar ou ler em voz alta.");
+
+  // ===== PAGE 12: PHOTO CREDITS =====
+  s = P();
+  sect(s,0.45,"★","Appendix","Photo credits");
+  T(s,"Fotos de licença livre (Wikimedia Commons). Ao reutilizar, mantenha o crédito e a licença.",{x:M,y:1.4,w:CW,h:0.5,base:{fontSize:12,color:GREY}});
+  [["Cover","Business man and woman handshake in work office","perzon seo","CC BY 2.0"],["Warm-up a (8:00 p.m.)","CentralBusinessDistrict-skyline-Singapore-20090213","Kok Leng Yeo","CC BY 2.0"],["Warm-up b (7:00 a.m.)","Morning Sky - 22023851233","Susanne Nilsson","CC BY-SA 2.0"],["Warm-up c (11:00 p.m.)","DSC 8585 Cozy elegant bedroom with a plush king-size bed","PattayaPatrol","CC BY-SA 4.0"],["Warm-up d (3:00 p.m.)","A sunny August afternoon on Primrose Hill NW1","Roger Davies","CC BY-SA 2.0"]].forEach((c,i)=>{
+    const y=2.0+i*0.95; box(pres,s,M,y,CW,0.82,i%2?C.WHITE:C.PANEL,C.LINE);
+    T(s,"*"+c[0]+"*",{x:M+0.15,y:y+0.08,w:6.7,h:0.28,base:{fontSize:12},hl:NAVY});
+    T(s,c[1]+" · "+c[2]+" · "+c[3],{x:M+0.15,y:y+0.38,w:6.7,h:0.38,base:{fontSize:10.5,color:GREY}});
+  });
+  T(s,"Personagens, bandeiras e ícones: ilustrações originais da série. Fonte das fotos: commons.wikimedia.org (ver página de cada arquivo).",{x:M,y:7.0,w:CW,h:0.6,base:{fontSize:11,color:GREY}});
 
   await pres.writeFile({ fileName: "Book1_Unit01_A4.pptx" });
   console.log("done");
