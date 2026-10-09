@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Unit 1 · Hello! Nice to meet you</title>
+<meta name="description" content="The English Skyrocket · Book 1 (A1) · Unit 1 com áudios e exercícios interativos">
+<style>
+:root{--navy:#001737;--yel:#FFCD04;--yelt:#FFF4BF;--blue:#7CC4FF;--bluet:#E6F3FF;--mint:#7EE0B8;--mintt:#E2F7EE;--lil:#EFEAFE;--grey:#5B6B82;--line:#D5DCE8;--panel:#F3F6FB;--red:#D64538;--redt:#FDE8E5;--green:#1B7F5C;--text:#0B1B33;
+--head:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:Calibri,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:#fff;color:var(--text);font:17px/1.55 var(--body)}
+h1,h2,h3{font-family:var(--head);color:var(--navy);line-height:1.15;margin:0}
+main{max-width:860px;margin:0 auto;padding:0 18px 80px}
+img{display:block}
+.top{padding:28px 0 12px}
+.brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase}
+.hero{display:flex;gap:20px;align-items:center;margin:16px 0 8px}
+.tile{flex:none;width:92px;height:92px;border-radius:16px;background:var(--yel);color:var(--navy);font:700 64px/92px var(--head);text-align:center}
+.hero small{display:block;font-weight:700;letter-spacing:.2em;color:var(--grey);font-size:13px}
+.hero h1{font-size:clamp(30px,6vw,44px)}
+.sub{color:var(--grey);margin:6px 0 0}
+nav{position:sticky;top:0;z-index:20;background:#fffffff2;backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin:0 -18px;padding:8px 18px;display:flex;gap:8px;overflow-x:auto;white-space:nowrap}
+nav a{font-size:13px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--panel);border:1px solid var(--line);padding:5px 12px;border-radius:999px}
+nav a:hover,nav a:focus-visible{background:var(--yel);border-color:var(--yel)}
+section{padding-top:34px}
+.tab{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.tab b{background:var(--navy);color:var(--yel);border-radius:6px;min-width:28px;text-align:center;font-size:14px;padding:2px 6px}
+.tab span{background:var(--yel);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 14px}
+h2{font-size:clamp(26px,5vw,34px);margin-bottom:12px}
+h3{font-size:20px;margin:22px 0 8px}
+p{margin:.4em 0}
+.hint{color:var(--grey);font-size:15px}
+.box{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0}
+.yelt{background:var(--yelt);border-color:#F2D869}.bluet{background:var(--bluet);border-color:#B7D9F5}.mintt{background:var(--mintt);border-color:#BFE9D6}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:640px){.g3,.g4{grid-template-columns:repeat(2,1fr)}.g2.keep{grid-template-columns:1fr}}
+@media(max-width:420px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}.g3.fl{grid-template-columns:1fr}}
+.grid>*{min-width:0}
+.card{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.c1{background:var(--yelt)}.c2{background:var(--bluet)}.c3{background:var(--mintt)}.c4{background:var(--lil)}
+.card b{font-family:var(--head);font-size:20px;color:var(--navy)}
+.audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:14px;padding:10px 14px;margin:10px 0}
+.audio .n{background:var(--yel);color:var(--navy);font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.audio span.t{font-weight:700;font-size:15px}
+.audio audio{flex:1 1 220px;min-width:200px;height:38px}
+.chat{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.msg{display:flex;gap:10px;align-items:flex-end}
+.msg.r{flex-direction:row-reverse}
+.msg img{width:46px;height:46px;border-radius:50%;flex:none}
+.bubble{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:8px 14px;max-width:calc(100% - 60px)}
+.msg.r .bubble{background:var(--yelt);border-color:#F2D869}
+.bubble i{font-style:normal;font-weight:700;color:var(--grey);margin-right:6px}
+.say{cursor:pointer;border:0;background:none;font-size:15px;padding:0 4px;color:var(--grey)}
+.say:hover{color:var(--navy)}
+.profile{display:flex;flex-direction:column;gap:8px}
+.profile .who{display:flex;gap:10px;align-items:center}
+.profile .who img:first-child{width:62px;height:62px;border-radius:50%}
+.profile .who img+img{width:46px;height:31px;border-radius:4px}
+.vocab .card{display:flex;flex-direction:column;gap:2px}
+.vocab .en{font-weight:700;font-size:18px;color:var(--navy)}
+.vocab .pt{color:var(--grey);font-size:14px}
+.vocab .ex{font-style:italic;font-size:14px}
+.flag{display:flex;gap:12px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px}
+.flag img{width:68px;height:45px}
+.flag small{display:block;color:var(--grey);font-size:13px}
+.flag b{font-family:var(--head);font-size:21px;color:var(--navy)}
+.alpha{display:grid;grid-template-columns:repeat(auto-fill,minmax(62px,1fr));gap:8px}
+.alpha button{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:6px 0 4px;cursor:pointer;font:inherit}
+.alpha button.v{background:var(--yelt);border-color:#F2D869}
+.alpha button:hover{outline:2px solid var(--yel)}
+.alpha strong{display:block;font:700 26px/1.1 var(--head);color:var(--navy)}
+.alpha em{font-style:normal;font-size:11px;color:var(--grey)}
+table{border-collapse:collapse;width:100%}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:left;padding:4px 8px}
+td{padding:6px 8px;font-size:18px}
+td:first-child,td:nth-child(2),td:nth-child(3){font-weight:700}
+.pill{display:inline-block;border-radius:999px;padding:2px 14px;font-weight:700;border:2px solid var(--line);background:#fff}
+.pill.g{border-color:var(--mint)}.pill.rd{border-color:#E5574B}
+.wrong{text-decoration:line-through;color:var(--grey)}
+.row3{display:grid;grid-template-columns:1fr 1fr 1.2fr;gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:10px 14px;margin:8px 0}
+@media(max-width:640px){.row3{grid-template-columns:1fr}}
+.x{color:var(--red);font-weight:700}.ok{color:var(--green);font-weight:700}
+.ex{margin:18px 0 8px}
+.exh{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:6px}
+.exh b{flex:none;background:var(--navy);color:var(--yel);border-radius:7px;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--head);font-size:18px}
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:7px 0;border-bottom:1px dashed var(--line)}
+.item:last-of-type{border-bottom:0}
+.item .no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bluet);text-align:center;line-height:28px;font-weight:700;font-size:14px}
+.item .q{flex:1 1 200px}
+input.ans,select.ans,textarea{font:inherit;border:2px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--text);min-width:0}
+input.ans{width:min(100%,260px)}
+input.ans.s{width:96px}
+input.ans.w{width:min(100%,380px)}
+select.ans{padding:5px 6px}
+input.ans:focus,select.ans:focus,textarea:focus,button:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;cursor:pointer}
+.opts button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.good{border-color:var(--mint)!important;background:var(--mintt)!important}
+.bad{border-color:#E5574B!important;background:var(--redt)!important}
+.opts.good,.opts.bad{background:none!important;border:0!important}
+.opts.good button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.opts.bad button[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.btn{font:700 15px var(--body);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy)}
+.btn.sec{background:var(--panel);border:1px solid var(--line)}
+.btn:hover{filter:brightness(.96)}
+.score{font-weight:700;color:var(--navy)}
+.wb{display:flex;flex-wrap:wrap;gap:8px;background:var(--yelt);border:1px solid #F2D869;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:6px}
+.steps{counter-reset:s;list-style:none;padding:0;margin:8px 0}
+.steps li{counter-increment:s;display:flex;gap:10px;padding:6px 0}
+.steps li:before{content:counter(s);flex:none;width:28px;height:28px;border-radius:50%;background:var(--yel);font-weight:700;text-align:center;line-height:28px}
+textarea{width:100%;min-height:150px;font-size:17px;line-height:1.7}
+.chk label{display:flex;gap:8px;align-items:center;padding:3px 0}
+.chk input{width:20px;height:20px;accent-color:var(--navy)}
+.cando{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.cando .opts button{padding:3px 12px}
+.next{background:var(--yel);border-radius:14px;padding:16px 20px;margin-top:18px}
+.next small{font-weight:700;letter-spacing:.1em}
+.next h3{font-size:26px}
+footer{margin-top:50px;color:var(--grey);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <div class="brand">The English Skyrocket · Book 1 · Level A1</div>
+  <div class="hero"><div class="tile">1</div><div><small>UNIT</small><h1>Hello! Nice to meet you</h1><p class="sub">Cumprimentar e se apresentar · verbo <i>to be</i> · alfabeto</p></div></div>
+</header>
+<nav aria-label="Seções da unidade">
+  <a href="#obj">Objectives</a><a href="#warm">1 Warm-up</a><a href="#dia">2 Dialogue</a><a href="#read">Reading</a><a href="#voc">3 Vocabulary</a><a href="#gra">4 Grammar</a><a href="#pra">5 Exercises</a><a href="#spk">6 Speaking</a><a href="#wri">Writing</a><a href="#wrap">Wrap-up</a>
+</nav>
+
+<section id="obj">
+  <div class="tab"><b>i</b><span>Objectives</span></div>
+  <h2>In this unit, I can…</h2>
+  <div class="grid g2 keep">
+    <div class="card c1"><b>Greet people</b><br>dizer <i>Hello</i>, <i>Good morning</i> e <i>Goodbye</i> na hora certa</div>
+    <div class="card c2"><b>Introduce myself</b><br>dizer meu nome e perguntar o nome de alguém</div>
+    <div class="card c3"><b>Say where I'm from</b><br>dizer meu país, minha nacionalidade e minha profissão</div>
+    <div class="card c4"><b>Spell words</b><br>falar o alfabeto e soletrar meu nome</div>
+  </div>
+  <p class="hint">💡 Dica: clique em 🔊 ao lado de uma palavra para ouvi-la. Use os áudios numerados (1.1 a 1.7) quantas vezes quiser.</p>
+</section>
+
+<section id="warm">
+  <div class="tab"><b>1</b><span>Warm-up</span></div>
+  <h2>Say hello!</h2>
+  <div class="ex" data-ex="warmA"><div class="exh"><b>A</b>Match the greetings (1–4) with the pictures (a–d).</div>
+    <div class="grid g4" style="margin:8px 0">
+      <div class="card c4" style="text-align:center"><b>a</b><div style="font-size:40px">🌙</div>8:00 p.m.</div>
+      <div class="card c1" style="text-align:center"><b>b</b><div style="font-size:40px">☀️</div>7:00 a.m.</div>
+      <div class="card c3" style="text-align:center"><b>c</b><div style="font-size:40px">🛏️</div>11:00 p.m.</div>
+      <div class="card c2" style="text-align:center"><b>d</b><div style="font-size:40px">⛅</div>3:00 p.m.</div>
+    </div>
+    <div class="item"><span class="no">1</span><span class="q">Good morning <button class="say" data-say="Good morning" aria-label="Ouvir">🔊</button></span><select class="ans" data-a="b"><option value="">–</option><option>a</option><option>b</option><option>c</option><option>d</option></select></div>
+    <div class="item"><span class="no">2</span><span class="q">Good afternoon <button class="say" data-say="Good afternoon" aria-label="Ouvir">🔊</button></span><select class="ans" data-a="d"><option value="">–</option><option>a</option><option>b</option><option>c</option><option>d</option></select></div>
+    <div class="item"><span class="no">3</span><span class="q">Good evening <button class="say" data-say="Good evening" aria-label="Ouvir">🔊</button></span><select class="ans" data-a="a"><option value="">–</option><option>a</option><option>b</option><option>c</option><option>d</option></select></div>
+    <div class="item"><span class="no">4</span><span class="q">Good night <button class="say" data-say="Good night" aria-label="Ouvir">🔊</button></span><select class="ans" data-a="c"><option value="">–</option><option>a</option><option>b</option><option>c</option><option>d</option></select></div>
+  </div>
+  <div class="box yelt"><b>SPEAK</b> · Say <i>Hello!</i> to your teacher. Then answer: <i>What's your name?</i></div>
+</section>
+
+<section id="dia">
+  <div class="tab"><b>2</b><span>Dialogue</span></div>
+  <h2>Meeting for the first time</h2>
+  <div class="audio"><span class="n">🎧 1.1</span><span class="t">Listen and read.</span><audio controls preload="none" src="audio/1.1.mp3"></audio></div>
+  <div class="chat">
+    <div class="msg"><img src="img/tom.svg" alt="Tom"><div class="bubble"><i>Tom:</i>Hello! I'm Tom. What's your name?</div></div>
+    <div class="msg r"><img src="img/ana.svg" alt="Ana"><div class="bubble"><i>Ana:</i>Hi, Tom! My name's Ana. Nice to meet you.</div></div>
+    <div class="msg"><img src="img/tom.svg" alt="Tom"><div class="bubble"><i>Tom:</i>Nice to meet you, too. Are you Brazilian?</div></div>
+    <div class="msg r"><img src="img/ana.svg" alt="Ana"><div class="bubble"><i>Ana:</i>Yes, I am. I'm from São Paulo. And you?</div></div>
+    <div class="msg"><img src="img/tom.svg" alt="Tom"><div class="bubble"><i>Tom:</i>I'm from Canada. I'm a teacher.</div></div>
+    <div class="msg r"><img src="img/ana.svg" alt="Ana"><div class="bubble"><i>Ana:</i>Great! I'm a student. See you later!</div></div>
+  </div>
+
+  <div class="ex" data-ex="diaA"><div class="exh"><b>A</b>True (T) or false (F)?</div>
+    <div class="item"><span class="no">1</span><span class="q">Tom is Brazilian.</span><div class="opts ans" data-a="F"><button>T</button><button>F</button></div></div>
+    <div class="item"><span class="no">2</span><span class="q">Ana is from São Paulo.</span><div class="opts ans" data-a="T"><button>T</button><button>F</button></div></div>
+    <div class="item"><span class="no">3</span><span class="q">Tom is a teacher.</span><div class="opts ans" data-a="T"><button>T</button><button>F</button></div></div>
+    <div class="item"><span class="no">4</span><span class="q">Ana is a teacher.</span><div class="opts ans" data-a="F"><button>T</button><button>F</button></div></div>
+  </div>
+  <div class="ex" data-ex="diaB"><div class="exh"><b>B</b>Answer the questions.</div>
+    <div class="item"><span class="no">1</span><span class="q">What's Tom's job?</span><input class="ans" data-a="a teacher|teacher|he's a teacher|he is a teacher|tom is a teacher" autocomplete="off"></div>
+    <div class="item"><span class="no">2</span><span class="q">Where is Ana from?</span><input class="ans" data-a="são paulo|sao paulo|brazil|she's from são paulo|she's from brazil|she is from são paulo|she is from brazil" autocomplete="off"></div>
+    <div class="item"><span class="no">3</span><span class="q">Is Tom from Brazil?</span><input class="ans" data-a="no|no, he isn't|no, he's not|no he isn't|no, he is not|no, he isn't. he's canadian" autocomplete="off"></div>
+  </div>
+</section>
+
+<section id="read">
+  <div class="tab"><b>2</b><span>Reading</span></div>
+  <h2>Meet the students</h2>
+  <div class="audio"><span class="n">🎧 1.2</span><span class="t">Listen and read the profiles.</span><audio controls preload="none" src="audio/1.2.mp3"></audio></div>
+  <div class="grid g3">
+    <div class="card c1 profile"><div class="who"><img src="img/ana.svg" alt="Ana"><img src="img/flag-brazil.svg" alt="Brazil"></div><b>Ana</b><span>Hi! I'm Ana. I'm from Brazil. I'm Brazilian. I'm a student.</span></div>
+    <div class="card c2 profile"><div class="who"><img src="img/tom.svg" alt="Tom"><img src="img/flag-canada.svg" alt="Canada"></div><b>Tom</b><span>Hello! I'm Tom. I'm from Canada. I'm Canadian. I'm a teacher.</span></div>
+    <div class="card c3 profile"><div class="who"><img src="img/yuki.svg" alt="Yuki"><img src="img/flag-japan.svg" alt="Japan"></div><b>Yuki</b><span>Hi! My name's Yuki. I'm from Japan. I'm Japanese. I'm a doctor.</span></div>
+  </div>
+  <div class="ex" data-ex="readA"><div class="exh"><b>A</b>Read and write the names.</div>
+    <div class="item"><span class="no">1</span><span class="q">Who is from Canada?</span><input class="ans s" data-a="tom" autocomplete="off"></div>
+    <div class="item"><span class="no">2</span><span class="q">Who is a doctor?</span><input class="ans s" data-a="yuki" autocomplete="off"></div>
+    <div class="item"><span class="no">3</span><span class="q">Who is Brazilian?</span><input class="ans s" data-a="ana" autocomplete="off"></div>
+  </div>
+</section>
+
+<section id="voc">
+  <div class="tab"><b>3</b><span>Vocabulary</span></div>
+  <h2>Greetings &amp; goodbyes</h2>
+  <div class="audio"><span class="n">🎧 1.3</span><span class="t">Listen and repeat.</span><audio controls preload="none" src="audio/1.3.mp3"></audio></div>
+  <div class="grid g4 vocab">
+    <div class="card c1"><span class="en">Hello / Hi <button class="say" data-say="Hello. Hi.">🔊</button></span><span class="pt">Olá / Oi</span><span class="ex">“Hi, Tom!”</span></div>
+    <div class="card c2"><span class="en">Good morning <button class="say" data-say="Good morning">🔊</button></span><span class="pt">Bom dia</span><span class="ex">“Good morning, Ana.”</span></div>
+    <div class="card c3"><span class="en">Good afternoon <button class="say" data-say="Good afternoon">🔊</button></span><span class="pt">Boa tarde</span><span class="ex">“Good afternoon!”</span></div>
+    <div class="card c4"><span class="en">Good evening <button class="say" data-say="Good evening">🔊</button></span><span class="pt">Boa noite (chegada)</span><span class="ex">“Good evening, all.”</span></div>
+    <div class="card c1"><span class="en">Goodbye / Bye <button class="say" data-say="Goodbye. Bye.">🔊</button></span><span class="pt">Tchau</span><span class="ex">“Bye, see you!”</span></div>
+    <div class="card c2"><span class="en">See you later <button class="say" data-say="See you later">🔊</button></span><span class="pt">Até mais</span><span class="ex">“See you later!”</span></div>
+    <div class="card c3"><span class="en">Nice to meet you <button class="say" data-say="Nice to meet you">🔊</button></span><span class="pt">Prazer em conhecer</span><span class="ex">“Nice to meet you.”</span></div>
+    <div class="card c4"><span class="en">Thank you <button class="say" data-say="Thank you">🔊</button></span><span class="pt">Obrigado(a)</span><span class="ex">“Thank you, Tom.”</span></div>
+  </div>
+
+  <h3>Countries &amp; nationalities</h3>
+  <div class="audio"><span class="n">🎧 1.4</span><span class="t">Listen and repeat.</span><audio controls preload="none" src="audio/1.4.mp3"></audio></div>
+  <div class="grid g3 fl">
+    <div class="flag"><img src="img/flag-brazil.svg" alt="Bandeira do Brasil"><div><small>Brazil</small><b>Brazilian</b> <button class="say" data-say="Brazil. Brazilian.">🔊</button></div></div>
+    <div class="flag"><img src="img/flag-usa.svg" alt="Bandeira dos EUA"><div><small>the USA</small><b>American</b> <button class="say" data-say="The USA. American.">🔊</button></div></div>
+    <div class="flag"><img src="img/flag-canada.svg" alt="Bandeira do Canadá"><div><small>Canada</small><b>Canadian</b> <button class="say" data-say="Canada. Canadian.">🔊</button></div></div>
+    <div class="flag"><img src="img/flag-england.svg" alt="Bandeira da Inglaterra"><div><small>England</small><b>English</b> <button class="say" data-say="England. English.">🔊</button></div></div>
+    <div class="flag"><img src="img/flag-portugal.svg" alt="Bandeira de Portugal"><div><small>Portugal</small><b>Portuguese</b> <button class="say" data-say="Portugal. Portuguese.">🔊</button></div></div>
+    <div class="flag"><img src="img/flag-japan.svg" alt="Bandeira do Japão"><div><small>Japan</small><b>Japanese</b> <button class="say" data-say="Japan. Japanese.">🔊</button></div></div>
+  </div>
+  <p class="hint box yelt"><b>Tip:</b> nationalities start with a capital letter: <b>Brazilian</b>.</p>
+
+  <h3>Jobs</h3>
+  <div class="audio"><span class="n">🎧 1.5</span><span class="t">Listen and repeat.</span><audio controls preload="none" src="audio/1.5.mp3"></audio></div>
+  <div class="grid g4 vocab">
+    <div class="card c1"><span class="en">teacher 🧑‍🏫 <button class="say" data-say="teacher">🔊</button></span><span class="pt">professor(a)</span></div>
+    <div class="card c2"><span class="en">student 🎓 <button class="say" data-say="student">🔊</button></span><span class="pt">estudante</span></div>
+    <div class="card c3"><span class="en">doctor 🩺 <button class="say" data-say="doctor">🔊</button></span><span class="pt">médico(a)</span></div>
+    <div class="card c4"><span class="en">engineer 👷 <button class="say" data-say="engineer">🔊</button></span><span class="pt">engenheiro(a)</span></div>
+    <div class="card c1"><span class="en">manager 💼 <button class="say" data-say="manager">🔊</button></span><span class="pt">gerente</span></div>
+  </div>
+  <div class="ex" data-ex="jobsA"><div class="exh"><b>A</b>Look at the pictures. Write the jobs.</div>
+    <div class="item"><span class="no">1</span><span class="q" style="font-size:34px">🩺</span><input class="ans" data-a="doctor" autocomplete="off"></div>
+    <div class="item"><span class="no">2</span><span class="q" style="font-size:34px">🧑‍🏫</span><input class="ans" data-a="teacher" autocomplete="off"></div>
+    <div class="item"><span class="no">3</span><span class="q" style="font-size:34px">👷</span><input class="ans" data-a="engineer" autocomplete="off"></div>
+    <div class="item"><span class="no">4</span><span class="q" style="font-size:34px">🎓</span><input class="ans" data-a="student" autocomplete="off"></div>
+  </div>
+
+  <h3>The alphabet</h3>
+  <div class="audio"><span class="n">🎧 1.6</span><span class="t">Listen and repeat. Vowels are in yellow.</span><audio controls preload="none" src="audio/1.6.mp3"></audio></div>
+  <p class="hint">Clique em uma letra para ouvir (pronúncia aproximada em português abaixo da letra).</p>
+  <div class="alpha" id="alpha"></div>
+  <p class="box bluet"><b>How do you spell your name?</b> → <b>T-O-M</b> · <b>A-N-A</b> · <b>Y-U-K-I</b></p>
+</section>
+
+<section id="gra">
+  <div class="tab"><b>4</b><span>Grammar</span></div>
+  <h2>Verb to be: I am, you are</h2>
+  <p>O verbo <b>to be</b> significa <b>ser</b> ou <b>estar</b>.</p>
+  <div class="box bluet">
+    <table><thead><tr><th>Subject</th><th>Verb</th><th>Short form</th><th>Example</th></tr></thead>
+    <tbody><tr><td>I</td><td>am</td><td>I'm</td><td><i>I'm Ana.</i></td></tr><tr><td>you</td><td>are</td><td>you're</td><td><i>You're Tom.</i></td></tr></tbody></table>
+    <p>Em inglês, a frase sempre precisa de <b>sujeito</b>: “Sou professor” → <b>I'm a teacher.</b></p>
+  </div>
+  <div class="box yelt"><b>WATCH OUT</b> · <b>I'm</b> = I am · <b>You're</b> = you are. Na fala, usamos quase sempre a forma curta.</div>
+
+  <h3>Negatives, questions &amp; short answers</h3>
+  <div class="grid g3">
+    <div class="card c3"><b>＋ Affirmative</b><p>I'm from Brazil.</p><p>You're a student.</p></div>
+    <div class="card c1"><b>－ Negative</b><p>I'm <b>not</b> from Japan.</p><p>You <b>aren't</b> a doctor.<br><span class="hint">(or You're not)</span></p></div>
+    <div class="card c2"><b>？ Question</b><p><b>Are</b> you a student?</p><p><b>Are</b> you from Canada?</p></div>
+  </div>
+  <div class="box"><b>SHORT ANSWERS</b><br>Are you a student? &nbsp; <span class="pill g">Yes, I <b>am</b>.</span> <span class="pill rd">No, I<b>'m not</b>.</span></div>
+
+  <h3>Dica Brasil · Watch out for these mistakes</h3>
+  <div class="row3"><span class="wrong">Am Ana.</span><span class="ok">✓ I'm Ana.</span><span class="hint">O sujeito é obrigatório.</span></div>
+  <div class="row3"><span class="wrong">Yes, I'm.</span><span class="ok">✓ Yes, I am.</span><span class="hint">Na resposta curta, não use a forma contraída.</span></div>
+  <div class="row3"><span class="wrong">Where you are from?</span><span class="ok">✓ Where are you from?</span><span class="hint">Na pergunta, o verbo vem antes do sujeito.</span></div>
+  <div class="box mintt"><b>CULTURE CORNER</b> · “How are you?” é uma saudação, não uma pergunta sobre saúde. A resposta comum é <b>Fine, thanks. And you?</b></div>
+</section>
+
+<section id="pra">
+  <div class="tab"><b>5</b><span>Exercises</span></div>
+  <h2>Practice</h2>
+
+  <div class="ex" data-ex="exA"><div class="exh"><b>A</b>Complete the sentences with the words in the box.</div>
+    <div class="wb"><span>am</span><span>are</span><span>Are</span><span>'m not</span><span>aren't</span></div>
+    <div class="item"><span class="no">1</span><span class="q">Hello! I <input class="ans s" data-a="am" autocomplete="off"> Tom.</span></div>
+    <div class="item"><span class="no">2</span><span class="q">You <input class="ans s" data-a="are" autocomplete="off"> a teacher.</span></div>
+    <div class="item"><span class="no">3</span><span class="q"><input class="ans s" data-a="are" autocomplete="off"> you Brazilian?</span></div>
+    <div class="item"><span class="no">4</span><span class="q">Yes, I <input class="ans s" data-a="am" autocomplete="off">.</span></div>
+    <div class="item"><span class="no">5</span><span class="q">I <input class="ans s" data-a="'m not|m not|am not" autocomplete="off"> from Japan. <span class="hint">(negative)</span></span></div>
+    <div class="item"><span class="no">6</span><span class="q">You <input class="ans s" data-a="aren't|arent|are not" autocomplete="off"> American. <span class="hint">(negative)</span></span></div>
+  </div>
+
+  <div class="ex" data-ex="exB"><div class="exh"><b>B</b>Put the words in order.</div>
+    <div class="item"><span class="no">1</span><span class="q">name / is / My / Ana</span><input class="ans w" data-a="my name is ana" autocomplete="off"></div>
+    <div class="item"><span class="no">2</span><span class="q">you / Are / Brazilian / ?</span><input class="ans w" data-a="are you brazilian" autocomplete="off"></div>
+    <div class="item"><span class="no">3</span><span class="q">from / I'm / Canada</span><input class="ans w" data-a="i'm from canada|i am from canada" autocomplete="off"></div>
+    <div class="item"><span class="no">4</span><span class="q">to / meet / Nice / you</span><input class="ans w" data-a="nice to meet you" autocomplete="off"></div>
+  </div>
+
+  <div class="ex" data-ex="exC"><div class="exh"><b>C</b>Rewrite the sentences.</div>
+    <div class="item"><span class="no">1</span><span class="q">You are a student. <span class="pill">question</span></span><input class="ans w" data-a="are you a student" autocomplete="off"></div>
+    <div class="item"><span class="no">2</span><span class="q">I'm a doctor. <span class="pill">negative</span></span><input class="ans w" data-a="i'm not a doctor|i am not a doctor" autocomplete="off"></div>
+    <div class="item"><span class="no">3</span><span class="q">You're from Japan. <span class="pill">question</span></span><input class="ans w" data-a="are you from japan" autocomplete="off"></div>
+    <div class="item"><span class="no">4</span><span class="q">You are Tom. <span class="pill">negative</span></span><input class="ans w" data-a="you aren't tom|you're not tom|you are not tom" autocomplete="off"></div>
+  </div>
+
+  <div class="ex" data-ex="exD"><div class="exh"><b>D</b>Listen and write the names and countries you hear.</div>
+    <div class="audio"><span class="n">🎧 1.7</span><span class="t">Listen (3 speakers).</span><audio controls preload="none" src="audio/1.7.mp3"></audio></div>
+    <div class="grid g3">
+      <div class="card c1" style="text-align:center"><img src="img/carlos.svg" alt="Speaker 1" style="width:70px;margin:0 auto 6px;border-radius:50%"><b>1</b><br>Name: <input class="ans s" data-a="carlos" autocomplete="off"><br>Country: <input class="ans s" data-a="brazil" autocomplete="off" style="margin-top:6px"></div>
+      <div class="card c4" style="text-align:center"><img src="img/emma.svg" alt="Speaker 2" style="width:70px;margin:0 auto 6px;border-radius:50%"><b>2</b><br>Name: <input class="ans s" data-a="emma" autocomplete="off"><br>Country: <input class="ans s" data-a="england" autocomplete="off" style="margin-top:6px"></div>
+      <div class="card c3" style="text-align:center"><img src="img/yuki.svg" alt="Speaker 3" style="width:70px;margin:0 auto 6px;border-radius:50%"><b>3</b><br>Name: <input class="ans s" data-a="yuki" autocomplete="off"><br>Country: <input class="ans s" data-a="japan" autocomplete="off" style="margin-top:6px"></div>
+    </div>
+    <p class="hint">Listen again. Which greeting do you hear? 1 Good morning / Good evening · 2 Hello / Hi · 3 Goodbye / See you later</p>
+    <div class="item"><span class="no">1</span><input class="ans w" data-a="good evening" placeholder="1" autocomplete="off"></div>
+    <div class="item"><span class="no">2</span><input class="ans w" data-a="hi" placeholder="2" autocomplete="off"></div>
+    <div class="item"><span class="no">3</span><input class="ans w" data-a="see you later" placeholder="3" autocomplete="off"></div>
+  </div>
+
+  <div class="ex" data-ex="exE"><div class="exh"><b>E</b>Choose the correct answer: a, b or c.</div>
+    <div class="item"><span class="no">1</span><span class="q">_____ you from Japan?</span><div class="opts ans" data-a="b"><button data-v="a">a Am</button><button data-v="b">b Are</button><button data-v="c">c Is</button></div></div>
+    <div class="item"><span class="no">2</span><span class="q">I _____ a teacher.</span><div class="opts ans" data-a="b"><button data-v="a">a are</button><button data-v="b">b am</button><button data-v="c">c is</button></div></div>
+    <div class="item"><span class="no">3</span><span class="q">Yes, I _____.</span><div class="opts ans" data-a="a"><button data-v="a">a am</button><button data-v="b">b I'm</button><button data-v="c">c are</button></div></div>
+    <div class="item"><span class="no">4</span><span class="q">Where _____ you from?</span><div class="opts ans" data-a="c"><button data-v="a">a you are</button><button data-v="b">b am</button><button data-v="c">c are</button></div></div>
+    <div class="item"><span class="no">5</span><span class="q">You _____ Canadian. <span class="hint">(negative)</span></span><div class="opts ans" data-a="b"><button data-v="a">a isn't</button><button data-v="b">b aren't</button><button data-v="c">c amn't</button></div></div>
+  </div>
+</section>
+
+<section id="spk">
+  <div class="tab"><b>6</b><span>Speaking</span></div>
+  <h2>Role-play: meet a new classmate</h2>
+  <p>Work in pairs. <b>Student A</b> is Carlos. <b>Student B</b> is Emma.</p>
+  <div class="grid g2 keep">
+    <div class="card c3 profile"><div class="who"><img src="img/carlos.svg" alt="Carlos"></div><b>Carlos · Student A</b><span>Brazil · Brazilian · student</span></div>
+    <div class="card c4 profile"><div class="who"><img src="img/emma.svg" alt="Emma"></div><b>Emma · Student B</b><span>England · English · teacher</span></div>
+  </div>
+  <ol class="steps">
+    <li><span><b>Greet:</b> Hello! / Good morning!</span></li>
+    <li><span><b>Ask the name:</b> What's your name?</span></li>
+    <li><span><b>Spell it:</b> How do you spell it?</span></li>
+    <li><span><b>Ask about origin:</b> Are you …? Where are you from?</span></li>
+    <li><span><b>Say goodbye:</b> Nice to meet you. See you later!</span></li>
+  </ol>
+  <p class="hint">Now change roles. Then use your own information!</p>
+  <div class="box chk" data-save="spk"><b>SELF-CHECK</b>
+    <label><input type="checkbox"> I used I'm / You're</label><label><input type="checkbox"> I asked a question</label><label><input type="checkbox"> I spelled my name</label><label><input type="checkbox"> I spoke slowly and clearly</label></div>
+</section>
+
+<section id="wri">
+  <div class="tab"><b>6</b><span>Writing</span></div>
+  <h2>My introduction card</h2>
+  <p>Write about you (30–40 words). Use: <i>Hello! My name is … I'm from … I'm … I'm a … Nice to meet you!</i></p>
+  <textarea id="card" aria-label="Minha apresentação" placeholder="Hello! My name is …"></textarea>
+  <div class="bar"><span class="score" id="wc">0 words</span><button class="btn sec" id="copy">Copiar texto</button></div>
+  <div class="box chk" data-save="wri"><b>SELF-CHECK</b>
+    <label><input type="checkbox"> I used I'm</label><label><input type="checkbox"> I wrote my country with a capital letter</label><label><input type="checkbox"> I used a full stop (.)</label></div>
+</section>
+
+<section id="wrap">
+  <div class="tab"><b>✓</b><span>Wrap-up</span></div>
+  <h2>Can you do it?</h2>
+  <div id="cando"></div>
+  <div class="next"><small>NEXT: UNIT 2</small><h3>Where are you from?</h3></div>
+  <footer>The English Skyrocket · Book 1 · A1 · Unit 1. Seu progresso fica salvo apenas neste navegador. Áudios gerados com voz sintética (espeak-ng).</footer>
+</section>
+</main>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try{ return localStorage.getItem('u1:'+k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem('u1:'+k, v) }catch(e){} } };
+const norm = s => (s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/\s+/g,' ').trim().replace(/[.?!]+$/,'');
+
+// ---------- text to speech (browser) ----------
+const synth = window.speechSynthesis;
+function say(t, rate=.8){ if(!synth) return; synth.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=rate; synth.speak(u); }
+if(!synth) $$('.say').forEach(b=>b.remove());
+document.addEventListener('click', e => { const b=e.target.closest('[data-say]'); if(b) say(b.dataset.say); });
+
+// ---------- alphabet ----------
+const ABC=[["A","êi"],["B","bi"],["C","si"],["D","di"],["E","i"],["F","éf"],["G","djí"],["H","êitch"],["I","ai"],["J","djêi"],["K","kêi"],["L","él"],["M","ém"],["N","én"],["O","ôu"],["P","pi"],["Q","kiú"],["R","ar"],["S","és"],["T","ti"],["U","iú"],["V","vi"],["W","dâbliu"],["X","éks"],["Y","uái"],["Z","zi"]];
+$('#alpha').innerHTML = ABC.map(([l,p])=>`<button class="${'AEIOU'.includes(l)?'v':''}" ${synth?`data-say="${l}"`:''} aria-label="Letra ${l}"><strong>${l}</strong><em>${p}</em></button>`).join('');
+
+// ---------- exercises ----------
+function getVal(el){ if(el.classList.contains('opts')){ const b=el.querySelector('[aria-pressed=true]'); return b ? (b.dataset.v || b.textContent.trim()) : '' } return el.value }
+function setVal(el,v){ if(el.classList.contains('opts')){ $$('button',el).forEach(b=>b.setAttribute('aria-pressed', (b.dataset.v||b.textContent.trim())===v)) } else el.value=v }
+function mark(el,state){ el.classList.remove('good','bad'); if(state) el.classList.add(state) }
+$$('.opts.ans').forEach(g => g.addEventListener('click', e => { const b=e.target.closest('button'); if(!b) return; $$('button',g).forEach(x=>x.setAttribute('aria-pressed','false')); b.setAttribute('aria-pressed','true'); mark(g,null); }));
+$$('.ex[data-ex]').forEach(ex => {
+  const id = ex.dataset.ex, items = $$('.ans', ex);
+  const bar = document.createElement('div'); bar.className='bar';
+  bar.innerHTML = '<button class="btn">Check</button><button class="btn sec">Show answers</button><button class="btn sec">Reset</button><span class="score" aria-live="polite"></span>';
+  ex.appendChild(bar);
+  const [chk, show, reset] = $$('button', bar), score = $('.score', bar);
+  const ok = el => { const a = el.dataset.a.split('|').map(norm); return a.includes(norm(getVal(el))) };
+  const saved = store.get(id); if(saved){ try{ JSON.parse(saved).forEach((v,i)=> items[i] && setVal(items[i],v)) }catch(e){} }
+  const save = () => store.set(id, JSON.stringify(items.map(getVal)));
+  ex.addEventListener('input', save); ex.addEventListener('change', save); ex.addEventListener('click', e => { if(e.target.closest('.opts')) save() });
+  items.forEach(el => el.addEventListener('input', () => mark(el,null)));
+  chk.onclick = () => { let n=0; items.forEach(el => { const r = ok(el); if(r) n++; mark(el, getVal(el)==='' ? null : (r?'good':'bad')) }); score.textContent = `${n} / ${items.length}` + (n===items.length?' 🎉':''); };
+  show.onclick = () => { items.forEach(el => { const a = el.dataset.a.split('|')[0]; setVal(el, el.classList.contains('opts')||el.tagName==='SELECT' ? a : a); mark(el,'good') }); score.textContent=''; save(); };
+  reset.onclick = () => { items.forEach(el => { setVal(el,''); mark(el,null) }); score.textContent=''; save(); };
+});
+
+// ---------- checklists and writing ----------
+$$('.chk[data-save]').forEach(c => { const k='chk-'+c.dataset.save, boxes=$$('input',c); try{ (JSON.parse(store.get(k)||'[]')).forEach((v,i)=>boxes[i]&&(boxes[i].checked=v)) }catch(e){} c.addEventListener('change',()=>store.set(k,JSON.stringify(boxes.map(b=>b.checked)))) });
+const card=$('#card'), wc=$('#wc'); card.value = store.get('card')||''; const count=()=>{ wc.textContent=(card.value.trim()?card.value.trim().split(/\s+/).length:0)+' words' }; count();
+card.addEventListener('input',()=>{ store.set('card',card.value); count() });
+$('#copy').onclick = async e => { try{ await navigator.clipboard.writeText(card.value); e.target.textContent='Copiado ✓' }catch(_){ card.select() } setTimeout(()=>e.target.textContent='Copiar texto',1500) };
+const CANDO=["Greet people (Hello, Good morning)","Say and ask names","Say where I'm from and what I do","Spell my name"];
+$('#cando').innerHTML = CANDO.map((t,i)=>`<div class="cando" data-i="${i}"><span>${t}</span><div class="opts" role="group" aria-label="${t}"><button data-v="y">✓ Yes</button><button data-v="m">~ So-so</button><button data-v="n">✗ Not yet</button></div></div>`).join('');
+$$('.cando').forEach(r => { const k='cando'+r.dataset.i, g=$('.opts',r), v=store.get(k); if(v) setVal(g,v); g.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; $$('button',g).forEach(x=>x.setAttribute('aria-pressed','false')); b.setAttribute('aria-pressed','true'); store.set(k,b.dataset.v) }) });
+// only one audio plays at a time
+document.addEventListener('play', e => { if(e.target.tagName==='AUDIO') $$('audio').forEach(a => a!==e.target && a.pause()); }, true);
+</script>
+</body>
+</html>
