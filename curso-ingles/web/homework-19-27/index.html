@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homework · Lessons 19-27</title>
+
+<style>
+/* Layout: a printed-workbook feel. White page, navy ink, yellow tabs; one sticky lesson bar; cards for activities. */
+:root{--navy:#001737;--yel:#FFCD04;--yelt:#FFF4BF;--blue:#7CC4FF;--bluet:#E6F3FF;--mint:#7EE0B8;--mintt:#E2F7EE;--lil:#EFEAFE;--grey:#5B6B82;--line:#D5DCE8;--panel:#F3F6FB;--red:#D64538;--redt:#FDE8E5;--green:#1B7F5C;--text:#0B1B33;--amber:#B45309;
+--head:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:Calibri,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{margin:0;background:#fff;color:var(--text);font:17px/1.55 var(--body)}
+h1,h2,h3{font-family:var(--head);color:var(--navy);line-height:1.15;margin:0}
+main{max-width:900px;margin:0 auto;padding-inline:18px;padding-bottom:80px}
+img{display:block}
+.brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:24px}
+.hero{display:flex;gap:18px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
+.tile{flex:none;background:var(--yel);color:var(--navy);border-radius:16px;padding:8px 18px;text-align:center;font:700 44px/1 var(--head)}
+.tile small{display:block;font:700 11px var(--body);letter-spacing:.2em}
+.hero h1{font-size:clamp(30px,6vw,46px)}
+.sub{color:var(--grey);margin:4px 0 0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#fffffff2;border-bottom:1px solid var(--line);margin-inline:-18px;padding:8px 18px}
+.prog{flex:1 1 160px;height:12px;background:var(--line);border-radius:999px;overflow:hidden;min-width:100px}
+.prog i{display:block;height:100%;width:0;background:var(--yel);transition:width .4s}
+.donebox{display:flex;gap:10px;align-items:center;background:var(--mintt);border:1px solid #BFE9D6;border-radius:12px;padding:10px 14px;margin-top:16px;font-weight:700}
+.donebox input{width:22px;height:22px;accent-color:var(--navy)}
+.steps{background:var(--bluet);border:1px solid #B7D9F5;border-radius:14px;padding:12px 16px;margin:10px 0}
+.steps ol{margin:6px 0 0;padding-left:22px}
+.steps li{margin:4px 0}
+.steps b.t{display:inline-block;background:var(--navy);color:var(--yel);border-radius:999px;padding:0 10px;font-size:13px;margin-right:6px}
+.bar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.clock{font:700 20px var(--head);background:var(--navy);color:var(--yel);border-radius:10px;padding:2px 12px;font-variant-numeric:tabular-nums}
+.now{font-size:14px;color:var(--grey);flex:1 1 200px;min-width:0}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-top:6px}
+nav a{font-size:13px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--panel);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+nav a.on{background:var(--yel);border-color:var(--yel)}
+section{padding-top:36px}
+.tab{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.tab b{background:var(--navy);color:var(--yel);border-radius:6px;min-width:28px;text-align:center;font-size:14px;padding:2px 6px}
+.tab span{background:var(--yel);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 14px}
+.tab em{font-style:normal;font-size:13px;color:var(--grey);margin-left:4px}
+h2{font-size:clamp(26px,5vw,34px);margin-bottom:10px}
+h3{font-size:21px;margin:24px 0 8px}
+p{margin:.4em 0}
+.hint{color:var(--grey);font-size:15px}
+.box{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0}
+.yelt{background:var(--yelt);border-color:#F2D869}.bluet{background:var(--bluet);border-color:#B7D9F5}.mintt{background:var(--mintt);border-color:#BFE9D6}.lilt{background:var(--lil);border-color:#D8CEF7}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.grid>*{min-width:0}
+@media(max-width:700px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.card{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.c1{background:var(--yelt)}.c2{background:var(--bluet)}.c3{background:var(--mintt)}.c4{background:var(--lil)}
+.audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:14px;padding:10px 14px;margin:10px 0}
+.audio .n{background:var(--yel);color:var(--navy);font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.audio .t{font-weight:700;font-size:15px;flex:1 1 160px;min-width:0}
+.audio audio{flex:1 1 260px;min-width:200px;height:38px}
+.photo{margin:0;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo.wide img{aspect-ratio:21/9}
+.photo figcaption{position:absolute;left:8px;bottom:8px;background:#fff;color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:left;padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:7px 8px;font-size:16px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;color:var(--navy);white-space:nowrap}
+.flash{perspective:900px;cursor:pointer;min-height:132px}
+.flash .in{position:relative;width:100%;height:100%;min-height:132px;transition:transform .5s;transform-style:preserve-3d}
+.flash.f .in{transform:rotateY(180deg)}
+.flash .a,.flash .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
+.flash .a{background:var(--bluet);align-items:center;text-align:center;font:700 22px var(--head);color:var(--navy)}
+.flash .a small{font:600 12px var(--body);color:var(--grey);display:block;margin-top:4px}
+.flash .b{background:var(--yelt);transform:rotateY(180deg);font-size:14px;line-height:1.35;overflow:auto}
+.flash .b i{color:var(--grey)}
+.flash .b u{text-decoration:none;color:var(--amber);font-weight:700}
+.ex{margin:20px 0 8px;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.exh{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:6px}
+.exh b{flex:none;background:var(--navy);color:var(--yel);border-radius:7px;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--head);font-size:18px}
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:7px 0;border-bottom:1px dashed var(--line)}
+.item:last-of-type{border-bottom:0}
+.item .no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bluet);text-align:center;line-height:28px;font-weight:700;font-size:14px}
+.item .q{flex:1 1 240px;min-width:0}
+input.ans,select.ans,textarea,input.free{font:inherit;border:2px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--text);min-width:0;max-width:100%}
+input.ans{width:min(100%,300px)}
+input.ans.w{width:min(100%,520px)}
+select.ans{padding:5px 6px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible,.flash:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;cursor:pointer;color:var(--text)}
+.opts button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.good{border-color:var(--mint)!important;background:var(--mintt)!important}
+.bad{border-color:#E5574B!important;background:var(--redt)!important}
+.opts.good,.opts.bad{background:none!important;border:0!important}
+.opts.good button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.opts.bad button[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.btn{font:700 15px var(--body);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy)}
+.btn.sec{background:var(--panel);border:1px solid var(--line)}
+.score{font-weight:700;color:var(--navy)}
+.wb{display:flex;flex-wrap:wrap;gap:8px;background:var(--yelt);border:1px solid #F2D869;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:6px}
+.model{display:none;background:var(--mintt);border:1px solid #BFE9D6;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:15px}
+.model.show{display:block}
+textarea{width:100%;min-height:150px;font-size:17px;line-height:1.7}
+.text{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:18px;line-height:1.75}
+.text mark{background:var(--yelt);border-bottom:2px solid var(--yel);border-radius:3px;padding:0 2px;cursor:help;color:inherit}
+.wrong{text-decoration:line-through;color:var(--grey)}
+.ok{color:var(--green);font-weight:700}
+.chip{display:inline-block;background:var(--bluet);border:1px solid #B7D9F5;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;margin:2px 4px 2px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin:10px 0;background:var(--panel)}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.say{cursor:pointer;border:0;background:none;font-size:15px;padding:0 4px;color:var(--grey)}
+.range{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.range span{flex:1 1 220px}
+.range input{accent-color:var(--navy);flex:1 1 140px}
+.pic{display:flex;flex-direction:column;gap:6px}
+.pic .photo img{aspect-ratio:4/3}
+.pic b{font-family:var(--head);font-size:19px;color:var(--navy)}
+.pic input{width:100%}
+.mat{display:flex;flex-direction:column;gap:6px}
+.mat .ico{aspect-ratio:4/3;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:30px;color:var(--grey)}
+.mat b{font-family:var(--head);font-size:19px;color:var(--navy)}
+footer{margin-top:44px;color:var(--grey);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+@media(prefers-reduced-motion:reduce){.flash .in{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<main>
+<div class="brand">The English Skyrocket · Homework · Levels B2 to C1</div>
+<div class="hero"><div class="tile">70<small>MINUTES</small></div><div><h1>Homework: Lessons 19–27</h1><p class="sub">Review vocabulary, pronunciation, grammar, listening and reading at home, step by step</p></div></div>
+<div class="grid g2 keep" style="margin:6px 0 4px">
+  <div class="card c1" style="display:flex;gap:12px;align-items:center"><img src="img/ana.svg" alt="Ana" style="width:56px;height:56px;border-radius:50%"><div><b>Ana</b><br><span class="hint">Student A</span></div></div>
+  <div class="card c3" style="display:flex;gap:12px;align-items:center"><img src="img/lucas.svg" alt="Lucas" style="width:56px;height:56px;border-radius:50%"><div><b>Lucas</b><br><span class="hint">Student B</span></div></div>
+</div>
+
+<div class="bar" role="region" aria-label="Your progress">
+  <div class="row"><span class="clock" id="pct">0%</span><div class="prog" aria-hidden="true"><i id="progfill"></i></div><span class="now" id="now">0 of 8 parts finished</span></div>
+  <nav id="nav" aria-label="Homework parts"></nav>
+</div>
+
+<section id="plan">
+  <div class="tab"><b>i</b><span>How to do this homework</span></div>
+  <h2>Start here</h2>
+  <ol class="steps" style="padding-left:40px">
+    <li>Use <b>headphones</b> and sit somewhere quiet. Work through the parts <b>in order</b>.</li>
+    <li>Each part starts with a blue box: it tells you <b>exactly what to do</b>, step by step.</li>
+    <li>Try every exercise <b>before</b> pressing <b>Show answers</b>. Press <b>Check</b>, fix the red answers, and check again.</li>
+    <li>Tap the <b>🔊</b> buttons and the <b>🎧 audio players</b> as often as you like. Listening again is part of the work.</li>
+    <li>When a part is finished, tick <b>"I finished this part"</b>. Your answers are saved on this device, so you can stop and come back.</li>
+    <li>At the end, press <b>Copy my report</b> and send it to your teacher.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Part</th><th>What you do</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td>1 Warm-up</td><td>Think and write about your last beach holiday</td><td>5 min</td></tr>
+      <tr><td>2 Vocabulary</td><td>Pictures, flashcards, matching, gap-fill, phrases</td><td>15 min</td></tr>
+      <tr><td>3 Pronunciation</td><td>Silent letters, word stress, pitch, dictation</td><td>12 min</td></tr>
+      <tr><td>4 Grammar</td><td>Past tenses and reporting a claim</td><td>12 min</td></tr>
+      <tr><td>5 Listening</td><td>Two friends after a holiday</td><td>6 min</td></tr>
+      <tr><td>6 Reading</td><td>A short news text, with questions</td><td>10 min</td></tr>
+      <tr><td>7 Speaking</td><td>Record a short voice message</td><td>10 min</td></tr>
+      <tr><td>8 Writing</td><td>Write your summary and send your report</td><td>10 min</td></tr>
+    </tbody></table></div>
+  <p class="hint">Total: about 70 minutes. You can split it into two or three days.</p>
+</section>
+
+<section id="s1">
+  <div class="tab"><b>1</b><span>Warm-up</span><em>about 5 min</em></div>
+  <h2>Welcome back, Ana and Lucas!</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Listen to the audio and read the three questions.</li><li>Think about your answer to question 1. Say it <b>out loud</b> in 3 or 4 sentences.</li><li>Write your best answer to question 2 in the box below (2 or 3 sentences). Use a past tense: <i>I was lying…</i>, <i>I had forgotten…</i></li></ol></div>
+  <figure class="photo wide"><img src="img/photos/footprints.jpg" alt="Footprints on a sandy beach" loading="lazy"><figcaption>By the beach</figcaption></figure>
+  <div class="audio"><span class="n">🎧 1</span><span class="t">Three warm-up questions</span><audio controls preload="none" src="audio/a1-warmup.mp3"></audio></div>
+  <div class="grid g3">
+    <div class="card c1"><b>1</b> Tell someone about the last time you went to the beach.</div>
+    <div class="card c2"><b>2</b> Have you ever been sunburned on holiday? What happened?</div>
+    <div class="card c3"><b>3</b> What is something you take for granted in your daily life?</div>
+  </div>
+  <div class="box lilt"><b>Use past tenses:</b> "I <b>was lying</b> on the beach when…" · "By the time we arrived, they <b>had already left</b>." · "As I <b>was saying</b>…"</div>
+  <textarea data-k="warm" style="min-height:96px" aria-label="Warm-up answer" placeholder="Write your answer to question 2 here…"></textarea>
+
+  <label class="donebox"><input type="checkbox" data-done="s1"> I finished this part</label>
+</section>
+
+<section id="s2">
+  <div class="tab"><b>2</b><span>Vocabulary</span><em>about 15 min</em></div>
+  <h2>Words from lessons 19 to 27</h2>
+  <div class="steps"><b class="t">What to do · about 15 min</b><ol><li>Press play on audio 2. <b>Repeat</b> each word after the voice.</li><li>Do <b>exercise A</b>: look at each picture and type the English word.</li><li>Flip the <b>flashcards</b> one by one. Before you flip, say the word in a sentence about <b>your own life</b>.</li><li>Do <b>B</b> (match) and <b>C</b> (gap-fill). Press Check, fix the red ones, check again.</li><li>Listen to audio 3 (phrases), then do <b>exercise D</b>.</li></ol></div>
+  <h3>Words in pictures</h3>
+  <div class="audio"><span class="n">🎧 2</span><span class="t">Key words: listen and repeat</span><audio controls preload="none" src="audio/a2-words.mp3"></audio></div>
+  <div class="ex" data-ex="vP"><div class="exh"><b>A</b>What is it? Write the English word.</div><div class="grid g4" id="picbox"></div></div>
+
+  <h3>Flashcards <span class="hint">(tap to flip)</span></h3>
+  <div class="grid g4" id="cards"></div>
+  <div class="ex" data-ex="vA"><div class="exh"><b>B</b>Match each word with its meaning.</div><div id="matchbox"></div></div>
+  <div class="ex" data-ex="vB"><div class="exh"><b>C</b>Complete the sentences with the words in the box.</div>
+    <div class="wb"><span>carry out</span><span>uneven</span><span>overwhelmed</span><span>clueless</span><span>side dish</span><span>cramp</span><span>exhaustive</span><span>sunburned</span></div>
+    <div id="gapbox"></div></div>
+
+  <h3>Chunks and useful phrases</h3>
+  <div class="audio"><span class="n">🎧 3</span><span class="t">Phrases with examples</span><audio controls preload="none" src="audio/a10-chunks.mp3"></audio></div>
+  <div class="grid g2">
+    <div class="box"><b>take something for granted</b> · Don't take your health for granted.<br><b>deal with / handle / cope with</b> · I can't cope with all these emails.<br><b>worth the price</b> · This one is worth the price.</div>
+    <div class="box"><b>make it up to someone</b> · I'll make it up to you, I promise.<br><b>fed up with</b> · I'm fed up with waiting.<br><b>hold on</b> · Hold on, my phone is ringing.</div>
+  </div>
+  <div class="ex" data-ex="vC"><div class="exh"><b>D</b>Fill in the missing word.</div><div id="chunkbox"></div></div>
+
+  <label class="donebox"><input type="checkbox" data-done="s2"> I finished this part</label>
+</section>
+
+<section id="s3">
+  <div class="tab"><b>3</b><span>Pronunciation</span><em>about 12 min</em></div>
+  <h2>Sounds to fix</h2>
+  <div class="steps"><b class="t">What to do · about 12 min</b><ol><li>Listen to audio 4 and <b>repeat</b> the silent-letter words. Say them three times.</li><li>Listen to audio 5 and <b>clap</b> on the stressed syllable of each word.</li><li>Listen to audio 6. Say <i>Hello, how was your day?</i> in a <b>high</b> voice, then in a <b>low</b> voice.</li><li>Do <b>exercise A</b>.</li><li>Do the <b>dictation</b>: play audio 7, write what you hear (you can listen up to three times), then press Check.</li></ol></div>
+  <div class="grid g2">
+    <div><div class="audio"><span class="n">🎧 4</span><span class="t">Silent letters</span><audio controls preload="none" src="audio/a3-silent.mp3"></audio></div>
+      <div class="grid g2">
+        <div class="card c1"><b>aisle</b><br>AYL (the s is silent)</div><div class="card c2"><b>debt</b><br>DET (the b is silent)</div>
+        <div class="card c3"><b>coup</b><br>KOO (the p is silent)</div><div class="card c4"><b>island</b><br>EYE-lund (silent s)</div>
+        <div class="card c1"><b>whisker</b><br>WIS-ker (h is soft)</div><div class="card c2"><b>cemetery</b><br>SEM-ih-ter-ee</div>
+        <div class="card c3"><b>intercom</b><br>IN-ter-kom</div><div class="card c4"><b>priest</b><br>PREEST</div>
+      </div></div>
+    <div><div class="audio"><span class="n">🎧 5</span><span class="t">Word stress</span><audio controls preload="none" src="audio/a4-stress.mp3"></audio></div>
+      <div class="grid g2">
+        <div class="card c1"><b>bureaucratic</b><br>byoor-uh-KRAT-ik</div><div class="card c2"><b>exhaustive</b><br>ig-ZAW-stiv</div>
+        <div class="card c3"><b>guarantor</b><br>GAIR-un-tor</div><div class="card c4"><b>candidacy</b><br>KAN-dih-duh-see</div>
+        <div class="card c1"><b>hegemony</b><br>hih-JEM-uh-nee</div><div class="card c2"><b>sovereignty</b><br>SOV-rin-tee</div>
+        <div class="card c3"><b>responsibilities</b><br>rih-spon-suh-BIL-ih-teez</div><div class="card c4"><b>plasterer</b><br>PLAS-ter-er</div>
+      </div></div>
+  </div>
+  <h3>High-pitched and low-pitched voices</h3>
+  <div class="audio"><span class="n">🎧 6</span><span class="t">The same sentence in a higher and a lower voice</span><audio controls preload="none" src="audio/a5-pitch.mp3"></audio></div>
+  <div class="box bluet">Pitch is how high or low a voice sounds. We use it to show feelings: a <b>higher</b> pitch can sound excited or surprised ("<i>I can't cope with this!</i>"), a <b>lower</b> pitch can sound calm, serious or tired. Try saying "<i>Hold on!</i>" in both ways.</div>
+  <div class="ex" data-ex="pA"><div class="exh"><b>A</b>Choose the best answer.</div><div id="pbox"></div></div>
+  <div class="ex" data-ex="pB"><div class="exh"><b>B</b>Dictation: listen and write what you hear.</div>
+    <div class="audio"><span class="n">🎧 7</span><span class="t">Five sentences, each read twice</span><audio controls preload="none" src="audio/a8-dictation.mp3"></audio></div><div id="dictbox"></div></div>
+
+  <label class="donebox"><input type="checkbox" data-done="s3"> I finished this part</label>
+</section>
+
+<section id="s4">
+  <div class="tab"><b>4</b><span>Grammar</span><em>about 12 min</em></div>
+  <h2>Telling stories and reporting claims</h2>
+  <div class="steps"><b class="t">What to do · about 12 min</b><ol><li>Read the two tables slowly. Say each example aloud.</li><li>Do <b>exercise A</b> (choose the answer). Check and fix.</li><li>Do <b>B</b>: write two different sentences for each item. Then press <b>Model answers</b> and compare.</li><li>Do <b>C</b>: write a more formal sentence. Compare with the model.</li></ol></div>
+  <div class="tbl"><table>
+    <thead><tr><th>Form</th><th>Use</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Past simple</td><td>finished events, one after another</td><td>I arrived, put on my cream and went swimming.</td></tr>
+      <tr><td>Past continuous</td><td>the background, or an action interrupted</td><td>I was lying on the beach when it started to rain.</td></tr>
+      <tr><td>Past perfect</td><td>the earlier of two past events</td><td>By the time I got back, they had already left.</td></tr>
+      <tr><td>As I was saying…</td><td>returning to a point after an interruption</td><td>As I was saying, the food was amazing.</td></tr>
+      <tr><td>She was like…</td><td>informal way to quote speech or attitude</td><td>She was like, "No way!" = She said no way.</td></tr>
+    </tbody></table></div>
+  <h3>Reporting a claim without saying it is true</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Form</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>reportedly</td><td>Officials reportedly met the groups.</td></tr>
+      <tr><td>according to…</td><td>According to the council, no such plan exists.</td></tr>
+      <tr><td>is said / alleged to…</td><td>The scheme is alleged to be under discussion.</td></tr>
+      <tr><td>It is claimed that…</td><td>It is claimed that the message came from the city.</td></tr>
+    </tbody></table></div>
+  <div class="ex" data-ex="gA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="mcbox"></div></div>
+  <div class="ex"><div class="exh"><b>B</b>Rewrite each sentence using two different reporting forms. Then compare.</div><div id="rpbox"></div></div>
+  <div class="ex"><div class="exh"><b>C</b>Say it more formally.</div><div id="qbox"></div></div>
+
+  <label class="donebox"><input type="checkbox" data-done="s4"> I finished this part</label>
+</section>
+
+<section id="s5">
+  <div class="tab"><b>5</b><span>Listening</span><em>about 6 min</em></div>
+  <h2>After the holiday</h2>
+  <div class="steps"><b class="t">What to do · about 6 min</b><ol><li>Read the five questions first.</li><li>Listen to audio 8 <b>once</b>, without the transcript.</li><li>Answer the questions and press <b>Check</b>.</li><li>Listen <b>again</b> and fix any mistakes.</li><li>Open the transcript and find the words from this unit.</li></ol></div>
+  <p class="hint">Mia and Dan meet at work. Listen once for the general idea, then again for the details.</p>
+  <div class="audio"><span class="n">🎧 8</span><span class="t">Mia and Dan</span><audio controls preload="none" src="audio/a6-listening.mp3"></audio></div>
+  <div class="ex" data-ex="lA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="lbox"></div></div>
+  <details><summary>Show the transcript (after the exercise)</summary>
+    <p><b>Mia:</b> You look so tanned! How was the beach?<br><b>Dan:</b> Honestly, it was worth the price. But on the second day I was so busy talking that I forgot my cream, and now I'm sunburned.<br><b>Mia:</b> Oh no. Did you put on moisturizing cream afterwards?<br><b>Dan:</b> Yes, a lot. By the way, as I was saying, the food was amazing. We had grilled prawns with a side dish of rice.<br><b>Mia:</b> Jealous! I'm fed up with the office. I've been dealing with bureaucratic forms all week.<br><b>Dan:</b> Hang in there. Do you need help? I can make it up to you for missing the meeting.<br><b>Mia:</b> Thanks. I just feel overwhelmed. Hold on, my phone is ringing.</p></details>
+
+  <label class="donebox"><input type="checkbox" data-done="s5"> I finished this part</label>
+</section>
+
+<section id="s6">
+  <div class="tab"><b>6</b><span>Reading</span><em>about 10 min</em></div>
+  <h2>Eastvale Debates a New Housing Tax</h2>
+  <div class="steps"><b class="t">What to do · about 10 min</b><ol><li>Read the text once, without audio. Do not stop for every new word.</li><li>Tap the highlighted words to see their meaning.</li><li>Listen to audio 9 while you read.</li><li>Answer the four questions in <b>full sentences</b>, then press <b>Model answer</b> and correct yours.</li><li>Choose one discussion question and answer it out loud for one minute.</li></ol></div>
+  <div class="audio"><span class="n">🎧 9</span><span class="t">Listen while you read (about 1 minute)</span><audio controls preload="none" src="audio/a7-reading.mp3"></audio></div>
+  <div class="text" id="reading">
+    Rumours spread online this week that the city of Eastvale will introduce a new tax on small apartments. The mayor's office says the claim is a <mark data-d="hoax: a trick or a false story">hoax</mark>. <mark data-d="according to: used to say where information comes from">According to</mark> the council, no such plan exists, although <mark data-d="housing prices: how much it costs to buy or rent a home">housing prices</mark> have risen sharply over the last five years. Local economists say that <mark data-d="low-paid jobs: jobs with a small salary">low-paid</mark> and <mark data-d="unskilled jobs: jobs that need no special training">unskilled jobs</mark> now make up almost a third of new positions, which makes renting very hard for young workers. A tenants' group <mark data-d="reportedly: according to reports (not confirmed)">reportedly</mark> asked the council to <mark data-d="carry out: to do or perform">carry out</mark> an <mark data-d="exhaustive: complete; covering everything">exhaustive</mark> study of rents. "People are <mark data-d="fed up: tired and annoyed (informal)">fed up</mark> with <mark data-d="bureaucratic: with too many official rules and forms">bureaucratic</mark> delays," said its spokesperson, "and they should not have to <mark data-d="take for granted: to assume something will always be there">take decent housing for granted</mark>." The council is said to be preparing a public meeting next month, and a <mark data-d="guarantor: a person who promises to pay if you cannot">guarantor</mark> scheme for tenants is <mark data-d="alleged: said to be true without proof">alleged</mark> to be under discussion, although officials have not confirmed it. Critics argue that the fear of new <mark data-d="income tax: a tax on the money you earn">income tax</mark> rules shows how quickly an unverified claim can spread.
+  </div>
+  <p class="hint" id="defbox">Highlighted words: tap one to see its meaning here.</p>
+  <div class="ex"><div class="exh"><b>A</b>Answer in full sentences. Then compare with the model answer.</div><div id="rcbox"></div></div>
+  <div class="ex"><div class="exh"><b>B</b>Discussion</div>
+    <p>1. Why can an unverified claim spread so fast online?</p>
+    <p>2. Are low-paid jobs undervalued in your country? Give an example.</p>
+    <div class="box yelt"><b>Useful language:</b><br><span class="chip">I couldn't agree more</span><span class="chip">That's a fair point, but…</span><span class="chip">According to what I've read…</span><span class="chip">It is said that…</span><span class="chip">Even though…</span><span class="chip">It depends on…</span></div></div>
+
+  <label class="donebox"><input type="checkbox" data-done="s6"> I finished this part</label>
+</section>
+
+<section id="s7">
+  <div class="tab"><b>7</b><span>Speaking</span><em>about 10 min</em></div>
+  <h2>Record a story</h2>
+  <div class="steps"><b class="t">What to do · about 10 min</b><ol>
+    <li>Listen to the model story (audio 10) once.</li>
+    <li>Prepare 4 or 5 notes for <b>your own</b> story: a holiday (real or invented) where something went wrong.</li>
+    <li>Open the voice recorder on your <b>phone</b>. Record a message of about <b>1 minute</b>. Use the frame below.</li>
+    <li>Listen to your recording. Tick the self-check boxes. If you want, record it again.</li>
+    <li>Send the recording to your <b>teacher</b>.</li>
+  </ol></div>
+  <div class="box bluet"><b>Story frame:</b> Last… I was… when… By the time… I had already… In the end… It was worth… / I will never take… for granted again.</div>
+  <div class="audio"><span class="n">🎧 10</span><span class="t">A model story</span><audio controls preload="none" src="audio/a9-story.mp3"></audio></div>
+  <div class="grid g2">
+    <div class="card c1"><b>Useful reactions</b> (if you practise with a friend)<br>"That must have been awful!" · "What did you do?" · "Did you manage to…?" · "How did you cope with…?"</div>
+    <div class="card c3"><b>Challenge</b><br>Use <i>according to…</i>, <i>it is said that…</i> and <i>even though…</i> once each when you give your opinion: "Should essential jobs be better paid?"</div>
+  </div>
+  <div class="box"><b>Self-check</b><br><label><input type="checkbox" data-chk="c1"> I used past simple, past continuous and past perfect</label><br><label><input type="checkbox" data-chk="c2"> I used one reporting form</label><br><label><input type="checkbox" data-chk="c3"> I used three new words from this homework</label><br><label><input type="checkbox" data-chk="c4"> I spoke slowly and clearly</label></div>
+
+  <label class="donebox"><input type="checkbox" data-done="s7"> I finished this part</label>
+</section>
+
+<section id="wrap">
+  <div class="tab"><b>8</b><span>Writing and report</span><em>about 10 min</em></div>
+  <h2>Last step</h2>
+  <div class="steps"><b class="t">What to do · about 10 min</b><ol>
+    <li>Rate yourself honestly with the sliders.</li>
+    <li>Write a <b>150-word summary</b> of one short English news article. Use at least <b>three reporting forms</b> (<i>reportedly, according to, is said to, alleged</i>). If you do not have an article, summarise the <b>Eastvale text</b> from Part 6.</li>
+    <li>Type your name, press <b>Copy my report</b> and send it to your teacher.</li>
+  </ol></div>
+  <div id="rates"></div>
+  <h3>Your summary</h3>
+  <textarea id="hw" aria-label="Summary draft" placeholder="According to…"></textarea>
+  <div class="tools"><span class="score" id="wc">0 words</span><button class="btn sec" id="copy">Copy text</button></div>
+  <h3>Your report</h3>
+  <p><label>Your name: <input class="free" id="nm" autocomplete="name" style="width:min(100%,260px)"></label></p>
+  <div class="tools"><button class="btn" id="rep">Copy my report</button><span class="score" id="repmsg" aria-live="polite"></span></div>
+  <textarea id="repbox" readonly aria-label="Report" style="min-height:120px;display:none"></textarea>
+  <footer>Audio: synthetic voices (Kokoro). Photos: Wikimedia Commons, see credits below. Your answers are saved only in this browser.<div id="credits"></div></footer>
+</section>
+</main>
+<script>
+
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try{ return localStorage.getItem('al:'+k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem('al:'+k, v) }catch(e){} } };
+const norm = s => (s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+const synth = window.speechSynthesis;
+function say(t, rate=.85){ if(!synth) return; synth.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=rate; synth.speak(u); }
+document.addEventListener('click', e => { const b=e.target.closest('[data-say]'); if(b) say(b.dataset.say); });
+
+const PICS=[["prawns","prawn","prawn|prawns|shrimp","camarão grande"],["footprints","footprints","footprints|footprint","pegadas"],["snakeplant","mother-in-law's tongue","snake plant|mother-in-law's tongue|mother in law's tongue|saint george's sword","espada-de-são-jorge"],["aisle","aisle","aisle|corridor","corredor"],["saucer","flying saucer","flying saucer|spaceship|ufo","disco voador"],["shade","shade","shade","sombra"],["handcraft","handcraft","handcraft|handicraft|handmade","artesanato"]];
+$('#picbox').innerHTML=PICS.map((p,i)=>`<div class="pic"><figure class="photo"><img src="img/photos/${p[0]}.jpg" alt="Picture ${i+1}" loading="lazy" onerror="this.parentNode.innerHTML='<div style=&quot;aspect-ratio:4/3;display:grid;place-items:center;color:#5B6B82&quot;>no photo</div>'"></figure><b>${i+1}</b><input class="ans" data-a="${p[2]}" autocomplete="off" placeholder="English word"></div>`).join('');
+const CARDS=[
+["willpower","noun","the strength of mind to do something difficult","It takes willpower to stop eating sweets.","força de vontade"],
+["muscle cramp","noun","a sudden, painful tightening of a muscle","I got a muscle cramp while swimming.","câimbra"],
+["side dish","noun","food served with the main dish","We had rice as a side dish.","acompanhamento"],
+["sunburned","adj.","with red, painful skin from too much sun","He's sunburned after a day on the beach.","queimado de sol"],
+["hoax","noun","a trick or a false story","The message turned out to be a hoax.","boato, farsa"],
+["take for granted","phrase","to not value something because you always have it","Don't take your health for granted.","não dar valor"],
+["cringe","verb","to feel embarrassed by something awkward","I cringe when I hear my old voice messages.","sentir vergonha alheia"],
+["endurance","noun","the ability to keep going for a long time","Marathons need great endurance.","resistência"],
+["overwhelmed","adj.","feeling that there is too much to deal with","I feel overwhelmed by work.","sobrecarregado"],
+["clueless","adj.","knowing nothing about something","He's clueless about cooking.","sem noção"],
+["bureaucratic","adj.","with too many official rules and forms","The process was slow and bureaucratic.","burocrático"],
+["exhaustive","adj.","complete; covering everything","They did an exhaustive search.","exaustivo"],
+["guarantor","noun","a person who promises to pay if you cannot","My landlord asked for a guarantor.","fiador"],
+["carry out","phrasal verb","to do or perform (a plan, a study)","They carried out a survey.","realizar"],
+["overprotective","adj.","trying to protect someone too much","Her parents are overprotective.","superprotetor"],
+["uneven","adj.","not equal or regular","The results were uneven.","desigual"],
+["endorse","verb","to publicly support someone or something","Several experts endorsed the plan.","apoiar publicamente"],
+["fed up","adj.","tired and annoyed (informal)","I'm fed up with the delays.","de saco cheio"]];
+$('#cards').innerHTML=CARDS.map(c=>`<div class="flash" tabindex="0" role="button" aria-label="Flashcard: ${c[0]}. Press Enter to flip"><div class="in"><div class="a"><span>${c[0]}<small>${c[1]}</small></span></div><div class="b"><u>${c[2]}</u><i>“${c[3]}”</i><span class="hint">PT: ${c[4]}</span></div></div></div>`).join('');
+$$('.flash').forEach(f=>{const t=()=>f.classList.toggle('f');f.addEventListener('click',t);f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
+const MATCH=[["willpower","the strength of mind to do something difficult"],["hoax","a trick or a false story"],["endurance","the ability to keep going for a long time"],["bureaucratic","with too many official rules and forms"],["guarantor","a person who promises to pay if you cannot"],["overprotective","trying to protect someone too much"],["endorse","to publicly support someone or something"],["fed up","tired and annoyed (informal)"]];
+const defs=MATCH.map(m=>m[1]).sort((a,b)=>a.localeCompare(b));
+$('#matchbox').innerHTML=MATCH.map((m,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><b>${m[0]}</b></span><select class="ans" data-a="${m[1]}"><option value="">choose…</option>${defs.map(d=>`<option>${d}</option>`).join('')}</select></div>`).join('');
+const fillers=(id,list)=>{$(id).innerHTML=list.map((g,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${g[0].replace('_',`<input class="ans" style="width:140px" data-a="${g[1]}" autocomplete="off">`)}</span></div>`).join('')};
+fillers('#gapbox',[["The committee will _ a full review next month.","carry out"],["The road was _, so the car shook all the way.","uneven"],["I feel _: I have three deadlines tomorrow.","overwhelmed"],["He is completely _ about technology. He can't even send an email.","clueless"],["We ordered grilled fish with a _ of vegetables.","side dish"],["After the swim I had a _ in my leg.","cramp|muscle cramp"],["She did an _ search and checked every document.","exhaustive"],["Put on cream, or you'll be _ by tonight.","sunburned"]]);
+fillers('#chunkbox',[["Don't _ your health for granted.","take"],["I can't _ with all these emails.","cope|deal"],["This one is worth the _.","price"],["I'll _ it up to you, I promise.","make"],["I'm fed _ with waiting.","up"],["They will carry _ a full study.","out"]]);
+function mc(id,list){ $(id).innerHTML=list.map((q,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${q[0]}</span><div class="opts ans" data-a="${'abc'[q[2]]}">${q[1].map((o,j)=>`<button data-v="${'abc'[j]}">${'abc'[j]}  ${o}</button>`).join('')}</div></div>`).join('') }
+mc('#pbox',[
+["In 'aisle', the letter s is…",["silent","pronounced /z/","pronounced /s/"],0],
+["How do we say 'coup'?",["KOWP","KOO","KOP"],1],
+["Where is the main stress in 'bureaucratic'?",["BU-rea-cra-tic","bu-REAU-cra-tic","bu-reau-CRA-tic"],2],
+["Where is the main stress in 'hegemony'?",["HE-ge-mo-ny","he-GE-mo-ny","he-ge-MO-ny"],1],
+["How do we say 'debt'?",["DEBT (with b)","DET","DEPT"],1],
+["A high-pitched voice sounds…",["lower and deeper","higher and lighter","louder only"],1]]);
+const DICT=["As I was saying, the housing prices have risen sharply.","She told me she had already left, so I was waiting for nothing.","The company is reportedly carrying out an exhaustive review.","I can't cope with this uneven schedule any more.","Don't take your free time for granted."];
+$('#dictbox').innerHTML=DICT.map((d,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><input class="ans w" data-a="${d}" autocomplete="off"></span></div>`).join('');
+mc('#mcbox',[
+["When I arrived, the film _ already _.",["was / starting","had / started","has / started"],1],
+["I _ on the beach when it started to rain.",["lay","was lying","had lain"],1],
+["By the time we found the hotel, the receptionist _ home.",["went","was going","had gone"],2],
+["Sorry, I interrupted you. As I _ saying, prices have gone up.",["was","had","am"],0],
+["She told me she _ the exam, so she was crying.",["failed","had failed","was failing"],1],
+["While he _ for the bus, he met an old friend.",["waited","was waiting","had waited"],1],
+["I _ him for years before he called me.",["didn't see","hadn't seen","wasn't seeing"],1],
+["The scheme _ to be under discussion, but officials have not confirmed it.",["is alleged","alleges","is alleging"],0]]);
+const RP=[["The minister is planning to resign.","The minister is reportedly planning to resign. / According to reports, the minister is planning to resign. / The minister is said to be planning to resign."],["Foreign money paid for the posts.","Foreign money is said to have paid for the posts. / It is claimed that foreign money paid for the posts."],["The accusations are only a campaign tactic.","The accusations are allegedly only a campaign tactic. / It is claimed that the accusations are only a campaign tactic."]];
+$('#rpbox').innerHTML=RP.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea style="min-height:64px" data-k="rp${i}" aria-label="Rewrite ${i+1}"></textarea><div class="tools"><button class="btn sec" data-m="r${i}">Model answers</button></div><div class="model" id="mr${i}">${q[1]}</div></div>`).join('');
+const QQ=[["She was like, \"I don't believe you!\"","She told me (that) she didn't believe me."],["He was like, \"I've already finished.\"","He said (that) he had already finished."],["I was like, \"Hold on a second.\"","I told him to hold on for a second."]];
+$('#qbox').innerHTML=QQ.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea style="min-height:64px" data-k="qq${i}" aria-label="Formal ${i+1}"></textarea><div class="tools"><button class="btn sec" data-m="q${i}">Model answer</button></div><div class="model" id="mq${i}">${q[1]}</div></div>`).join('');
+mc('#lbox',[
+["Why is Dan sunburned?",["He forgot his cream.","He fell asleep in the shade.","He stayed too long at lunch."],0],
+["Which phrase means 'I want to compensate you'?",["hang in there","make it up to you","hold on"],1],
+["How does Mia feel about her job at the moment?",["Excited","Fed up and overwhelmed","Bored and sleepy"],1],
+["What did Dan eat on holiday?",["Grilled prawns with a side dish","A cold salad","Pizza"],0],
+["What does 'Hold on' mean?",["Wait a moment","Hurry up","Hang up"],0]]);
+const RC=[["What claim spread online, and how does the council respond?","The claim is that a new tax on small apartments will be introduced. The mayor's office says it is a hoax."],["Find words or phrases that show these are reports, not facts.","says, according to, reportedly, is said to, alleged"],["Why is renting very hard for young workers?","Housing prices have risen sharply and many new jobs are low-paid or unskilled."],["What does 'take decent housing for granted' mean here?","To assume that decent housing will always be available without effort or cost."]];
+$('#rcbox').innerHTML=RC.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea style="min-height:64px" data-k="rc${i}" aria-label="Answer ${i+1}"></textarea><div class="tools"><button class="btn sec" data-m="c${i}">Model answer</button></div><div class="model" id="mc${i}">${q[1]}</div></div>`).join('');
+$$('[data-m]').forEach(b=>b.onclick=()=>$('#m'+b.dataset.m).classList.toggle('show'));
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+$$('#reading mark').forEach(m=>m.addEventListener('click',()=>{$('#defbox').textContent=m.dataset.d}));
+$$('[data-chk]').forEach(c=>{c.checked=store.get('chk-'+c.dataset.chk)==='1';c.addEventListener('change',()=>store.set('chk-'+c.dataset.chk,c.checked?'1':'0'))});
+
+// ---------- exercises engine ----------
+function getVal(el){ if(el.classList.contains('opts')){const b=el.querySelector('[aria-pressed=true]');return b?b.dataset.v:''} return el.value }
+function setVal(el,v){ if(el.classList.contains('opts')){ $$('button',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v)) } else el.value=v }
+function mark(el,s){ el.classList.remove('good','bad'); if(s) el.classList.add(s) }
+$$('.opts.ans').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('button',g).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');mark(g,null)}));
+$$('.ex[data-ex]').forEach(ex=>{
+  const id=ex.dataset.ex, items=$$('.ans',ex);
+  const bar=document.createElement('div'); bar.className='tools';
+  bar.innerHTML='<button class="btn">Check</button><button class="btn sec">Show answers</button><button class="btn sec">Reset</button><span class="score" aria-live="polite"></span>';
+  ex.appendChild(bar);
+  const [chk,show,reset]=$$('button',bar), score=$('.score',bar);
+  const ok=el=>{const raw=el.dataset.a, v=getVal(el); if(el.classList.contains('opts')||el.tagName==='SELECT') return norm(raw.split('|')[0])===norm(v); return raw.split('|').map(norm).includes(norm(v))};
+  try{(JSON.parse(store.get(id)||'[]')).forEach((v,i)=>items[i]&&setVal(items[i],v))}catch(e){}
+  const save=()=>store.set(id,JSON.stringify(items.map(getVal)));
+  ex.addEventListener('input',save);ex.addEventListener('change',save);ex.addEventListener('click',e=>{if(e.target.closest('.opts'))save()});
+  items.forEach(el=>el.addEventListener('input',()=>mark(el,null)));
+  chk.onclick=()=>{let n=0;items.forEach(el=>{const r=ok(el);if(r)n++;mark(el,getVal(el)===''?null:(r?'good':'bad'))});score.textContent=`${n} / ${items.length}`+(n===items.length?' 🎉':'');store.set('score-'+id,n+' / '+items.length)};
+  show.onclick=()=>{items.forEach(el=>{setVal(el,el.dataset.a.split('|')[0]);mark(el,'good')});score.textContent='';save()};
+  reset.onclick=()=>{items.forEach(el=>{setVal(el,'');mark(el,null)});score.textContent='';save()};
+});
+
+
+// ---------- progress, nav ----------
+const PARTS=[["s1","Warm-up"],["s2","Vocabulary"],["s3","Pronunciation"],["s4","Grammar"],["s5","Listening"],["s6","Reading"],["s7","Speaking"],["wrap","Writing"]];
+$('#nav').innerHTML=[['plan','Start']].concat(PARTS).map(p=>`<a href="#${p[0]}" data-t="${p[0]}">${p[1]}</a>`).join('');
+const dones=$$('[data-done]');
+dones.forEach(d=>{d.checked=store.get('done-'+d.dataset.done)==='1';d.addEventListener('change',()=>{store.set('done-'+d.dataset.done,d.checked?'1':'0');prog()})});
+function prog(){const n=dones.filter(d=>d.checked).length+(($('#hw').value.trim().split(/\s+/).filter(Boolean).length>=100)?1:0);const tot=dones.length+1;$('#pct').textContent=Math.round(n/tot*100)+'%';$('#progfill').style.width=(n/tot*100)+'%';$('#now').textContent=n+' of '+tot+' parts finished'}
+const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===e.target.id))})},{rootMargin:'-30% 0px -60% 0px'}):null;
+if(io)['plan'].concat(PARTS.map(p=>p[0])).forEach(id=>{const el=document.getElementById(id);el&&io.observe(el)});
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+
+// ---------- self rating, homework ----------
+const RATES=["I can use the new vocabulary in my own sentences","I can choose the right tense","I can pronounce the tricky words","I understood the listening","I can explain my ideas fluently"];
+$('#rates').innerHTML=RATES.map((r,i)=>`<div class="range"><span>${r}</span><input type="range" min="1" max="5" value="${store.get('rate'+i)||3}" data-r="${i}" aria-label="${r}"><b id="rv${i}">${store.get('rate'+i)||3}/5</b></div>`).join('');
+$$('[data-r]').forEach(r=>r.addEventListener('input',()=>{$('#rv'+r.dataset.r).textContent=r.value+'/5';store.set('rate'+r.dataset.r,r.value)}));
+const hw=$('#hw'),wc=$('#wc');hw.value=store.get('hw')||'';const count=()=>{wc.textContent=(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words'};count();
+hw.addEventListener('input',()=>{store.set('hw',hw.value);count();prog()});prog();
+$('#copy').onclick=async e=>{try{await navigator.clipboard.writeText(hw.value);e.target.textContent='Copied ✓'}catch(_){hw.select()}setTimeout(()=>e.target.textContent='Copy text',1500)};
+// one audio at a time
+document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')$$('audio').forEach(a=>a!==e.target&&a.pause())},true);
+
+// ---------- report ----------
+const NAMES={vP:'Pictures',vA:'Match words',vB:'Gap-fill',vC:'Phrases',pA:'Pronunciation quiz',pB:'Dictation',gA:'Grammar quiz',lA:'Listening'};
+const nm=$('#nm');nm.value=store.get('nm')||'';nm.addEventListener('input',()=>store.set('nm',nm.value));
+$('#rep').onclick=async()=>{
+  const L=['HOMEWORK Lessons 19-27','Name: '+(nm.value||'(no name)'),'Parts finished: '+dones.filter(d=>d.checked).length+' of '+dones.length,'','SCORES (last check)'];
+  Object.keys(NAMES).forEach(k=>L.push('- '+NAMES[k]+': '+(store.get('score-'+k)||'not checked')));
+  L.push('','SELF-RATING');$$('[data-r]').forEach(r=>L.push('- '+r.getAttribute('aria-label')+': '+r.value+'/5'));
+  const w=store.get('warm');if(w)L.push('','WARM-UP ANSWER',w);
+  const ans=[['rp','Reporting rewrites'],['qq','Formal rewrites'],['rc','Reading answers']];
+  ans.forEach(([p,t])=>{const xs=[0,1,2,3].map(i=>store.get(p+i)).filter(Boolean);if(xs.length)L.push('',t.toUpperCase(),...xs.map((x,i)=>(i+1)+'. '+x))});
+  L.push('','SUMMARY ('+(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words)',hw.value||'(empty)');
+  const txt=L.join('\n'),box=$('#repbox');box.value=txt;box.style.display='block';
+  try{await navigator.clipboard.writeText(txt);$('#repmsg').textContent='Copied ✓ Now paste it in your message to your teacher.'}catch(_){box.select();$('#repmsg').textContent='Select the text below and copy it.'}
+};
+const CREDITS=[{"key": "prawns", "what": "Prawn", "title": "File:Grilled Jumbo Prawn (49934463021).jpg", "page": "https://commons.wikimedia.org/wiki/File:Grilled_Jumbo_Prawn_(49934463021).jpg", "license": "CC BY 2.0", "artist": "Thank You (23 Millions+) views from Los Angeles, USA"}, {"key": "footprints", "what": "Footprints", "title": "File:Footprints in sand at grassy head beach.jpg", "page": "https://commons.wikimedia.org/wiki/File:Footprints_in_sand_at_grassy_head_beach.jpg", "license": "Public domain", "artist": "Jonathon Coombes"}, {"key": "snakeplant", "what": "Mother-in-law's tongue", "title": "File:Sansevieria trifasciata (BYU, LSB).jpg", "page": "https://commons.wikimedia.org/wiki/File:Sansevieria_trifasciata_(BYU,_LSB).jpg", "license": "CC BY-SA 4.0", "artist": "Ben PL"}, {"key": "aisle", "what": "Aisle", "title": "File:Aisle in L Intermarche supermarket in Quebec City.jpg", "page": "https://commons.wikimedia.org/wiki/File:Aisle_in_L_Intermarche_supermarket_in_Quebec_City.jpg", "license": "CC BY-SA 4.0", "artist": "Wilfredor"}, {"key": "saucer", "what": "Flying saucer", "title": "File:Supposed UFO, Passaic, New Jersey.jpg", "page": "https://commons.wikimedia.org/wiki/File:Supposed_UFO,_Passaic,_New_Jersey.jpg", "license": "Public domain", "artist": "George Stock"}, {"key": "shade", "what": "Shade", "title": "File:Benches in the shade of a tree, Old (geograph 3540514).jpg", "page": "https://commons.wikimedia.org/wiki/File:Benches_in_the_shade_of_a_tree,_Old_(geograph_3540514).jpg", "license": "CC BY-SA 2.0", "artist": "Bikeboy"}, {"key": "handcraft", "what": "Handcraft", "title": "File:Hanging baskets.jpg", "page": "https://commons.wikimedia.org/wiki/File:Hanging_baskets.jpg", "license": "CC BY-SA 4.0", "artist": "Meriem Mach"}];
+$('#credits').innerHTML='<p>'+CREDITS.map(x=>`${x.what}: “${x.title.replace(/^File:/,'').replace(/\.\w+$/,'')}” by ${x.artist||'unknown'} (${x.license})`).join(' · ')+'</p>';
+</script>
+
+</body>
+</html>
