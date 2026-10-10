@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karina · B2 Review Lesson</title>
+
+<style>
+/* Layout: a printed-workbook feel. White page, navy ink, yellow tabs; one sticky lesson bar; cards for activities. */
+:root{--navy:#001737;--yel:#FFCD04;--yelt:#FFF4BF;--blue:#7CC4FF;--bluet:#E6F3FF;--mint:#7EE0B8;--mintt:#E2F7EE;--lil:#EFEAFE;--grey:#5B6B82;--line:#D5DCE8;--panel:#F3F6FB;--red:#D64538;--redt:#FDE8E5;--green:#1B7F5C;--text:#0B1B33;--amber:#B45309;
+--head:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:Calibri,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{margin:0;background:#fff;color:var(--text);font:17px/1.55 var(--body)}
+h1,h2,h3{font-family:var(--head);color:var(--navy);line-height:1.15;margin:0}
+main{max-width:900px;margin:0 auto;padding-inline:18px;padding-bottom:80px}
+img{display:block}
+.brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:24px}
+.hero{display:flex;gap:18px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
+.tile{flex:none;background:var(--yel);color:var(--navy);border-radius:16px;padding:8px 18px;text-align:center;font:700 44px/1 var(--head)}
+.tile small{display:block;font:700 11px var(--body);letter-spacing:.2em}
+.hero h1{font-size:clamp(30px,6vw,46px)}
+.sub{color:var(--grey);margin:4px 0 0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#fffffff2;border-bottom:1px solid var(--line);margin-inline:-18px;padding:8px 18px}
+.bar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.clock{font:700 20px var(--head);background:var(--navy);color:var(--yel);border-radius:10px;padding:2px 12px;font-variant-numeric:tabular-nums}
+.now{font-size:14px;color:var(--grey);flex:1 1 200px;min-width:0}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-top:6px}
+nav a{font-size:13px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--panel);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+nav a.on{background:var(--yel);border-color:var(--yel)}
+section{padding-top:36px}
+.tab{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.tab b{background:var(--navy);color:var(--yel);border-radius:6px;min-width:28px;text-align:center;font-size:14px;padding:2px 6px}
+.tab span{background:var(--yel);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 14px}
+.tab em{font-style:normal;font-size:13px;color:var(--grey);margin-left:4px}
+h2{font-size:clamp(26px,5vw,34px);margin-bottom:10px}
+h3{font-size:21px;margin:24px 0 8px}
+p{margin:.4em 0}
+.hint{color:var(--grey);font-size:15px}
+.box{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0}
+.yelt{background:var(--yelt);border-color:#F2D869}.bluet{background:var(--bluet);border-color:#B7D9F5}.mintt{background:var(--mintt);border-color:#BFE9D6}.lilt{background:var(--lil);border-color:#D8CEF7}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.grid>*{min-width:0}
+@media(max-width:700px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.card{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.c1{background:var(--yelt)}.c2{background:var(--bluet)}.c3{background:var(--mintt)}.c4{background:var(--lil)}
+.audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:14px;padding:10px 14px;margin:10px 0}
+.audio .n{background:var(--yel);color:var(--navy);font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.audio .t{font-weight:700;font-size:15px;flex:1 1 160px;min-width:0}
+.audio audio{flex:1 1 260px;min-width:200px;height:38px}
+.photo{margin:0;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo.wide img{aspect-ratio:21/9}
+.photo figcaption{position:absolute;left:8px;bottom:8px;background:#fff;color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:left;padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:7px 8px;font-size:16px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;color:var(--navy);white-space:nowrap}
+.flash{perspective:900px;cursor:pointer;min-height:132px}
+.flash .in{position:relative;width:100%;height:100%;min-height:132px;transition:transform .5s;transform-style:preserve-3d}
+.flash.f .in{transform:rotateY(180deg)}
+.flash .a,.flash .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
+.flash .a{background:var(--bluet);align-items:center;text-align:center;font:700 22px var(--head);color:var(--navy)}
+.flash .a small{font:600 12px var(--body);color:var(--grey);display:block;margin-top:4px}
+.flash .b{background:var(--yelt);transform:rotateY(180deg);font-size:14px;line-height:1.35;overflow:auto}
+.flash .b i{color:var(--grey)}
+.flash .b u{text-decoration:none;color:var(--amber);font-weight:700}
+.ex{margin:20px 0 8px;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.exh{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:6px}
+.exh b{flex:none;background:var(--navy);color:var(--yel);border-radius:7px;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--head);font-size:18px}
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:7px 0;border-bottom:1px dashed var(--line)}
+.item:last-of-type{border-bottom:0}
+.item .no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bluet);text-align:center;line-height:28px;font-weight:700;font-size:14px}
+.item .q{flex:1 1 240px;min-width:0}
+input.ans,select.ans,textarea,input.free{font:inherit;border:2px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--text);min-width:0;max-width:100%}
+input.ans{width:min(100%,300px)}
+input.ans.w{width:min(100%,520px)}
+select.ans{padding:5px 6px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible,.flash:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;cursor:pointer;color:var(--text)}
+.opts button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.good{border-color:var(--mint)!important;background:var(--mintt)!important}
+.bad{border-color:#E5574B!important;background:var(--redt)!important}
+.opts.good,.opts.bad{background:none!important;border:0!important}
+.opts.good button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.opts.bad button[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.btn{font:700 15px var(--body);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy)}
+.btn.sec{background:var(--panel);border:1px solid var(--line)}
+.score{font-weight:700;color:var(--navy)}
+.wb{display:flex;flex-wrap:wrap;gap:8px;background:var(--yelt);border:1px solid #F2D869;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:6px}
+.model{display:none;background:var(--mintt);border:1px solid #BFE9D6;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:15px}
+.model.show{display:block}
+textarea{width:100%;min-height:150px;font-size:17px;line-height:1.7}
+.text{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:18px;line-height:1.75}
+.text mark{background:var(--yelt);border-bottom:2px solid var(--yel);border-radius:3px;padding:0 2px;cursor:help;color:inherit}
+.wrong{text-decoration:line-through;color:var(--grey)}
+.ok{color:var(--green);font-weight:700}
+.chip{display:inline-block;background:var(--bluet);border:1px solid #B7D9F5;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;margin:2px 4px 2px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin:10px 0;background:var(--panel)}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.say{cursor:pointer;border:0;background:none;font-size:15px;padding:0 4px;color:var(--grey)}
+.range{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.range span{flex:1 1 220px}
+.range input{accent-color:var(--navy);flex:1 1 140px}
+.mat{display:flex;flex-direction:column;gap:6px}
+.mat .ico{aspect-ratio:4/3;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:30px;color:var(--grey)}
+.mat b{font-family:var(--head);font-size:19px;color:var(--navy)}
+footer{margin-top:44px;color:var(--grey);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+@media(prefers-reduced-motion:reduce){.flash .in{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+
+<main>
+<div class="brand">The English Skyrocket · Review lesson · Level B2</div>
+<div class="hero"><div class="tile">60<small>MINUTES</small></div><div><h1>Karina's 2026 Review</h1><p class="sub">Vocabulary, grammar, pronunciation, listening, reading and speaking, all from our lessons</p></div></div>
+
+<div class="bar" role="region" aria-label="Lesson timer">
+  <div class="row"><span class="clock" id="clock">60:00</span><button class="btn" id="go">Start lesson</button><button class="btn sec" id="rst">Reset</button><span class="now" id="now">Press start. The bar shows the current stage.</span></div>
+  <nav id="nav" aria-label="Lesson sections"></nav>
+</div>
+
+<section id="plan">
+  <div class="tab"><b>i</b><span>Lesson plan</span></div>
+  <h2>Today's route</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Min</th><th>Stage</th><th>What we do</th><th>Skill</th></tr></thead>
+    <tbody>
+      <tr><td>0–5</td><td>1 Warm-up</td><td>Three questions: routines, current projects, small annoyances</td><td>Speaking</td></tr>
+      <tr><td>5–15</td><td>2 Vocabulary</td><td>Flashcards, matching, collocations, chunks</td><td>Words</td></tr>
+      <tr><td>15–27</td><td>3 Grammar</td><td>Tenses, <i>too</i> vs <i>so</i>, <i>will</i> vs <i>going to</i>, error hunt</td><td>Accuracy</td></tr>
+      <tr><td>27–35</td><td>4 Pronunciation</td><td>Tricky words, <i>-le</i> endings, magic <i>e</i>, dictation</td><td>Sounds</td></tr>
+      <tr><td>35–42</td><td>5 Listening</td><td>A phone chat about plans, with five questions</td><td>Listening</td></tr>
+      <tr><td>42–52</td><td>6 Reading</td><td>"The Disappearing Family Meal", questions and a debate</td><td>Reading</td></tr>
+      <tr><td>52–60</td><td>7 Speaking</td><td>"What's your collage?" plus wrap-up</td><td>Fluency</td></tr>
+    </tbody></table></div>
+  <p class="hint">Tip: tap a flashcard to flip it. Use <b>Check</b>, <b>Show answers</b> and <b>Reset</b> under every exercise. The 🔊 buttons read a word aloud with your device's voice.</p>
+</section>
+
+<!-- 1 WARM-UP -->
+<section id="s1" data-min="5">
+  <div class="tab"><b>1</b><span>Warm-up</span><em>5 min</em></div>
+  <h2>Welcome back!</h2>
+  <figure class="photo wide"><img src="img/photos/collage-hero.jpg" alt="A paper collage artwork" loading="lazy"><figcaption>Collage: our favourite topic</figcaption></figure>
+  <div class="audio"><span class="n">🎧 1</span><span class="t">Three warm-up questions</span><audio controls preload="none" src="audio/k1-warmup.mp3"></audio></div>
+  <div class="grid g3">
+    <div class="card c1"><b>1</b> What does a typical weekday look like for you?</div>
+    <div class="card c2"><b>2</b> What are you working on or learning at the moment?</div>
+    <div class="card c3"><b>3</b> Is there anything people around you are always doing that annoys you?</div>
+  </div>
+  <h3>Language to use</h3>
+  <div class="grid g3">
+    <div class="box bluet"><b>Time</b><br>in the morning · in the afternoon · at night · before · after</div>
+    <div class="box yelt"><b>Frequency</b><br>always · usually · sometimes · never · every day</div>
+    <div class="box mintt"><b>Sequence</b><br>first · then · after that · finally · at the end of the day</div>
+  </div>
+  <div class="box lilt"><b>Complaints:</b> <i>always</i> + present continuous → "He's <b>always barking</b>!" · "It's <b>so annoying</b>."<br><b>Right now:</b> present continuous → "I'm <b>learning</b> about collage." · <b>Plans that changed:</b> "I <b>was going to</b> go, but I couldn't."</div>
+  <details><summary>Teacher notes</summary><p>Let Karina speak for about 90 seconds on question 1 without interruptions. Note two or three errors on a sticky list and revisit them in stage 3. Praise <i>I'm learning</i> and <i>I was going to</i>.</p></details>
+</section>
+
+<!-- 2 VOCABULARY -->
+<section id="s2" data-min="10">
+  <div class="tab"><b>2</b><span>Vocabulary</span><em>10 min</em></div>
+  <h2>Words that matter</h2>
+  <h3>Flashcards <span class="hint">(tap to flip)</span></h3>
+  <div class="grid g4" id="cards"></div>
+
+  <div class="ex" data-ex="vA"><div class="exh"><b>A</b>Match each word with its meaning.</div><div id="matchbox"></div></div>
+  <div class="ex" data-ex="vB"><div class="exh"><b>B</b>Complete the sentences with the words in the box.</div>
+    <div class="wb"><span>dwindling</span><span>rely</span><span>cherish</span><span>discarded</span><span>outlet</span><span>bonded</span><span>commute</span><span>fragments</span></div>
+    <div id="gapbox"></div></div>
+
+  <h3>Chunks: say them in whole phrases</h3>
+  <div class="audio"><span class="n">🎧 2</span><span class="t">Chunk expressions: listen, repeat, then hear the example</span><audio controls preload="none" src="audio/k6-chunks.mp3"></audio></div>
+  <div class="grid g2">
+    <div class="box"><b>go back to</b> · The history of collage goes back to the 12th century.<br><b>be used for</b> · Paper was used for calligraphy.<br><b>stick together</b> · The artist sticks different pieces together.<br><b>cut out</b> · Cut out some pictures from a magazine.<br><b>think differently</b> · Art can help people think differently.</div>
+    <div class="box"><b>start with</b> · You can start with a piece of cardboard.<br><b>take away</b> · The group wants to take away barriers to art.<br><b>around you</b> · Look at the materials around you.<br><b>in new ways</b> · Combine these elements in new ways.<br><b>there is no wrong way to…</b> · There is no wrong way to make a collage.</div>
+  </div>
+  <div class="ex" data-ex="vC"><div class="exh"><b>C</b>Fill in the missing word of the chunk.</div><div id="chunkbox"></div></div>
+  <details><summary>Teacher notes</summary><p>Ask Karina to flip a card, say the word in a new sentence about her own life, then flip to compare. Good extra words from past classes: <i>manage to</i> (succeed in doing something difficult), <i>overthinking</i>, <i>discouraged</i>, <i>concern</i>, <i>foggy</i>.</p></details>
+</section>
+
+<!-- 3 GRAMMAR -->
+<section id="s3" data-min="12">
+  <div class="tab"><b>3</b><span>Grammar</span><em>12 min</em></div>
+  <h2>Accuracy check</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Tense</th><th>Use</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Present simple</td><td>habits, facts, stative verbs</td><td>I go to the gym every day. · She doesn't like pizza.</td></tr>
+      <tr><td>Present continuous</td><td>happening now, temporary, annoying habits with <i>always</i></td><td>I'm working from home today. · He's always barking!</td></tr>
+      <tr><td>Past simple</td><td>finished past events</td><td>She studied at that school when she was ten.</td></tr>
+      <tr><td>Past continuous</td><td>action in progress in the past</td><td>He was driving to the city when I called.</td></tr>
+      <tr><td>Present perfect</td><td>experience or result up to now</td><td>Have you watched it already?</td></tr>
+      <tr><td>Past perfect</td><td>earlier than another past event</td><td>I had told you that before.</td></tr>
+      <tr><td>will / be going to</td><td><i>will</i>: decisions now, promises, predictions. <i>going to</i>: plans already made</td><td>I'll call you. · We're going to visit Rome in June.</td></tr>
+    </tbody></table></div>
+  <div class="grid g3" style="margin-top:12px">
+    <div class="box bluet"><b>too / so</b><br><i>too</i> + adjective = a problem: "too shy".<br><i>so</i> + adjective = intensifier: "so beautiful".</div>
+    <div class="box yelt"><b>listen / hear</b><br><i>listen to</i> = on purpose (a podcast).<br><i>hear</i> = it just reaches your ears (thunder).</div>
+    <div class="box mintt"><b>make / do</b><br><i>make</i> = create from scratch (a collage).<br><i>do</i> = perform an activity (homework).</div>
+    <div class="box lilt"><b>get + adjective</b><br>"I got happy" (change of state). But: <i>go crazy</i>.</div>
+    <div class="box bluet"><b>feel like + -ing</b><br>"I feel like eating pizza." · "I didn't feel like crying."</div>
+    <div class="box yelt"><b>want someone to</b><br>"I want you to be happy." · <b>unless</b> = if not.</div>
+  </div>
+  <div class="box"><b>Other useful ones:</b> <i>manage to + verb</i> (succeed): "Did you manage to do it?" · <i>could</i> (past ability): "I couldn't study." · <i>would be</i>: "Today was better than I thought it would be." · noun + noun: "a lemon balm <b>tea</b>", not "tea <s>of</s> lemon balm".</div>
+
+  <div class="ex" data-ex="gA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="mcbox"></div></div>
+  <div class="ex" data-ex="gB"><div class="exh"><b>B</b>Error hunt: rewrite each sentence correctly.</div><div id="errbox"></div></div>
+  <div class="ex" data-ex="gC"><div class="exh"><b>C</b>Rewrite the sentences using the word in brackets.</div><div id="trbox"></div></div>
+  <details><summary>Teacher notes</summary><p>For exercise B, first ask Karina <i>what</i> is wrong (category), then <i>why</i>. Common patterns from our lessons: missing <i>-ing</i> after <i>be</i>, <i>to</i> after <i>love/like</i> + noun, <i>better</i> instead of <i>best</i>, a base verb after <i>will</i>, missing subject pronoun, prepositions with days and times (<i>on</i> Sundays, <i>at</i> the table, <i>once</i> a week).</p></details>
+</section>
+
+<!-- 4 PRONUNCIATION -->
+<section id="s4" data-min="8">
+  <div class="tab"><b>4</b><span>Pronunciation</span><em>8 min</em></div>
+  <h2>Sounds we practised</h2>
+  <div class="audio"><span class="n">🎧 3</span><span class="t">Words you found tricky: listen and repeat</span><audio controls preload="none" src="audio/k3-words.mp3"></audio></div>
+  <div class="grid g3">
+    <div class="card c1"><b>Wednesday</b><br>WENZ-day</div><div class="card c2"><b>Thursday</b><br>THURZ-day</div><div class="card c3"><b>cancel</b><br>CAN-sl</div>
+    <div class="card c4"><b>suggest</b><br>suh-JEST</div><div class="card c1"><b>regularly</b><br>REG-yoo-lar-lee</div><div class="card c2"><b>decades</b><br>DEK-aydz</div>
+    <div class="card c3"><b>schedules</b><br>SKEJ-oolz</div><div class="card c4"><b>argue</b><br>AR-gyoo</div><div class="card c1"><b>lawyer</b><br>LOY-er</div>
+  </div>
+  <div class="grid g2" style="margin-top:12px">
+    <div><div class="audio"><span class="n">🎧 4</span><span class="t">-le endings</span><audio controls preload="none" src="audio/k4-le.mp3"></audio></div>
+      <div class="box">The ending <b>-le</b> sounds like a short "ol": ta<b>ble</b>, mar<b>ble</b>, peb<b>ble</b>, bub<b>ble</b>, strug<b>gle</b>.</div></div>
+    <div><div class="audio"><span class="n">🎧 5</span><span class="t">Magic e: short, then long</span><audio controls preload="none" src="audio/k5-magic-e.mp3"></audio></div>
+      <div class="box">hat → <b>hate</b> · fat → <b>fate</b> · cut → <b>cute</b> · pet → <b>Pete</b>. The silent <b>e</b> makes the vowel say its name.</div></div>
+  </div>
+  <div class="ex" data-ex="pA"><div class="exh"><b>A</b>Choose the best answer.</div><div id="pbox"></div></div>
+  <div class="ex" data-ex="pB"><div class="exh"><b>B</b>Dictation: listen and write what you hear.</div>
+    <div class="audio"><span class="n">🎧 6</span><span class="t">Five sentences, each read twice</span><audio controls preload="none" src="audio/k8-dictation.mp3"></audio></div><div id="dictbox"></div></div>
+  <details><summary>Teacher notes</summary><p>Have Karina clap the stress: <i>re-GU-lar-ly</i> is wrong, <i>REG-yoo-lar-lee</i> is right. For <i>Wednesday</i> the middle "d" is silent. For dictation, pause the audio after each sentence if needed. Accept contractions in either form.</p></details>
+</section>
+
+<!-- 5 LISTENING -->
+<section id="s5" data-min="7">
+  <div class="tab"><b>5</b><span>Listening</span><em>7 min</em></div>
+  <h2>A chat about plans</h2>
+  <p class="hint">Maya and Leo are talking about work and the weekend. Listen once for the general idea, then again for the details.</p>
+  <div class="audio"><span class="n">🎧 7</span><span class="t">Maya and Leo</span><audio controls preload="none" src="audio/k7-listening.mp3"></audio></div>
+  <div class="ex" data-ex="lA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="lbox"></div></div>
+  <details><summary>Show the transcript (after the exercise)</summary>
+    <p><b>Maya:</b> Hey Leo, did you manage to finish the report?<br><b>Leo:</b> Almost! I was going to send it last night, but I felt so tired that I fell asleep on the sofa.<br><b>Maya:</b> Don't worry. Unless the client calls today, you'll have the whole morning.<br><b>Leo:</b> I hope so. I've been overthinking it all week. Honestly, I don't feel like working anymore.<br><b>Maya:</b> Then take a break. I'm going to a pottery workshop on Saturday. Do you want to come?<br><b>Leo:</b> Sounds great, but I'm too busy this weekend. My cousin is visiting, and I'll cook dinner for the whole family.<br><b>Maya:</b> Wow, that's so kind of you. I'll see you on Monday, then.</p>
+    <p class="hint">Find in the text: <i>manage to</i> · <i>was going to</i> · <i>so tired</i> · <i>unless</i> · <i>overthinking</i> · <i>don't feel like</i> · <i>too busy</i> · <i>I'll</i></p></details>
+</section>
+
+<!-- 6 READING -->
+<section id="s6" data-min="10">
+  <div class="tab"><b>6</b><span>Reading</span><em>10 min</em></div>
+  <h2>The Disappearing Family Meal</h2>
+  <figure class="photo" style="max-width:360px"><img src="img/photos/dinner.jpg" alt="A table with a shared meal" loading="lazy" style="aspect-ratio:3/4"><figcaption>Sharing a meal</figcaption></figure>
+  <div class="audio"><span class="n">🎧 8</span><span class="t">Listen while you read (about 50 seconds)</span><audio controls preload="none" src="audio/k2-text.mp3"></audio></div>
+  <div class="text" id="reading">
+    In many Brazilian families, Sunday lunch at grandma's house is almost sacred. Yet around the world, studies suggest that the number of families who eat together regularly has been <mark data-d="to dwindle: to become smaller little by little">dwindling</mark> for <mark data-d="decades: periods of ten years">decades</mark>. Long working hours, long <mark data-d="commute: the daily trip between home and work">commutes</mark> and busy school <mark data-d="schedules: plans with times for activities">schedules</mark> mean that many people now eat <mark data-d="on the go: in a hurry, while moving">on the go</mark>, often <mark data-d="to rely on: to depend on">relying on</mark> <mark data-d="convenience food: ready-made food that needs little preparation">convenience food</mark> or delivery apps. Researchers <mark data-d="to argue: to say that something is true and give reasons">argue</mark> that this matters more than we think: children who regularly share meals with their families tend to have better diets, stronger language skills and a greater <mark data-d="a sense of belonging: the feeling of being part of a group">sense of belonging</mark>. Ana, a 34-year-old <mark data-d="lawyer: a person who gives legal advice">lawyer</mark>, admits that her family rarely sits down together on weekdays. "But we <mark data-d="to cherish: to value something very much">cherish</mark> Sundays," she says. "That's when we really <mark data-d="to bond: to build a close relationship">bond</mark>."
+  </div>
+  <p class="hint" id="defbox">Highlighted words: tap one to see its meaning here.</p>
+  <div class="ex"><div class="exh"><b>A</b>Answer in full sentences. Then compare with the model answer.</div><div id="rcbox"></div></div>
+  <div class="ex"><div class="exh"><b>B</b>Discussion</div>
+    <p>1. Is the decline of the family meal a real problem, or just a natural change in modern life?</p>
+    <p>2. How have delivery apps changed the way people in your city eat?</p>
+    <div class="box yelt"><b>Debate:</b> "Phones should be banned at the dinner table." Do you agree or disagree?<br><span class="chip">I couldn't agree more</span><span class="chip">That's a fair point, but…</span><span class="chip">I see it differently because…</span><span class="chip">On the one hand… on the other hand…</span><span class="chip">Even though…</span><span class="chip">It depends on…</span></div></div>
+  <details><summary>Teacher notes</summary><p>Reading: 3 minutes silent with audio, 4 minutes for questions, 3 minutes for the debate. Watch for: <i>sit down <b>at</b> the table</i>, <i><b>once</b> a week</i>, <i><b>on</b> Sundays</i>, <i>tend <b>to</b> have</i>, and keeping the subject pronoun (<i>they ruin my diet</i>).</p></details>
+</section>
+
+<!-- 7 SPEAKING -->
+<section id="s7" data-min="8">
+  <div class="tab"><b>7</b><span>Speaking</span><em>8 min</em></div>
+  <h2>What's your collage?</h2>
+  <p>Imagine you need to create a collage using <b>five</b> of these materials. Choose them, then explain your plan.</p>
+  <div class="grid g4" id="mats"></div>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="box bluet"><b>Choose and explain</b><br>I'd like to use…<br>I would combine…<br>I would cut out…<br>I would tear…<br>I would stick…<br>I think it would represent…</div>
+    <div class="box yelt"><b>Describe the steps</b><br>First, take…<br>Then, cut out…<br>After that, tear…<br>Next, combine…<br>Finally, stick…</div>
+  </div>
+  <div class="audio"><span class="n">🎧 9</span><span class="t">A model answer (listen after you try)</span><audio controls preload="none" src="audio/k9-collage-model.mp3"></audio></div>
+  <div class="box mintt"><b>Challenge:</b> use <b>five</b> target structures in one minute: <i>even though</i> · <i>unless</i> · <i>too/so</i> · <i>feel like</i> + -ing · <i>manage to</i>.</div>
+  <details><summary>Teacher notes</summary><p>Two rounds of 1 minute each. Round 1: Karina speaks. Round 2: she repeats with the corrections. Record the second attempt if she agrees, so she can compare it with her first.</p></details>
+</section>
+
+<!-- WRAP-UP -->
+<section id="wrap">
+  <div class="tab"><b>✓</b><span>Wrap-up</span></div>
+  <h2>How did it go?</h2>
+  <div id="rates"></div>
+  <h3>Homework</h3>
+  <p>Write about 120 words: <b>My collage</b>. Use at least five target structures. Your draft is saved on this device.</p>
+  <textarea id="hw" aria-label="Homework draft" placeholder="Start with: I'd like to use…"></textarea>
+  <div class="tools"><span class="score" id="wc">0 words</span><button class="btn sec" id="copy">Copy text</button></div>
+  <footer>Audio: synthetic voices (Kokoro). Photos: Wikimedia Commons, see credits below. Your answers are saved only in this browser.<div id="credits"></div></footer>
+</section>
+</main>
+
+<script>
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try{ return localStorage.getItem('kb2:'+k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem('kb2:'+k, v) }catch(e){} } };
+const norm = s => (s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+
+// ---------- data ----------
+const CARDS=[
+["dwindle","verb","to become smaller or fewer little by little","The number of local shops has dwindled.","diminuir aos poucos"],
+["on the go","phrase","in a hurry; moving from one thing to the next","I usually eat lunch on the go.","na correria"],
+["bond","verb","to build a close relationship","The team bonded during the trip.","criar laços"],
+["convenience food","noun","ready-made food that needs little preparation","Convenience food is often high in salt.","comida pronta"],
+["cherish","verb","to value something very much","I cherish the time with my grandparents.","valorizar muito"],
+["a sense of belonging","noun","the feeling of being part of a group","Sports give kids a sense of belonging.","sentimento de pertencimento"],
+["commute","noun","the daily trip between home and work","Long commutes leave people tired.","trajeto casa-trabalho"],
+["rely on","verb","to depend on someone or something","Many people rely on delivery apps.","depender de"],
+["even though","conj.","despite the fact that","Even though they're busy, they eat together.","mesmo que, embora"],
+["overthinking","noun","thinking about something too much","I've been overthinking it all week.","pensar demais"],
+["manage to","verb","to succeed in doing something difficult","Did you manage to do it?","conseguir fazer"],
+["discouraged","adj.","having lost confidence or motivation","She felt discouraged after the test.","desencorajado"],
+["repurpose","verb","to use something for a new purpose","Artists repurpose old materials.","reaproveitar"],
+["outlet","noun","a way of expressing feelings or energy","Collage is an outlet for creativity.","válvula de escape"],
+["perspective","noun","a way of thinking about something","See things from a new perspective.","perspectiva"],
+["challenge","verb","to question accepted ideas","Art can challenge traditional ideas.","desafiar"]];
+$('#cards').innerHTML=CARDS.map((c,i)=>`<div class="flash" tabindex="0" role="button" aria-label="Flashcard: ${c[0]}. Press Enter to flip"><div class="in"><div class="a"><span>${c[0]}<small>${c[1]}</small></span></div><div class="b"><u>${c[2]}</u><i>“${c[3]}”</i><span class="hint">PT: ${c[4]}</span></div></div></div>`).join('');
+$$('.flash').forEach(f=>{const t=()=>f.classList.toggle('f');f.addEventListener('click',t);f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
+
+const MATCH=[["dwindle","to become smaller little by little"],["rely on","to depend on"],["cherish","to value very much"],["bond","to build a close relationship"],["on the go","in a hurry, while moving"],["commute","the daily trip between home and work"],["outlet","a way of expressing feelings or energy"],["manage to","to succeed in doing something difficult"]];
+const defs=[...MATCH.map(m=>m[1])].sort((a,b)=>a.localeCompare(b));
+$('#matchbox').innerHTML=MATCH.map((m,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><b>${m[0]}</b></span><select class="ans" data-a="${m[1]}"><option value="">choose…</option>${defs.map(d=>`<option>${d}</option>`).join('')}</select></div>`).join('');
+const GAPS=[["The number of local cinemas has been _ for years.","dwindling"],["Many students _ on delivery apps when exams are near.","rely"],["We _ Sundays: it's the only day we're all together.","cherish"],["She makes art from _ materials, like old magazines.","discarded"],["Collage can be an _ for creativity.","outlet"],["The team really _ during the trip.","bonded"]];
+$('#gapbox').innerHTML=GAPS.map((g,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${g[0].replace('_',`<input class="ans" style="width:130px" data-a="${g[1]}" autocomplete="off">`)}</span></div>`).join('');
+const CHUNKS=[["The tradition goes _ to the 12th century.","back"],["Cut _ the pictures from a magazine.","out"],["There is no _ way to make a collage.","wrong"],["Art can help people think _.","differently"],["Combine these colours _ new ways.","in"],["Paper was used _ calligraphy.","for"]];
+$('#chunkbox').innerHTML=CHUNKS.map((g,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${g[0].replace('_',`<input class="ans" style="width:130px" data-a="${g[1]}" autocomplete="off">`)}</span></div>`).join('');
+
+function mc(id,list){ $(id).innerHTML=list.map((q,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${q[0]}</span><div class="opts ans" data-a="${'abc'[q[2]]}">${q[1].map((o,j)=>`<button data-v="${'abc'[j]}">${'abc'[j]}  ${o}</button>`).join('')}</div></div>`).join('') }
+mc('#mcbox',[
+["She _ at this school when she was ten.",["studied","was studying","has studied"],0],
+["I couldn't _ the thunder because I was wearing earbuds.",["listen to","hear","listen"],1],
+["This soup is _ salty. I can't eat it.",["so","too","very much"],1],
+["We _ visit Rome in June. We've booked the tickets.",["will","are going to","are visiting to"],1],
+["I feel like _ pizza tonight.",["to eat","eat","eating"],2],
+["I want you _ happy.",["be","to be","being"],1],
+["_ you practise, you won't improve.",["Unless","Although","Because"],0],
+["She told me she _ already sent the invitation.",["has","had","was"],1],
+["Today was better than I thought it _ be.",["will","would","is"],1],
+["My tea is a lemon balm _.",["tree","tea","of tea"],1]]);
+const ERR=[["She doesn't here.","She isn't here."],["He was visit his friend yesterday.","He was visiting his friend yesterday.|He visited his friend yesterday."],["I'm work from home today.","I'm working from home today.|I work from home today."],["It was the better decision of my life.","It was the best decision of my life."],["I love to pizza.","I love pizza."],["I will managed to finish it.","I will manage to finish it."],["My tea is of lemon balm.","My tea is a lemon balm tea."],["He isn't liking pizza.","He doesn't like pizza."]];
+$('#errbox').innerHTML=ERR.map((e,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><span class="wrong">${e[0]}</span><br><input class="ans w" data-a="${e[1]}" autocomplete="off" placeholder="Write the correct sentence"></span></div>`).join('');
+const TR=[["I was unable to study this weekend. (couldn't)","I couldn't study this weekend."],["The neighbours' dog barks all the time and it annoys me. (always)","The neighbours' dog is always barking."],["If you don't practise, you won't improve. (unless)","Unless you practise, you won't improve."],["I'd like her to come with us. (want)","I want her to come with us."],["The history of collage began in the 12th century. (go back)","The history of collage goes back to the 12th century."]];
+$('#trbox').innerHTML=TR.map((e,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${e[0]}<br><input class="ans w" data-a="${e[1]}" autocomplete="off"></span></div>`).join('');
+mc('#pbox',[
+["How do we say Wednesday?",["WED-nes-day","WENZ-day","WEN-ess-day"],1],
+["The ending in table and marble sounds like…",["-ell","-ol (short and soft)","-eel"],1],
+["Which word rhymes with 'hate'?",["hat","fate","cut"],1],
+["lawyer is pronounced…",["LOY-er","LAW-yer","LAH-wi-er"],0]]);
+const DICT=["I'm too tired to cook, so I'll order something.","Even though they are busy, they eat together on Sundays.","She told me she had already sent the invitation.","I didn't feel like going out, so I stayed home.","Art can help people think differently."];
+$('#dictbox').innerHTML=DICT.map((d,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><input class="ans w" data-a="${d.replace(/"/g,'&quot;')}" autocomplete="off"></span></div>`).join('');
+mc('#lbox',[
+["Why didn't Leo send the report last night?",["He forgot the password.","He fell asleep.","The client called."],1],
+["What does \"I don't feel like working\" mean?",["He is not able to work.","He doesn't want to work right now.","He loves working."],1],
+["What is Maya going to do on Saturday?",["Cook dinner","Go to a pottery workshop","Visit her cousin"],1],
+["Why can't Leo join her?",["He's too busy.","He lives too far.","He doesn't like pottery."],0],
+["Which sentence is a decision made at the moment of speaking?",["I was going to send it last night.","I'm going to a pottery workshop.","I'll see you on Monday, then."],2]]);
+
+const RC=[["What trend does the text describe?","Fewer families eat together regularly. Many people now eat on the go instead."],["What reasons are given for this change?","Long working hours, long commutes and busy school schedules."],["According to researchers, what are the benefits of family meals for children?","Children tend to have better diets, stronger language skills and a greater sense of belonging."],["How does Ana's family compensate for not eating together during the week?","They sit down together on Sundays, when they really bond."]];
+$('#rcbox').innerHTML=RC.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea style="min-height:64px" data-k="rc${i}" aria-label="Answer ${i+1}"></textarea><div class="tools"><button class="btn sec" data-m="${i}">Model answer</button></div><div class="model" id="m${i}">${q[1]}</div></div>`).join('');
+$$('[data-m]').forEach(b=>b.onclick=()=>$('#m'+b.dataset.m).classList.toggle('show'));
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+$$('#reading mark').forEach(m=>m.addEventListener('click',()=>{$('#defbox').textContent=m.dataset.d}));
+
+const MATS=[["newspaper","old newspaper","📰"],["fabric","fabric","🧵"],["cardboard","pieces of cardboard","📦"],["leaves","leaves","🍂"],["tickets","tickets","🎟️"],["magazines","magazine pages","📖"],["photos","photographs","🖼️"],["drawings","drawings","✏️"]];
+$('#mats').innerHTML=MATS.map(m=>`<label class="mat"><span class="photo" id="p-${m[0]}"><span class="ico">${m[2]}</span></span><b><input type="checkbox" data-mat="${m[0]}"> ${m[1]}</b></label>`).join('');
+MATS.forEach(m=>{const im=new Image();im.onload=()=>{const el=$('#p-'+m[0]);el.innerHTML='';im.alt=m[1];im.loading='lazy';im.style.cssText='width:100%;aspect-ratio:4/3;object-fit:cover';el.appendChild(im)};im.src='img/photos/'+m[0]+'.jpg'});
+$$('[data-mat]').forEach(c=>{c.checked=store.get('mat-'+c.dataset.mat)==='1';c.addEventListener('change',()=>store.set('mat-'+c.dataset.mat,c.checked?'1':'0'))});
+
+// ---------- exercises engine ----------
+function getVal(el){ if(el.classList.contains('opts')){const b=el.querySelector('[aria-pressed=true]');return b?b.dataset.v:''} return el.value }
+function setVal(el,v){ if(el.classList.contains('opts')){ $$('button',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v)) } else el.value=v }
+function mark(el,s){ el.classList.remove('good','bad'); if(s) el.classList.add(s) }
+$$('.opts.ans').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('button',g).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');mark(g,null)}));
+$$('.ex[data-ex]').forEach(ex=>{
+  const id=ex.dataset.ex, items=$$('.ans',ex);
+  const bar=document.createElement('div'); bar.className='tools';
+  bar.innerHTML='<button class="btn">Check</button><button class="btn sec">Show answers</button><button class="btn sec">Reset</button><span class="score" aria-live="polite"></span>';
+  ex.appendChild(bar);
+  const [chk,show,reset]=$$('button',bar), score=$('.score',bar);
+  const ok=el=>{const raw=el.dataset.a, v=getVal(el); if(el.classList.contains('opts')||el.tagName==='SELECT') return norm(raw.split('|')[0])===norm(v); return raw.split('|').map(norm).includes(norm(v))};
+  try{(JSON.parse(store.get(id)||'[]')).forEach((v,i)=>items[i]&&setVal(items[i],v))}catch(e){}
+  const save=()=>store.set(id,JSON.stringify(items.map(getVal)));
+  ex.addEventListener('input',save);ex.addEventListener('change',save);ex.addEventListener('click',e=>{if(e.target.closest('.opts'))save()});
+  items.forEach(el=>el.addEventListener('input',()=>mark(el,null)));
+  chk.onclick=()=>{let n=0;items.forEach(el=>{const r=ok(el);if(r)n++;mark(el,getVal(el)===''?null:(r?'good':'bad'))});score.textContent=`${n} / ${items.length}`+(n===items.length?' 🎉':'')};
+  show.onclick=()=>{items.forEach(el=>{setVal(el,el.dataset.a.split('|')[0]);mark(el,'good')});score.textContent='';save()};
+  reset.onclick=()=>{items.forEach(el=>{setVal(el,'');mark(el,null)});score.textContent='';save()};
+});
+
+// ---------- timer, nav ----------
+const STAGES=[["s1","Warm-up",5],["s2","Vocabulary",10],["s3","Grammar",12],["s4","Pronunciation",8],["s5","Listening",7],["s6","Reading",10],["s7","Speaking",8]];
+$('#nav').innerHTML=[['plan','Plan']].concat(STAGES.map(s=>[s[0],s[1]])).concat([['wrap','Wrap-up']]).map(s=>`<a href="#${s[0]}" data-t="${s[0]}">${s[1]}</a>`).join('');
+let t0=null,paused=0,tick=null; const TOTAL=3600;
+const fmt=s=>{s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function stageAt(sec){let acc=0;for(const s of STAGES){acc+=s[2]*60;if(sec<acc)return s}return STAGES[STAGES.length-1]}
+function update(){const el=paused+(t0?Math.floor((Date.now()-t0)/1000):0);$('#clock').textContent=fmt(TOTAL-el);const s=stageAt(el);$('#now').textContent=el>=TOTAL?'Time is up. Wrap up!':'Now: '+s[1]+' ('+s[2]+' min plan)';$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===s[0]&&!!t0))}
+$('#go').onclick=()=>{if(t0){paused+=Math.floor((Date.now()-t0)/1000);t0=null;clearInterval(tick);$('#go').textContent='Resume'}else{t0=Date.now();tick=setInterval(update,500);$('#go').textContent='Pause'}update()};
+$('#rst').onclick=()=>{t0=null;paused=0;clearInterval(tick);$('#go').textContent='Start lesson';$('#clock').textContent='60:00';$('#now').textContent='Press start. The bar shows the current stage.';$$('#nav a').forEach(a=>a.classList.remove('on'))};
+
+// ---------- self rating, homework ----------
+const RATES=["I can use the new vocabulary in my own sentences","I can choose the right tense","I can pronounce the tricky words","I understood the listening","I can explain my ideas fluently"];
+$('#rates').innerHTML=RATES.map((r,i)=>`<div class="range"><span>${r}</span><input type="range" min="1" max="5" value="${store.get('rate'+i)||3}" data-r="${i}" aria-label="${r}"><b id="rv${i}">${store.get('rate'+i)||3}/5</b></div>`).join('');
+$$('[data-r]').forEach(r=>r.addEventListener('input',()=>{$('#rv'+r.dataset.r).textContent=r.value+'/5';store.set('rate'+r.dataset.r,r.value)}));
+const hw=$('#hw'),wc=$('#wc');hw.value=store.get('hw')||'';const count=()=>{wc.textContent=(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words'};count();
+hw.addEventListener('input',()=>{store.set('hw',hw.value);count()});
+$('#copy').onclick=async e=>{try{await navigator.clipboard.writeText(hw.value);e.target.textContent='Copied ✓'}catch(_){hw.select()}setTimeout(()=>e.target.textContent='Copy text',1500)};
+// one audio at a time
+document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')$$('audio').forEach(a=>a!==e.target&&a.pause())},true);
+// photo credits
+const CREDITS=[{"what": "Cover", "title": "File:Collage of printed elements centered on Women, Children, Family and Rural Life MET DP886499.jpg", "artist": "Illman Brothers", "license": "CC0"}, {"what": "Old newspaper", "title": "File:Newspaper-003.jpg", "artist": "Alexander Novikov", "license": "CC BY-SA 4.0"}, {"what": "Fabric", "title": "File:Bolts of fabric. (15012162252).jpg", "artist": "Bernard Spragg. NZ from Christchurch, New Zealand", "license": "CC0"}, {"what": "Cardboard", "title": "File:Corrugated Cardboard.JPG", "artist": "Richard Wheeler (Zephyris)", "license": "CC BY-SA 3.0"}, {"what": "Leaves", "title": "File:Autumn leaves on the ground in Quebec City.jpg", "artist": "Wilfredor", "license": "CC BY-SA 4.0"}, {"what": "Tickets", "title": "File:AA paper ticket.jpg", "artist": "AHeneen", "license": "CC BY-SA 4.0"}, {"what": "Magazine pages", "title": "File:Cycling magazines - bike magazines.jpg", "artist": "Alextredz", "license": "CC BY-SA 4.0"}, {"what": "Shared meal", "title": "File:Liat Portal for Foodie Disorder - Thanksgiving dinner spread.jpg", "artist": "HaJunkiyada", "license": "CC BY-SA 4.0"}];
+$('#credits').innerHTML='<p>'+CREDITS.map(x=>`${x.what}: “${x.title.replace(/^File:/,'').replace(/\.\w+$/,'')}” by ${x.artist||'unknown'} (${x.license})`).join(' · ')+'</p>';
+</script>
+
+</body>
+</html>
