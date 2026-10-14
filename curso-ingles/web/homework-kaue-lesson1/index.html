@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaue · Lesson 1 Homework</title>
+
+<style>
+/* Layout: a printed-workbook feel. White page, navy ink, yellow tabs; one sticky lesson bar; cards for activities. */
+:root{--navy:#001737;--yel:#FFCD04;--yelt:#FFF4BF;--blue:#7CC4FF;--bluet:#E6F3FF;--mint:#7EE0B8;--mintt:#E2F7EE;--lil:#EFEAFE;--grey:#5B6B82;--line:#D5DCE8;--panel:#F3F6FB;--red:#D64538;--redt:#FDE8E5;--green:#1B7F5C;--text:#0B1B33;--amber:#B45309;
+--head:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:Calibri,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{margin:0;background:#fff;color:var(--text);font:17px/1.55 var(--body)}
+h1,h2,h3{font-family:var(--head);color:var(--navy);line-height:1.15;margin:0}
+main{max-width:900px;margin:0 auto;padding-inline:18px;padding-bottom:80px}
+img{display:block}
+.brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:24px}
+.hero{display:flex;gap:18px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
+.tile{flex:none;background:var(--yel);color:var(--navy);border-radius:16px;padding:8px 18px;text-align:center;font:700 44px/1 var(--head)}
+.tile small{display:block;font:700 11px var(--body);letter-spacing:.2em}
+.hero h1{font-size:clamp(30px,6vw,46px)}
+.sub{color:var(--grey);margin:4px 0 0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#fffffff2;border-bottom:1px solid var(--line);margin-inline:-18px;padding:8px 18px}
+.prog{flex:1 1 160px;height:12px;background:var(--line);border-radius:999px;overflow:hidden;min-width:100px}
+.prog i{display:block;height:100%;width:0;background:var(--yel);transition:width .4s}
+.donebox{display:flex;gap:10px;align-items:center;background:var(--mintt);border:1px solid #BFE9D6;border-radius:12px;padding:10px 14px;margin-top:16px;font-weight:700}
+.donebox input{width:22px;height:22px;accent-color:var(--navy)}
+.steps{background:var(--bluet);border:1px solid #B7D9F5;border-radius:14px;padding:12px 16px;margin:10px 0}
+.steps ol{margin:6px 0 0;padding-left:22px}
+.steps li{margin:4px 0}
+.steps b.t{display:inline-block;background:var(--navy);color:var(--yel);border-radius:999px;padding:0 10px;font-size:13px;margin-right:6px}
+.bar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.clock{font:700 20px var(--head);background:var(--navy);color:var(--yel);border-radius:10px;padding:2px 12px;font-variant-numeric:tabular-nums}
+.now{font-size:14px;color:var(--grey);flex:1 1 200px;min-width:0}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-top:6px}
+nav a{font-size:13px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--panel);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+nav a.on{background:var(--yel);border-color:var(--yel)}
+section{padding-top:36px}
+.tab{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.tab b{background:var(--navy);color:var(--yel);border-radius:6px;min-width:28px;text-align:center;font-size:14px;padding:2px 6px}
+.tab span{background:var(--yel);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 14px}
+.tab em{font-style:normal;font-size:13px;color:var(--grey);margin-left:4px}
+h2{font-size:clamp(26px,5vw,34px);margin-bottom:10px}
+h3{font-size:21px;margin:24px 0 8px}
+p{margin:.4em 0}
+.hint{color:var(--grey);font-size:15px}
+.box{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0}
+.yelt{background:var(--yelt);border-color:#F2D869}.bluet{background:var(--bluet);border-color:#B7D9F5}.mintt{background:var(--mintt);border-color:#BFE9D6}.lilt{background:var(--lil);border-color:#D8CEF7}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.grid>*{min-width:0}
+@media(max-width:700px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.card{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.c1{background:var(--yelt)}.c2{background:var(--bluet)}.c3{background:var(--mintt)}.c4{background:var(--lil)}
+.audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:14px;padding:10px 14px;margin:10px 0}
+.audio .n{background:var(--yel);color:var(--navy);font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.audio .t{font-weight:700;font-size:15px;flex:1 1 160px;min-width:0}
+.audio audio{flex:1 1 260px;min-width:200px;height:38px}
+.photo{margin:0;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo.wide img{aspect-ratio:21/9}
+.photo figcaption{position:absolute;left:8px;bottom:8px;background:#fff;color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:left;padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:7px 8px;font-size:16px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;color:var(--navy);white-space:nowrap}
+.flash{perspective:900px;cursor:pointer;min-height:132px}
+.flash .in{position:relative;width:100%;height:100%;min-height:132px;transition:transform .5s;transform-style:preserve-3d}
+.flash.f .in{transform:rotateY(180deg)}
+.flash .a,.flash .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
+.flash .a{background:var(--bluet);align-items:center;text-align:center;font:700 22px var(--head);color:var(--navy)}
+.flash .a small{font:600 12px var(--body);color:var(--grey);display:block;margin-top:4px}
+.flash .b{background:var(--yelt);transform:rotateY(180deg);font-size:14px;line-height:1.35;overflow:auto}
+.flash .b i{color:var(--grey)}
+.flash .b u{text-decoration:none;color:var(--amber);font-weight:700}
+.ex{margin:20px 0 8px;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.exh{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:6px}
+.exh b{flex:none;background:var(--navy);color:var(--yel);border-radius:7px;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--head);font-size:18px}
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:7px 0;border-bottom:1px dashed var(--line)}
+.item:last-of-type{border-bottom:0}
+.item .no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bluet);text-align:center;line-height:28px;font-weight:700;font-size:14px}
+.item .q{flex:1 1 240px;min-width:0}
+input.ans,select.ans,textarea,input.free{font:inherit;border:2px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--text);min-width:0;max-width:100%}
+input.ans{width:min(100%,300px)}
+input.ans.w{width:min(100%,520px)}
+select.ans{padding:5px 6px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible,.flash:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;cursor:pointer;color:var(--text)}
+.opts button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.good{border-color:var(--mint)!important;background:var(--mintt)!important}
+.bad{border-color:#E5574B!important;background:var(--redt)!important}
+.opts.good,.opts.bad{background:none!important;border:0!important}
+.opts.good button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.opts.bad button[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.btn{font:700 15px var(--body);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy)}
+.btn.sec{background:var(--panel);border:1px solid var(--line)}
+.score{font-weight:700;color:var(--navy)}
+.wb{display:flex;flex-wrap:wrap;gap:8px;background:var(--yelt);border:1px solid #F2D869;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:6px}
+.model{display:none;background:var(--mintt);border:1px solid #BFE9D6;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:15px}
+.model.show{display:block}
+textarea{width:100%;min-height:150px;font-size:17px;line-height:1.7}
+.text{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:18px;line-height:1.75}
+.text mark{background:var(--yelt);border-bottom:2px solid var(--yel);border-radius:3px;padding:0 2px;cursor:help;color:inherit}
+.wrong{text-decoration:line-through;color:var(--grey)}
+.ok{color:var(--green);font-weight:700}
+.chip{display:inline-block;background:var(--bluet);border:1px solid #B7D9F5;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;margin:2px 4px 2px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin:10px 0;background:var(--panel)}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.say{cursor:pointer;border:0;background:none;font-size:15px;padding:0 4px;color:var(--grey)}
+.range{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.range span{flex:1 1 220px}
+.range input{accent-color:var(--navy);flex:1 1 140px}
+.pic{display:flex;flex-direction:column;gap:6px}
+.pic .photo img{aspect-ratio:4/3}
+.pic b{font-family:var(--head);font-size:19px;color:var(--navy)}
+.pic input{width:100%}
+.mat{display:flex;flex-direction:column;gap:6px}
+.mat .ico{aspect-ratio:4/3;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:30px;color:var(--grey)}
+.mat b{font-family:var(--head);font-size:19px;color:var(--navy)}
+footer{margin-top:44px;color:var(--grey);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+@media(prefers-reduced-motion:reduce){.flash .in{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<main>
+<div class="brand">The English Skyrocket · Homework · Lesson 1 · Levels A2 to B1</div>
+<div class="hero"><div class="tile">50<small>MINUTES</small></div><div><h1>Kaue's Homework: About Me</h1><p class="sub">Talk about yourself, hobbies, favorites and weekends · useful classroom phrases · new words</p></div></div>
+<div class="bar" role="region" aria-label="Your progress">
+  <div class="row"><span class="clock" id="pct">0%</span><div class="prog" aria-hidden="true"><i id="progfill"></i></div><span class="now" id="now">0 of 8 parts finished</span></div>
+  <nav id="nav" aria-label="Homework parts"></nav>
+</div>
+<section id="plan">
+  <div class="tab"><b>i</b><span>How to do this homework</span></div>
+  <h2>Start here</h2>
+  <ol class="steps" style="padding-left:40px">
+    <li>Use <b>headphones</b> and sit somewhere quiet. Do the parts <b>in order</b>.</li>
+    <li>Each part starts with a blue box. It tells you <b>exactly what to do</b>, step by step.</li>
+    <li>Try each exercise <b>first</b>. Then press <b>Check</b>. Fix the red answers and check again. Press <b>Show answers</b> only at the end.</li>
+    <li>Tap the <b>🔊</b> buttons and the <b>🎧 audio players</b> many times. Listening again helps a lot.</li>
+    <li>When a part is finished, tick <b>"I finished this part"</b>. Your answers are saved on this device.</li>
+    <li>At the end, press <b>Copy my report</b> and send it to your teacher.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Part</th><th>What you do</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td>1 Warm-up</td><td>Answer questions about you</td><td>5 min</td></tr>
+      <tr><td>2 Vocabulary</td><td>Pictures, flashcards, <i>mean</i> and <i>like</i>, days of the week</td><td>12 min</td></tr>
+      <tr><td>3 Grammar</td><td>Present and past, <i>like + -ing</i>, <i>should</i>, common mistakes</td><td>12 min</td></tr>
+      <tr><td>4 Phrases</td><td>Classroom English: ask for help</td><td>5 min</td></tr>
+      <tr><td>5 Sounds</td><td>Hard words and dictation</td><td>6 min</td></tr>
+      <tr><td>6 Listen &amp; read</td><td>Leo introduces himself</td><td>5 min</td></tr>
+      <tr><td>7 Speaking</td><td>Record a short voice message</td><td>5 min</td></tr>
+      <tr><td>8 Writing</td><td>Write about you and send your report</td><td>8 min</td></tr>
+    </tbody></table></div>
+  <p class="hint">Total: about 50 minutes. You can do it in two days.</p>
+</section>
+
+<section id="s1">
+  <div class="tab"><b>1</b><span>Warm-up</span><em>about 5 min</em></div>
+  <h2>Tell me about you</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Press play and listen to the eight questions.</li><li>Answer each question <b>out loud</b> with a full sentence: <i>My name is…</i>, <i>I live in…</i></li><li>Write your answers to questions 1 to 4 in the box below.</li></ol></div>
+  <div class="audio"><span class="n">🎧 1</span><span class="t">Eight questions about you</span><audio controls preload="none" src="audio/c1-warmup.mp3"></audio></div>
+  <div class="grid g2">
+    <div class="card c1"><b>1</b> What is your name?<br><b>2</b> Where do you live?<br><b>3</b> How old are you?<br><b>4</b> Where are you from?</div>
+    <div class="card c2"><b>5</b> Do you work or study?<br><b>6</b> What are your hobbies?<br><b>7</b> What is your favorite food?<br><b>8</b> Tell me about your family.</div>
+  </div>
+  <textarea data-k="warm" style="min-height:110px;margin-top:10px" aria-label="Warm-up answers" placeholder="1. My name is…&#10;2. I live in…"></textarea>
+  <label class="donebox"><input type="checkbox" data-done="s1"> I finished this part</label>
+</section>
+
+<section id="s2">
+  <div class="tab"><b>2</b><span>Vocabulary</span><em>about 12 min</em></div>
+  <h2>Words from Lesson 1</h2>
+  <div class="steps"><b class="t">What to do · about 12 min</b><ol><li>Do <b>exercise A</b>: look at the photos and type the English word.</li><li>Press play on audio 2 and <b>repeat</b> each word.</li><li>Flip the <b>flashcards</b>. Say a sentence before you flip.</li><li>Do <b>B</b> (match), <b>C</b> (the word <i>mean</i>) and <b>D</b> (the word <i>like</i>).</li><li>Listen to audio 3 and repeat the days of the week.</li></ol></div>
+  <div class="ex" data-ex="vP"><div class="exh"><b>A</b>What is it? Write the English word.</div><div class="grid g3" id="picbox"></div></div>
+  <div class="audio"><span class="n">🎧 2</span><span class="t">The words: listen and repeat</span><audio controls preload="none" src="audio/c2-words.mp3"></audio></div>
+  <h3>Flashcards <span class="hint">(tap to flip)</span></h3>
+  <div class="grid g4" id="cards"></div>
+  <div class="ex" data-ex="vA"><div class="exh"><b>B</b>Match each word with its meaning.</div><div id="matchbox"></div></div>
+  <div class="ex" data-ex="vB"><div class="exh"><b>C</b>The word <i>mean</i> has three meanings. Choose the correct one.</div><div id="meanbox"></div></div>
+  <div class="ex" data-ex="vC"><div class="exh"><b>D</b>The word <i>like</i>: is it a <strong>verb</strong> (gostar) or a <strong>preposition</strong> (como)?</div><div id="likebox"></div></div>
+  <h3>Days of the week</h3>
+  <div class="audio"><span class="n">🎧 3</span><span class="t">Days of the week</span><audio controls preload="none" src="audio/c5-days.mp3"></audio></div>
+  <div class="tbl"><table><thead><tr><th>Sunday</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th><th>Saturday</th></tr></thead></table></div>
+  <div class="box bluet"><b>Prepositions:</b> <b>on</b> Saturday · <b>on</b> Friday night · <b>in</b> the morning · <b>at</b> night · <b>at</b> the weekend</div>
+  <label class="donebox"><input type="checkbox" data-done="s2"> I finished this part</label>
+</section>
+
+<section id="s3">
+  <div class="tab"><b>3</b><span>Grammar</span><em>about 12 min</em></div>
+  <h2>Talking about me</h2>
+  <div class="steps"><b class="t">What to do · about 12 min</b><ol><li>Read the boxes slowly and say the examples <b>out loud</b>.</li><li>Do <b>exercise A</b> (choose). Check and fix.</li><li>Do <b>B</b> (write the correct verb form).</li><li>Do <b>C</b> (find the mistake). Then do <b>D</b> and compare with the model answers.</li></ol></div>
+  <div class="grid g3">
+    <div class="card c1"><b>Present simple</b><br><span class="hint">habits, facts, where you live</span><br>I <b>live</b> in a big city.<br>She <b>works</b> every day. <span class="hint">(he / she / it + s)</span><br>I <b>don't like</b> horror movies.</div>
+    <div class="card c2"><b>Past simple</b><br><span class="hint">finished actions: yesterday, last weekend</span><br>I <b>went</b> to a party on Saturday.<br>We <b>watched</b> a movie.<br>I <b>didn't go</b> to work.</div>
+    <div class="card c3"><b>like / love + -ing</b><br><span class="hint">after like, love, enjoy</span><br>I <b>like playing</b> video games.<br>She <b>loves drawing</b>.<br>✘ I very like pizza → ✔ I <b>like pizza very much</b> / I <b>really like</b> pizza.</div>
+  </div>
+  <div class="grid g3" style="margin-top:12px">
+    <div class="box bluet"><b>My age</b><br>✔ I <b>am</b> twenty-two years old.<br>✘ I have twenty-two years. <span class="hint">(In English we use <i>be</i>, not <i>have</i>.)</span></div>
+    <div class="box yelt"><b>Favorite + plural</b><br>My favorite <b>color is</b> green.<br>My favorite <b>colors are</b> green and brown.<br>My favorite <b>animals are</b> cats.</div>
+    <div class="box mintt"><b>should</b> = advice<br>You <b>should</b> study more.<br>She <b>shouldn't</b> be lazy.<br><span class="hint">should + base verb (no "to")</span></div>
+  </div>
+  <div class="box"><b>Between:</b> The mean <b>between</b> 15, 10 and 5 is 10. · <b>What if…?</b> = e se…? "What if I don't pass?" · <b>Give it a shot</b> = try it: "I'll give Interstellar a shot."</div>
+  <div class="ex" data-ex="gA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="mcbox"></div></div>
+  <div class="ex" data-ex="gB"><div class="exh"><b>B</b>Write the correct form of the verb.</div><div id="formbox"></div></div>
+  <div class="ex" data-ex="gC"><div class="exh"><b>C</b>Find the mistake and write the correct sentence.</div><div id="errbox"></div></div>
+  <div class="ex"><div class="exh"><b>D</b>Answer in full sentences about <b>you</b>. Then compare with the model.</div><div id="cqbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s3"> I finished this part</label>
+</section>
+
+<section id="s4">
+  <div class="tab"><b>4</b><span>Phrases</span><em>about 5 min</em></div>
+  <h2>Ask for help in English</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Listen to audio 4 and repeat each phrase.</li><li>Read the box. Imagine a situation for each phrase.</li><li>Do exercise <b>A</b>: put the words in order.</li></ol></div>
+  <div class="audio"><span class="n">🎧 4</span><span class="t">Useful phrases</span><audio controls preload="none" src="audio/c3-phrases.mp3"></audio></div>
+  <div class="grid g2">
+    <div class="card c1"><b>What does STRAWBERRY mean?</b><br>What is the meaning of STRAWBERRY?<br><span class="hint">Use it when you do not know a word.</span></div>
+    <div class="card c2"><b>Can / Could you repeat that, please?</b><br><span class="hint">Use it when you did not understand.</span></div>
+    <div class="card c3"><b>How can I say "papel higiênico" in English?</b><br><span class="hint">Use it when you know the word in Portuguese.</span></div>
+    <div class="card c4"><b>Could you speak more slowly, please?</b><br><span class="hint">Use it when the speaker is too fast.</span></div>
+  </div>
+  <div class="ex" data-ex="fA"><div class="exh"><b>A</b>Put the words in order.</div><div id="fbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s4"> I finished this part</label>
+</section>
+
+<section id="s5">
+  <div class="tab"><b>5</b><span>Sounds</span><em>about 6 min</em></div>
+  <h2>Say it right</h2>
+  <div class="steps"><b class="t">What to do · about 6 min</b><ol><li>Listen to audio 5 and repeat the hard words. Say each one three times.</li><li>Do <b>exercise A</b>.</li><li>Do the <b>dictation</b>: play audio 6, write what you hear (up to three listens), then press Check.</li></ol></div>
+  <div class="audio"><span class="n">🎧 5</span><span class="t">Hard words</span><audio controls preload="none" src="audio/c4-sounds.mp3"></audio></div>
+  <div class="grid g4">
+    <div class="card c1"><b>strawberry</b><br>STRAW-ber-ee</div><div class="card c2"><b>Wednesday</b><br>WENZ-day</div><div class="card c3"><b>colleague</b><br>KOL-eeg</div><div class="card c4"><b>scholarship</b><br>SKOL-er-ship</div>
+    <div class="card c1"><b>favorite</b><br>FAY-ver-it</div><div class="card c2"><b>interstellar</b><br>in-ter-STEL-er</div><div class="card c3"><b>personality</b><br>per-so-NAL-i-tee</div><div class="card c4"><b>thriller</b><br>THRIL-er</div>
+  </div>
+  <div class="ex" data-ex="pA"><div class="exh"><b>A</b>Choose the best answer.</div><div id="pbox"></div></div>
+  <div class="ex" data-ex="pB"><div class="exh"><b>B</b>Dictation: listen and write what you hear.</div>
+    <div class="audio"><span class="n">🎧 6</span><span class="t">Five sentences, each read twice</span><audio controls preload="none" src="audio/c7-dictation.mp3"></audio></div><div id="dictbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s5"> I finished this part</label>
+</section>
+
+<section id="s6">
+  <div class="tab"><b>6</b><span>Listen &amp; read</span><em>about 5 min</em></div>
+  <h2>Hi, I'm Leo</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Read the text once. Tap the highlighted words to see their meaning.</li><li>Listen to audio 7 while you read.</li><li>Answer the five questions and press <b>Check</b>.</li></ol></div>
+  <div class="audio"><span class="n">🎧 7</span><span class="t">Leo introduces himself (about 45 seconds)</span><audio controls preload="none" src="audio/c6-text.mp3"></audio></div>
+  <div class="text" id="reading">
+    Hi! My name is Leo. I'm twenty-three years old. I live in a small city near São Paulo, but I was born in another city. I work and I study <mark data-d="at the same time: together, in the same period">at the same time</mark>, <mark data-d="like (preposition): similar to; as">like</mark> many young Brazilians. My <mark data-d="hobbies: things you do for fun in your free time">hobbies</mark> are playing video games and going to the gym. I also like drawing. My favorite food is hamburgers, and my favorite animals are cats. I have two cats. <mark data-d="last weekend: the weekend that just finished">Last weekend</mark>, I went to a birthday party on Saturday, and on Sunday I watched a sci-fi movie. I like sci-fi movies because the <mark data-d="plot: the story of a film or book">plot</mark> is always surprising.
+  </div>
+  <p class="hint" id="defbox">Highlighted words: tap one to see its meaning here.</p>
+  <div class="ex" data-ex="lA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="lbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s6"> I finished this part</label>
+</section>
+
+<section id="s7">
+  <div class="tab"><b>7</b><span>Speaking</span><em>about 5 min</em></div>
+  <h2>Record yourself</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Listen to the model (audio 8) once.</li><li>Make notes: name, age, city, work or study, hobbies, favorite food, a movie you like, last weekend.</li><li>Open the voice recorder on your <b>phone</b> and record about <b>1 minute</b>.</li><li>Listen to your recording. Tick the boxes. Send it to your <b>teacher</b>.</li></ol></div>
+  <div class="audio"><span class="n">🎧 8</span><span class="t">A model: Alex introduces himself</span><audio controls preload="none" src="audio/c8-model.mp3"></audio></div>
+  <div class="box bluet"><b>Frame:</b> My name is… I'm… years old. I live in… I work / I study… My hobbies are… My favorite food is… I like… movies because… Last weekend, I went to…</div>
+  <div class="box"><b>Self-check</b><br><label><input type="checkbox" data-chk="c1"> I said my name, age and city</label><br><label><input type="checkbox" data-chk="c2"> I talked about my hobbies</label><br><label><input type="checkbox" data-chk="c3"> I used one past sentence (<i>I went…</i>)</label><br><label><input type="checkbox" data-chk="c4"> I spoke slowly and clearly</label></div>
+  <label class="donebox"><input type="checkbox" data-done="s7"> I finished this part</label>
+</section>
+
+<section id="wrap">
+  <div class="tab"><b>8</b><span>Writing and report</span><em>about 8 min</em></div>
+  <h2>Last step</h2>
+  <div class="steps"><b class="t">What to do · about 8 min</b><ol><li>Rate yourself honestly with the sliders.</li><li>Write <b>60 to 80 words</b> about you: name, city, hobbies, favorite food and animal, and what you did last weekend.</li><li>Type your name, press <b>Copy my report</b> and send it to your teacher.</li></ol></div>
+  <div id="rates"></div>
+  <h3>About me</h3>
+  <textarea id="hw" aria-label="Writing draft" placeholder="My name is…"></textarea>
+  <div class="tools"><span class="score" id="wc">0 words</span><button class="btn sec" id="copy">Copy text</button></div>
+  <h3>Your report</h3>
+  <p><label>Your name: <input class="free" id="nm" autocomplete="name" style="width:min(100%,260px)"></label></p>
+  <div class="tools"><button class="btn" id="rep">Copy my report</button><span class="score" id="repmsg" aria-live="polite"></span></div>
+  <textarea id="repbox" readonly aria-label="Report" style="min-height:120px;display:none"></textarea>
+  <footer>Audio: synthetic voices (Kokoro). Photos: Wikimedia Commons, see credits below. Your answers are saved only in this browser.<div id="credits"></div></footer>
+</section>
+</main>
+<script>
+
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try{ return localStorage.getItem('kq:'+k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem('kq:'+k, v) }catch(e){} } };
+const norm = s => (s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+const synth = window.speechSynthesis;
+function say(t, rate=.85){ if(!synth) return; synth.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=rate; synth.speak(u); }
+document.addEventListener('click', e => { const b=e.target.closest('[data-say]'); if(b) say(b.dataset.say); });
+const PICS=[["hamburger","hamburger","hamburger|burger"],["cat","cat","cat|kitten"],["dog","dog|puppy","dog|puppy"],["gym","gym","gym|weights|dumbbells"],["controller","video game","video game|videogame|game controller|controller|game|games"],["party","party","party|birthday party|birthday|cake"]];
+$('#picbox').innerHTML=PICS.map((p,i)=>`<div class="pic"><figure class="photo"><img src="img/photos/${p[0]}.jpg" alt="Picture ${i+1}" loading="lazy" onerror="this.parentNode.innerHTML='<div style=&quot;aspect-ratio:4/3;display:grid;place-items:center;color:#5B6B82&quot;>no photo</div>'"></figure><b>${i+1}</b><input class="ans" data-a="${p[2]}" autocomplete="off" placeholder="English word"></div>`).join('');
+const CARDS=[
+["mean","verb / adj. / noun","1) to have a meaning · 2) unkind · 3) the average","What does 'strawberry' mean? He is a mean person.","significar · malvado · média"],
+["like","verb / prep.","verb: to enjoy · preposition: similar to","I like to work here. I love my job like it is.","gostar · como"],
+["person","noun","a human being","She is a nice person.","pessoa"],
+["personality","noun","the way a person thinks, feels and behaves","He has a funny personality.","personalidade"],
+["between","prep.","in the middle of two things","The mean between 15, 10 and 5 is 10.","entre"],
+["colleague","noun","a person you work with","My colleague helped me.","colega de trabalho"],
+["scholarship","noun","money to help a student pay for studies","She got a scholarship.","bolsa de estudos"],
+["should","modal","used to give advice","You should study more.","deveria"],
+["lazy","adj.","not wanting to work or make an effort","I feel lazy on Sundays.","preguiçoso"],
+["horror / action / thriller","noun","types of movies","I like thrillers.","terror · ação · suspense"],
+["give it a shot","phrase","to try something","I'll give this movie a shot.","tentar, dar uma chance"],
+["what if","phrase","used to imagine a situation","What if it rains?","e se"],
+["slang","noun","very informal words","'Cool' is slang.","gíria"],
+["hobby","noun","something you do for fun","My hobby is drawing.","passatempo"]];
+$('#cards').innerHTML=CARDS.map(c=>`<div class="flash" tabindex="0" role="button" aria-label="Flashcard: ${c[0]}. Press Enter to flip"><div class="in"><div class="a"><span>${c[0]}<small>${c[1]}</small></span></div><div class="b"><u>${c[2]}</u><i>“${c[3]}”</i><span class="hint">PT: ${c[4]}</span></div></div></div>`).join('');
+$$('.flash').forEach(f=>{const t=()=>f.classList.toggle('f');f.addEventListener('click',t);f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
+const MATCH=[["mean (adjective)","unkind to other people"],["lazy","not wanting to work or make an effort"],["colleague","a person you work with"],["scholarship","money that helps a student to pay for studies"],["between","in the middle of two things"],["personality","the way a person thinks, feels and behaves"],["thriller","an exciting film or book about danger or crime"],["give it a shot","to try something"]];
+const defs=MATCH.map(m=>m[1]).sort((a,b)=>a.localeCompare(b));
+$('#matchbox').innerHTML=MATCH.map((m,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><b>${m[0]}</b></span><select class="ans" data-a="${m[1]}"><option value="">choose…</option>${defs.map(d=>`<option>${d}</option>`).join('')}</select></div>`).join('');
+function mc(id,list){ $(id).innerHTML=list.map((q,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${q[0]}</span><div class="opts ans" data-a="${'abc'[q[2]]}">${q[1].map((o,j)=>`<button data-v="${'abc'[j]}">${'abc'[j]}  ${o}</button>`).join('')}</div></div>`).join('') }
+mc('#meanbox',[["What does 'strawberry' mean?",["it has the meaning","unkind","the average"],0],["The mean of 15, 10 and 5 is 10.",["it has the meaning","unkind","the average"],2],["Our neighbour is a mean person. He never says hello.",["it has the meaning","unkind","the average"],1],["What does 'lazy' mean?",["it has the meaning","unkind","the average"],0],["Don't be mean to your little brother!",["it has the meaning","unkind","the average"],1]]);
+mc('#likebox',[["I like pizza.",["verb","preposition"],0],["She sings like a bird.",["verb","preposition"],1],["He likes his job.",["verb","preposition"],0],["It looks like rain.",["verb","preposition"],1],["They like playing games.",["verb","preposition"],0]]);
+mc('#mcbox',[
+["She _ in a small city.",["live","lives","living"],1],
+["I _ to a birthday party last Saturday.",["go","went","goed"],1],
+["My favorite animals _ cats.",["is","are","be"],1],
+["I like _ video games.",["play","playing","to played"],1],
+["I _ twenty-two years old.",["have","am","has"],1],
+["I _ this movie very much.",["very like","like","am like"],1],
+["We watch movies _ Friday night.",["at","on","in"],1],
+["What _ you do at the weekend?",["do","does","did"],0],
+["He _ a cat and a dog.",["have","has","haves"],1],
+["You _ study more. It's good advice.",["should","shoulds","should to"],0]]);
+const fillers=(id,list,w)=>{$(id).innerHTML=list.map((g,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${g[0].replace('_',`<input class="ans" style="width:${w||150}px" data-a="${g[1]}" autocomplete="off">`)}</span></div>`).join('')};
+fillers('#formbox',[["Yesterday I _ a movie. (watch)","watched"],["She _ every day. (work)","works"],["Last weekend we _ to the beach. (go)","went"],["My sister _ a cat. (have)","has"],["I _ horror movies. (not like)","don't like|do not like"],["He _ video games last Saturday. (play)","played"]],150);
+const ERR=[["I very like pizza.","I like pizza very much.|I really like pizza.|I like pizza a lot."],["I have twenty-two years.","I am twenty-two years old.|I'm twenty-two years old.|I am 22 years old.|I'm 22 years old."],["My favorite colors is green.","My favorite colors are green.|My favorite color is green."],["I love to eat it at Friday night.","I love to eat it on Friday night."],["She work in a bank.","She works in a bank."],["On Saturday I go to a party.","On Saturday I went to a party."]];
+$('#errbox').innerHTML=ERR.map((e,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><span class="wrong">${e[0]}</span><br><input class="ans w" data-a="${e[1]}" autocomplete="off" placeholder="Write the correct sentence"></span></div>`).join('');
+const CQ=[["What is your name? Where do you live? How old are you?","My name is Sam. I live in Campinas. I'm twenty-five years old."],["Do you work or study?","I work and I study at the same time."],["What are your hobbies?","My hobbies are playing video games and going to the gym."],["What is your favorite food, and what is your favorite animal? Why?","My favorite food is pizza. My favorite animals are dogs because they are friendly."],["What did you do last weekend?","On Saturday I went to a birthday party. On Sunday I watched a movie."]];
+$('#cqbox').innerHTML=CQ.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea style="min-height:64px" data-k="cq${i}" aria-label="Answer ${i+1}"></textarea><div class="tools"><button class="btn sec" data-m="q${i}">Model answer</button></div><div class="model" id="mq${i}">${q[1]}</div></div>`).join('');
+$$('[data-m]').forEach(b=>b.onclick=()=>$('#m'+b.dataset.m).classList.toggle('show'));
+const FR=[["does / mean / What / strawberry / ?","What does strawberry mean?"],["you / Could / repeat / that / , please / ?","Could you repeat that, please?|Could you repeat that please?"],["I / How / say / can / bolsa / in English / ?","How can I say bolsa in English?"],["the / meaning / What / is / of / lazy / ?","What is the meaning of lazy?"]];
+$('#fbox').innerHTML=FR.map((q,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><b>${q[0]}</b><br><input class="ans w" data-a="${q[1]}" autocomplete="off"></span></div>`).join('');
+mc('#pbox',[["How do we say 'Wednesday'?",["WED-nes-day","WENZ-day","WEN-es-day"],1],["How do we say 'colleague'?",["KOL-eeg","ko-LEEG","KOL-eg-ew"],0],["How do we say 'strawberry'?",["STRAW-ber-ee","straw-BER-ry","STRAW-berry-ee"],0],["Where is the stress in 'interstellar'?",["IN-ter-stel-er","in-ter-STEL-er","in-TER-stel-er"],1]]);
+const DICT=["My name is Leo and I'm twenty-three years old.","I live in a small city and I work and study.","My favorite animals are cats because they are cute.","Last Saturday I went to a birthday party.","Can you repeat that, please?"];
+$('#dictbox').innerHTML=DICT.map((d,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><input class="ans w" data-a="${d}" autocomplete="off"></span></div>`).join('');
+mc('#lbox',[["How old is Leo?",["22","23","32"],1],["What does Leo do?",["He only studies.","He works and studies.","He only works."],1],["What are Leo's hobbies?",["Video games and the gym","Reading and swimming","Cooking and dancing"],0],["How many cats does Leo have?",["One","Two","None"],1],["What did Leo do on Saturday?",["He went to a birthday party.","He went to the beach.","He stayed at home."],0]]);
+$$('#reading mark').forEach(m=>m.addEventListener('click',()=>{$('#defbox').textContent=m.dataset.d}));
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+$$('[data-chk]').forEach(c=>{c.checked=store.get('chk-'+c.dataset.chk)==='1';c.addEventListener('change',()=>store.set('chk-'+c.dataset.chk,c.checked?'1':'0'))});
+// ---------- exercises engine ----------
+function getVal(el){ if(el.classList.contains('opts')){const b=el.querySelector('[aria-pressed=true]');return b?b.dataset.v:''} return el.value }
+function setVal(el,v){ if(el.classList.contains('opts')){ $$('button',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v)) } else el.value=v }
+function mark(el,s){ el.classList.remove('good','bad'); if(s) el.classList.add(s) }
+$$('.opts.ans').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('button',g).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');mark(g,null)}));
+$$('.ex[data-ex]').forEach(ex=>{
+  const id=ex.dataset.ex, items=$$('.ans',ex);
+  const bar=document.createElement('div'); bar.className='tools';
+  bar.innerHTML='<button class="btn">Check</button><button class="btn sec">Show answers</button><button class="btn sec">Reset</button><span class="score" aria-live="polite"></span>';
+  ex.appendChild(bar);
+  const [chk,show,reset]=$$('button',bar), score=$('.score',bar);
+  const ok=el=>{const raw=el.dataset.a, v=getVal(el); if(el.classList.contains('opts')||el.tagName==='SELECT') return norm(raw.split('|')[0])===norm(v); return raw.split('|').map(norm).includes(norm(v))};
+  try{(JSON.parse(store.get(id)||'[]')).forEach((v,i)=>items[i]&&setVal(items[i],v))}catch(e){}
+  const save=()=>store.set(id,JSON.stringify(items.map(getVal)));
+  ex.addEventListener('input',save);ex.addEventListener('change',save);ex.addEventListener('click',e=>{if(e.target.closest('.opts'))save()});
+  items.forEach(el=>el.addEventListener('input',()=>mark(el,null)));
+  chk.onclick=()=>{let n=0;items.forEach(el=>{const r=ok(el);if(r)n++;mark(el,getVal(el)===''?null:(r?'good':'bad'))});score.textContent=`${n} / ${items.length}`+(n===items.length?' 🎉':'');store.set('score-'+id,n+' / '+items.length)};
+  show.onclick=()=>{items.forEach(el=>{setVal(el,el.dataset.a.split('|')[0]);mark(el,'good')});score.textContent='';save()};
+  reset.onclick=()=>{items.forEach(el=>{setVal(el,'');mark(el,null)});score.textContent='';save()};
+});
+
+
+// ---------- progress, nav ----------
+const PARTS=[["s1","Warm-up"],["s2","Vocabulary"],["s3","Grammar"],["s4","Phrases"],["s5","Sounds"],["s6","Listen & read"],["s7","Speaking"],["wrap","Writing"]];
+$('#nav').innerHTML=[['plan','Start']].concat(PARTS).map(p=>`<a href="#${p[0]}" data-t="${p[0]}">${p[1]}</a>`).join('');
+const dones=$$('[data-done]');
+dones.forEach(d=>{d.checked=store.get('done-'+d.dataset.done)==='1';d.addEventListener('change',()=>{store.set('done-'+d.dataset.done,d.checked?'1':'0');prog()})});
+function prog(){const n=dones.filter(d=>d.checked).length+(($('#hw').value.trim().split(/\s+/).filter(Boolean).length>=100)?1:0);const tot=dones.length+1;$('#pct').textContent=Math.round(n/tot*100)+'%';$('#progfill').style.width=(n/tot*100)+'%';$('#now').textContent=n+' of '+tot+' parts finished'}
+const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===e.target.id))})},{rootMargin:'-30% 0px -60% 0px'}):null;
+if(io)['plan'].concat(PARTS.map(p=>p[0])).forEach(id=>{const el=document.getElementById(id);el&&io.observe(el)});
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+
+// ---------- self rating, homework ----------
+const RATES=["I can use the new vocabulary in my own sentences","I can talk about myself and my life","I can pronounce the tricky words","I understood the listening","I can ask for help in English"];
+$('#rates').innerHTML=RATES.map((r,i)=>`<div class="range"><span>${r}</span><input type="range" min="1" max="5" value="${store.get('rate'+i)||3}" data-r="${i}" aria-label="${r}"><b id="rv${i}">${store.get('rate'+i)||3}/5</b></div>`).join('');
+$$('[data-r]').forEach(r=>r.addEventListener('input',()=>{$('#rv'+r.dataset.r).textContent=r.value+'/5';store.set('rate'+r.dataset.r,r.value)}));
+const hw=$('#hw'),wc=$('#wc');hw.value=store.get('hw')||'';const count=()=>{wc.textContent=(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words'};count();
+hw.addEventListener('input',()=>{store.set('hw',hw.value);count();prog()});prog();
+$('#copy').onclick=async e=>{try{await navigator.clipboard.writeText(hw.value);e.target.textContent='Copied ✓'}catch(_){hw.select()}setTimeout(()=>e.target.textContent='Copy text',1500)};
+// one audio at a time
+document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')$$('audio').forEach(a=>a!==e.target&&a.pause())},true);
+
+// ---------- report ----------
+const NAMES={vP:'Pictures',vA:'Match words',vB:'Mean',vC:'Like',gA:'Grammar quiz',gB:'Verb forms',gC:'Error hunt',fA:'Useful phrases',pA:'Pronunciation quiz',pB:'Dictation',lA:'Listening'};
+const nm=$('#nm');nm.value=store.get('nm')||'';nm.addEventListener('input',()=>store.set('nm',nm.value));
+$('#rep').onclick=async()=>{
+  const L=['HOMEWORK Lesson 1 (About me)','Name: '+(nm.value||'(no name)'),'Parts finished: '+dones.filter(d=>d.checked).length+' of '+dones.length,'','SCORES (last check)'];
+  Object.keys(NAMES).forEach(k=>L.push('- '+NAMES[k]+': '+(store.get('score-'+k)||'not checked')));
+  L.push('','SELF-RATING');$$('[data-r]').forEach(r=>L.push('- '+r.getAttribute('aria-label')+': '+r.value+'/5'));
+  const w=store.get('warm');if(w)L.push('','WARM-UP ANSWER',w);
+  const ans=[['cq','Conversation answers']];
+  ans.forEach(([p,t])=>{const xs=[0,1,2,3,4,5,6].map(i=>store.get(p+i)).filter(Boolean);if(xs.length)L.push('',t.toUpperCase(),...xs.map((x,i)=>(i+1)+'. '+x))});
+  L.push('','SUMMARY ('+(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words)',hw.value||'(empty)');
+  const txt=L.join('\n'),box=$('#repbox');box.value=txt;box.style.display='block';
+  try{await navigator.clipboard.writeText(txt);$('#repmsg').textContent='Copied ✓ Now paste it in your message to your teacher.'}catch(_){box.select();$('#repmsg').textContent='Select the text below and copy it.'}
+};
+const CREDITS=[{"key": "hamburger", "what": "Hamburger", "title": "File:Hamburger - 1.jpg", "page": "https://commons.wikimedia.org/wiki/File:Hamburger_-_1.jpg", "license": "CC BY 2.0", "artist": "Helen Penjam"}, {"key": "cat", "what": "Cat", "title": "File:Clovelly (Devon, UK) -- 2013 -- 1332.jpg", "page": "https://commons.wikimedia.org/wiki/File:Clovelly_(Devon,_UK)_--_2013_--_1332.jpg", "license": "CC BY-SA 4.0", "artist": "Dietmar Rabich"}, {"key": "dog", "what": "Dog", "title": "File:Dog portrait Budapest.jpg", "page": "https://commons.wikimedia.org/wiki/File:Dog_portrait_Budapest.jpg", "license": "CC BY 4.0", "artist": "CONTRERAS Roberto"}, {"key": "gym", "what": "Gym", "title": "File:Weight training gear (23673556034).jpg", "page": "https://commons.wikimedia.org/wiki/File:Weight_training_gear_(23673556034).jpg", "license": "CC0", "artist": "StockyPics"}, {"key": "controller", "what": "Video games", "title": "File:Nintendo-Switch-Pro-Controller-FL.jpg", "page": "https://commons.wikimedia.org/wiki/File:Nintendo-Switch-Pro-Controller-FL.jpg", "license": "Public domain", "artist": "Evan-Amos"}, {"key": "party", "what": "Party", "title": "File:Birthday cake with 6 candles.JPG", "page": "https://commons.wikimedia.org/wiki/File:Birthday_cake_with_6_candles.JPG", "license": "CC BY-SA 4.0", "artist": "Editor:Rlevente Original author:Ardfern"}];
+$('#credits').innerHTML='<p>'+CREDITS.map(x=>`${x.what}: “${x.title.replace(/^File:/,'').replace(/\.\w+$/,'')}” by ${x.artist||'unknown'} (${x.license})`).join(' · ')+'</p>';
+</script>
+
+</body>
+</html>
