@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Karina · Lesson 6 Homework</title>
+
+<style>
+/* Layout: a printed-workbook feel. White page, navy ink, yellow tabs; one sticky lesson bar; cards for activities. */
+:root{--navy:#001737;--yel:#FFCD04;--yelt:#FFF4BF;--blue:#7CC4FF;--bluet:#E6F3FF;--mint:#7EE0B8;--mintt:#E2F7EE;--lil:#EFEAFE;--grey:#5B6B82;--line:#D5DCE8;--panel:#F3F6FB;--red:#D64538;--redt:#FDE8E5;--green:#1B7F5C;--text:#0B1B33;--amber:#B45309;
+--head:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:Calibri,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{margin:0;background:#fff;color:var(--text);font:17px/1.55 var(--body)}
+h1,h2,h3{font-family:var(--head);color:var(--navy);line-height:1.15;margin:0}
+main{max-width:900px;margin:0 auto;padding-inline:18px;padding-bottom:80px}
+img{display:block}
+.brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:24px}
+.hero{display:flex;gap:18px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
+.tile{flex:none;background:var(--yel);color:var(--navy);border-radius:16px;padding:8px 18px;text-align:center;font:700 44px/1 var(--head)}
+.tile small{display:block;font:700 11px var(--body);letter-spacing:.2em}
+.hero h1{font-size:clamp(30px,6vw,46px)}
+.sub{color:var(--grey);margin:4px 0 0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#fffffff2;border-bottom:1px solid var(--line);margin-inline:-18px;padding:8px 18px}
+.prog{flex:1 1 160px;height:12px;background:var(--line);border-radius:999px;overflow:hidden;min-width:100px}
+.prog i{display:block;height:100%;width:0;background:var(--yel);transition:width .4s}
+.donebox{display:flex;gap:10px;align-items:center;background:var(--mintt);border:1px solid #BFE9D6;border-radius:12px;padding:10px 14px;margin-top:16px;font-weight:700}
+.donebox input{width:22px;height:22px;accent-color:var(--navy)}
+.steps{background:var(--bluet);border:1px solid #B7D9F5;border-radius:14px;padding:12px 16px;margin:10px 0}
+.steps ol{margin:6px 0 0;padding-left:22px}
+.steps li{margin:4px 0}
+.steps b.t{display:inline-block;background:var(--navy);color:var(--yel);border-radius:999px;padding:0 10px;font-size:13px;margin-right:6px}
+.bar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.clock{font:700 20px var(--head);background:var(--navy);color:var(--yel);border-radius:10px;padding:2px 12px;font-variant-numeric:tabular-nums}
+.now{font-size:14px;color:var(--grey);flex:1 1 200px;min-width:0}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-top:6px}
+nav a{font-size:13px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--panel);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+nav a.on{background:var(--yel);border-color:var(--yel)}
+section{padding-top:36px}
+.tab{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.tab b{background:var(--navy);color:var(--yel);border-radius:6px;min-width:28px;text-align:center;font-size:14px;padding:2px 6px}
+.tab span{background:var(--yel);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 14px}
+.tab em{font-style:normal;font-size:13px;color:var(--grey);margin-left:4px}
+h2{font-size:clamp(26px,5vw,34px);margin-bottom:10px}
+h3{font-size:21px;margin:24px 0 8px}
+p{margin:.4em 0}
+.hint{color:var(--grey);font-size:15px}
+.box{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0}
+.yelt{background:var(--yelt);border-color:#F2D869}.bluet{background:var(--bluet);border-color:#B7D9F5}.mintt{background:var(--mintt);border-color:#BFE9D6}.lilt{background:var(--lil);border-color:#D8CEF7}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.grid>*{min-width:0}
+@media(max-width:700px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.card{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.c1{background:var(--yelt)}.c2{background:var(--bluet)}.c3{background:var(--mintt)}.c4{background:var(--lil)}
+.audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:14px;padding:10px 14px;margin:10px 0}
+.audio .n{background:var(--yel);color:var(--navy);font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.audio .t{font-weight:700;font-size:15px;flex:1 1 160px;min-width:0}
+.audio audio{flex:1 1 260px;min-width:200px;height:38px}
+.photo{margin:0;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo.wide img{aspect-ratio:21/9}
+.photo figcaption{position:absolute;left:8px;bottom:8px;background:#fff;color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:left;padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:7px 8px;font-size:16px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;color:var(--navy);white-space:nowrap}
+.flash{perspective:900px;cursor:pointer;min-height:132px}
+.flash .in{position:relative;width:100%;height:100%;min-height:132px;transition:transform .5s;transform-style:preserve-3d}
+.flash.f .in{transform:rotateY(180deg)}
+.flash .a,.flash .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
+.flash .a{background:var(--bluet);align-items:center;text-align:center;font:700 22px var(--head);color:var(--navy)}
+.flash .a small{font:600 12px var(--body);color:var(--grey);display:block;margin-top:4px}
+.flash .b{background:var(--yelt);transform:rotateY(180deg);font-size:14px;line-height:1.35;overflow:auto}
+.flash .b i{color:var(--grey)}
+.flash .b u{text-decoration:none;color:var(--amber);font-weight:700}
+.ex{margin:20px 0 8px;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.exh{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:6px}
+.exh b{flex:none;background:var(--navy);color:var(--yel);border-radius:7px;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--head);font-size:18px}
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:7px 0;border-bottom:1px dashed var(--line)}
+.item:last-of-type{border-bottom:0}
+.item .no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bluet);text-align:center;line-height:28px;font-weight:700;font-size:14px}
+.item .q{flex:1 1 240px;min-width:0}
+input.ans,select.ans,textarea,input.free{font:inherit;border:2px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--text);min-width:0;max-width:100%}
+input.ans{width:min(100%,300px)}
+input.ans.w{width:min(100%,520px)}
+select.ans{padding:5px 6px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible,.flash:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;cursor:pointer;color:var(--text)}
+.opts button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.good{border-color:var(--mint)!important;background:var(--mintt)!important}
+.bad{border-color:#E5574B!important;background:var(--redt)!important}
+.opts.good,.opts.bad{background:none!important;border:0!important}
+.opts.good button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.opts.bad button[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.btn{font:700 15px var(--body);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy)}
+.btn.sec{background:var(--panel);border:1px solid var(--line)}
+.score{font-weight:700;color:var(--navy)}
+.wb{display:flex;flex-wrap:wrap;gap:8px;background:var(--yelt);border:1px solid #F2D869;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:6px}
+.model{display:none;background:var(--mintt);border:1px solid #BFE9D6;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:15px}
+.model.show{display:block}
+textarea{width:100%;min-height:150px;font-size:17px;line-height:1.7}
+.text{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:18px;line-height:1.75}
+.text mark{background:var(--yelt);border-bottom:2px solid var(--yel);border-radius:3px;padding:0 2px;cursor:help;color:inherit}
+.wrong{text-decoration:line-through;color:var(--grey)}
+.ok{color:var(--green);font-weight:700}
+.chip{display:inline-block;background:var(--bluet);border:1px solid #B7D9F5;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;margin:2px 4px 2px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin:10px 0;background:var(--panel)}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.say{cursor:pointer;border:0;background:none;font-size:15px;padding:0 4px;color:var(--grey)}
+.range{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.range span{flex:1 1 220px}
+.range input{accent-color:var(--navy);flex:1 1 140px}
+.pic{display:flex;flex-direction:column;gap:6px}
+.pic .photo img{aspect-ratio:4/3}
+.pic b{font-family:var(--head);font-size:19px;color:var(--navy)}
+.pic input{width:100%}
+.mat{display:flex;flex-direction:column;gap:6px}
+.mat .ico{aspect-ratio:4/3;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:30px;color:var(--grey)}
+.mat b{font-family:var(--head);font-size:19px;color:var(--navy)}
+footer{margin-top:44px;color:var(--grey);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+@media(prefers-reduced-motion:reduce){.flash .in{transition:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<main>
+<div class="brand">The English Skyrocket · Homework · Lesson 6 · Level B2</div>
+<div class="hero"><div class="tile">60<small>MINUTES</small></div><div><h1>Karina's Homework: Lesson 6</h1><p class="sub">Used to, be used to, get used to · to vs for · new words · pronunciation</p></div></div>
+
+<div class="bar" role="region" aria-label="Your progress">
+  <div class="row"><span class="clock" id="pct">0%</span><div class="prog" aria-hidden="true"><i id="progfill"></i></div><span class="now" id="now">0 of 8 parts finished</span></div>
+  <nav id="nav" aria-label="Homework parts"></nav>
+</div>
+
+<section id="plan">
+  <div class="tab"><b>i</b><span>How to do this homework</span></div>
+  <h2>Start here</h2>
+  <ol class="steps" style="padding-left:40px">
+    <li>Use <b>headphones</b> and sit somewhere quiet. Work through the parts <b>in order</b>.</li>
+    <li>Each part starts with a blue box that tells you <b>exactly what to do</b>, step by step.</li>
+    <li>Try every exercise <b>before</b> pressing <b>Show answers</b>. Press <b>Check</b>, fix the red answers, and check again.</li>
+    <li>Tap the <b>🔊</b> buttons and the <b>🎧 audio players</b> as often as you like. Listening again is part of the work.</li>
+    <li>When a part is finished, tick <b>"I finished this part"</b>. Your answers are saved on this device, so you can stop and come back.</li>
+    <li>At the end, press <b>Copy my report</b> and send it to your teacher.</li>
+  </ol>
+  <div class="tbl"><table>
+    <thead><tr><th>Part</th><th>What you do</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td>1 Warm-up</td><td>Two questions about your childhood</td><td>5 min</td></tr>
+      <tr><td>2 Vocabulary</td><td>Pictures, flashcards, word families, matching</td><td>10 min</td></tr>
+      <tr><td>3 Used to</td><td><i>used to</i>, <i>be used to</i>, <i>get used to</i>: rules and practice</td><td>15 min</td></tr>
+      <tr><td>4 To / For</td><td>When to use <i>to</i> and when to use <i>for</i></td><td>8 min</td></tr>
+      <tr><td>5 Sounds</td><td>"used to" and tricky words, dictation</td><td>7 min</td></tr>
+      <tr><td>6 Listen &amp; read</td><td>A short story about a grandmother's kitchen</td><td>7 min</td></tr>
+      <tr><td>7 Speaking</td><td>Record a short voice message</td><td>5 min</td></tr>
+      <tr><td>8 Writing</td><td>Write your paragraph and send your report</td><td>8 min</td></tr>
+    </tbody></table></div>
+  <p class="hint">Total: about 60 minutes. You can split it into two days.</p>
+</section>
+
+<section id="s1">
+  <div class="tab"><b>1</b><span>Warm-up</span><em>about 5 min</em></div>
+  <h2>When I was a kid…</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Listen to the audio and read the two questions.</li><li>Say your answers <b>out loud</b>, in 3 or 4 sentences each.</li><li>Write your answer to question 1 in the box (2 or 3 sentences). Use <b>used to</b>: <i>I used to listen to…</i></li></ol></div>
+  <figure class="photo wide"><img src="img/photos/waterfall.jpg" alt="A waterfall in a forest" loading="lazy"><figcaption>Where did you use to go on holiday?</figcaption></figure>
+  <div class="audio"><span class="n">🎧 1</span><span class="t">Two warm-up questions</span><audio controls preload="none" src="audio/b1-warmup.mp3"></audio></div>
+  <div class="grid g2">
+    <div class="card c1"><b>1</b> What did you <b>use to</b> listen to when you were a kid or a teenager?</div>
+    <div class="card c2"><b>2</b> What did you <b>use to</b> eat with your family on Sundays?</div>
+  </div>
+  <textarea data-k="warm" style="min-height:96px;margin-top:10px" aria-label="Warm-up answer" placeholder="When I was a kid, I used to…"></textarea>
+  <label class="donebox"><input type="checkbox" data-done="s1"> I finished this part</label>
+</section>
+
+<section id="s2">
+  <div class="tab"><b>2</b><span>Vocabulary</span><em>about 10 min</em></div>
+  <h2>Words from Lesson 6</h2>
+  <div class="steps"><b class="t">What to do · about 10 min</b><ol><li>Press play on audio 2 and <b>repeat</b> each word.</li><li>Do <b>exercise A</b>: look at each picture and type the English word.</li><li>Flip the <b>flashcards</b>. Before you flip, say a sentence with the word.</li><li>Do <b>B</b> (word families) and <b>C</b> (matching). Check, fix the red ones, check again.</li></ol></div>
+  <div class="audio"><span class="n">🎧 2</span><span class="t">The words: listen and repeat</span><audio controls preload="none" src="audio/b2-words.mp3"></audio></div>
+  <div class="ex" data-ex="vP"><div class="exh"><b>A</b>What is it? Write the English word.</div><div class="grid g3" id="picbox"></div></div>
+  <h3>Flashcards <span class="hint">(tap to flip)</span></h3>
+  <div class="grid g4" id="cards"></div>
+  <div class="box yelt"><b>False friend:</b> <i>actually</i> means "in fact" or "really", <b>not</b> "atualmente". For "atualmente", say <i>currently</i> or <i>at the moment</i>.</div>
+  <div class="ex" data-ex="vB"><div class="exh"><b>B</b>Word families: write the correct form of the word in brackets.</div><div id="famBox"></div></div>
+  <div class="ex" data-ex="vA"><div class="exh"><b>C</b>Match each word with its meaning.</div><div id="matchbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s2"> I finished this part</label>
+</section>
+
+<section id="s3">
+  <div class="tab"><b>3</b><span>Grammar</span><em>about 15 min</em></div>
+  <h2>Used to, be used to, get used to</h2>
+  <div class="steps"><b class="t">What to do · about 15 min</b><ol><li>Read the three boxes slowly. Say each example <b>out loud</b>.</li><li>Look at the comparison table. Notice what comes after <b>to</b>: a base verb or an <b>-ing</b> form?</li><li>Do <b>exercise A</b> (choose). Check and fix.</li><li>Do <b>B</b> (write the form) and <b>C</b> (error hunt).</li><li>Do <b>D</b>: answer the conversation questions in writing, then compare with the model.</li></ol></div>
+  <div class="grid g3">
+    <div class="card c1"><b>used to + base verb</b><br><span class="hint">a past habit or state that is not true now</span><br>✔ I <b>used to</b> cook for my grandmother.<br>✘ I <b>didn't use to</b> cook.<br>? <b>Did</b> you <b>use to</b> cook? · What did you <b>use to</b> cook?</div>
+    <div class="card c2"><b>be used to + -ing</b><br><span class="hint">to be accustomed to something (now)</span><br>✔ I <b>am used to</b> sleeping late.<br>✘ I'<b>m not used to</b> sleeping late.<br>? <b>Are</b> you <b>used to</b> sleeping late?</div>
+    <div class="card c3"><b>get used to + -ing</b><br><span class="hint">to become accustomed to something</span><br>✔ I need to <b>get used to</b> waking up earlier.<br>✔ She <b>got used to</b> living abroad.<br>✘ I <b>haven't got used to</b> the cold yet.</div>
+  </div>
+  <div class="tbl" style="margin-top:12px"><table>
+    <thead><tr><th>Form</th><th>Meaning</th><th>After "to"</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>used to</td><td>I did it in the past, but not now</td><td>base verb</td><td>I used to play the guitar.</td></tr>
+      <tr><td>be used to</td><td>It is normal for me now</td><td>-ing</td><td>I'm used to playing every day.</td></tr>
+      <tr><td>get used to</td><td>It is becoming normal</td><td>-ing</td><td>I'm getting used to playing in public.</td></tr>
+    </tbody></table></div>
+  <div class="box bluet"><b>Why -ing?</b> In <i>be used to</i> and <i>get used to</i>, the word <b>to</b> is a preposition, and a preposition is followed by a noun or an <b>-ing</b> form. In <i>used to</i> (past habit), <b>to</b> belongs to the verb, so we use the base form.<br><b>Spelling:</b> in questions and negatives we write <i>use to</i> (without -d): "Did you <b>use to</b> live here?"</div>
+  <div class="ex" data-ex="gA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="mcbox"></div></div>
+  <div class="ex" data-ex="gB"><div class="exh"><b>B</b>Write the correct form (used to, be used to or get used to) with the verb in brackets.</div><div id="formbox"></div></div>
+  <div class="ex" data-ex="gC"><div class="exh"><b>C</b>Error hunt: rewrite each sentence correctly.</div><div id="errbox"></div></div>
+  <div class="ex"><div class="exh"><b>D</b>Conversation: answer in full sentences. Then compare with the model.</div><div id="cqbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s3"> I finished this part</label>
+</section>
+
+<section id="s4">
+  <div class="tab"><b>4</b><span>To / For</span><em>about 8 min</em></div>
+  <h2>To or for?</h2>
+  <div class="steps"><b class="t">What to do · about 8 min</b><ol><li>Read the two boxes. Say one example from each list.</li><li>Do <b>exercise A</b> (choose to or for). Check and fix.</li><li>Do <b>B</b> (type the word). Check and fix.</li></ol></div>
+  <p>The main difference: <b>to</b> usually connects to a verb or to a direction or person, while <b>for</b> usually connects to a noun and shows benefit, purpose or duration.</p>
+  <div class="grid g2">
+    <div class="card c2"><b>TO</b><br>• <b>destination:</b> I'm going <b>to</b> Paris.<br>• <b>recipient:</b> I gave the book <b>to</b> her.<br>• <b>+ verb (purpose):</b> I came here <b>to</b> help.<br>• <b>time and preferences:</b> It's quarter <b>to</b> two. I prefer tea <b>to</b> coffee.</div>
+    <div class="card c1"><b>FOR</b><br>• <b>benefit:</b> I bought a gift <b>for</b> you. Can you carry this <b>for</b> me?<br>• <b>+ noun (purpose):</b> Let's go out <b>for</b> coffee. I'm studying <b>for</b> the exam.<br>• <b>duration:</b> I have lived here <b>for</b> two years.<br>• <b>thanks:</b> Thank you <b>for</b> your help.</div>
+  </div>
+  <div class="ex" data-ex="tA"><div class="exh"><b>A</b>Choose to or for.</div><div id="tabox"></div></div>
+  <div class="ex" data-ex="tB"><div class="exh"><b>B</b>Write to or for.</div><div id="tbbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s4"> I finished this part</label>
+</section>
+
+<section id="s5">
+  <div class="tab"><b>5</b><span>Sounds</span><em>about 7 min</em></div>
+  <h2>Say it right</h2>
+  <div class="steps"><b class="t">What to do · about 7 min</b><ol><li>Listen to audio 3. Repeat each sentence and copy the rhythm of <b>used to</b>.</li><li>Listen to audio 4 and repeat the tricky words.</li><li>Do <b>exercise A</b>.</li><li>Do the <b>dictation</b>: play audio 5 and write what you hear (up to three listens), then press Check.</li></ol></div>
+  <div class="audio"><span class="n">🎧 3</span><span class="t">"Used to" in sentences</span><audio controls preload="none" src="audio/b3-usedto.mp3"></audio></div>
+  <div class="box bluet"><b>used to</b> (past habit) sounds like <b>YOOST-tuh</b>: the "d" disappears and "to" is weak. In <b>be used to</b>, we say the same sounds: "I'm <b>YOOST-tuh</b> cooking."</div>
+  <div class="audio"><span class="n">🎧 4</span><span class="t">Tricky words</span><audio controls preload="none" src="audio/b4-sounds.mp3"></audio></div>
+  <div class="grid g4">
+    <div class="card c1"><b>conscience</b><br>KON-shuns</div><div class="card c2"><b>actually</b><br>AK-choo-uh-lee</div><div class="card c3"><b>obviously</b><br>OB-vee-us-lee</div><div class="card c4"><b>relieved</b><br>rih-LEEVD</div>
+    <div class="card c1"><b>depressed</b><br>dih-PREST</div><div class="card c2"><b>waterfall</b><br>WAW-ter-fawl</div><div class="card c3"><b>flaws</b><br>FLAWZ</div><div class="card c4"><b>tasty</b><br>TAY-stee</div>
+  </div>
+  <div class="ex" data-ex="pA"><div class="exh"><b>A</b>Choose the best answer.</div><div id="pbox"></div></div>
+  <div class="ex" data-ex="pB"><div class="exh"><b>B</b>Dictation: listen and write what you hear.</div>
+    <div class="audio"><span class="n">🎧 5</span><span class="t">Five sentences, each read twice</span><audio controls preload="none" src="audio/b6-dictation.mp3"></audio></div><div id="dictbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s5"> I finished this part</label>
+</section>
+
+<section id="s6">
+  <div class="tab"><b>6</b><span>Listen &amp; read</span><em>about 7 min</em></div>
+  <h2>My grandmother's kitchen</h2>
+  <div class="steps"><b class="t">What to do · about 7 min</b><ol><li>Read the text once without audio. Tap the highlighted words to see their meaning.</li><li>Listen to audio 6 while you read.</li><li>Answer the five questions and press <b>Check</b>. Fix any mistakes.</li><li>Find all the examples of <b>used to</b>, <b>be used to</b> and <b>get used to</b> in the text.</li></ol></div>
+  <div class="audio"><span class="n">🎧 6</span><span class="t">Listen while you read (about 40 seconds)</span><audio controls preload="none" src="audio/b5-text.mp3"></audio></div>
+  <div class="text" id="reading">
+    When I was a child, I <mark data-d="used to + base verb: a past habit that has stopped">used to</mark> spend every summer at my grandmother's house. She <mark data-d="used to + base verb: a past habit that has stopped">used to</mark> cook <mark data-d="tasty: having a good flavour">tasty</mark> meals for the whole family, and we <mark data-d="used to + base verb: a past habit that has stopped">used to</mark> eat outside, under the sun. At first, I <mark data-d="be used to + -ing: accustomed to something">wasn't used to</mark> waking up so early, but I <mark data-d="get used to + -ing: to become accustomed to something">got used to</mark> it quickly. Now I live in a big city, and I'm <mark data-d="be used to + -ing: accustomed to something">used to</mark> living without a garden. <mark data-d="actually: in fact (not 'atualmente')">Actually</mark>, I miss the <mark data-d="waterfall: water falling from a high place">waterfall</mark> near her house. We used to walk there after lunch, and I always felt <mark data-d="relieved: happy because a worry has gone">relieved</mark> and happy, with a <mark data-d="clean conscience: the feeling that you have done nothing wrong">clean conscience</mark>. <mark data-d="obviously: in a way that is easy to see">Obviously</mark>, nothing is perfect, but those days had very few <mark data-d="flaws: small faults or weaknesses">flaws</mark>.
+  </div>
+  <p class="hint" id="defbox">Highlighted words: tap one to see its meaning here.</p>
+  <div class="ex" data-ex="lA"><div class="exh"><b>A</b>Choose the correct answer.</div><div id="lbox"></div></div>
+  <label class="donebox"><input type="checkbox" data-done="s6"> I finished this part</label>
+</section>
+
+<section id="s7">
+  <div class="tab"><b>7</b><span>Speaking</span><em>about 5 min</em></div>
+  <h2>Record yourself</h2>
+  <div class="steps"><b class="t">What to do · about 5 min</b><ol><li>Listen to the model (audio 7) once.</li><li>Prepare 3 notes: what you <b>used to</b> do as a child, something you are <b>used to</b> now, something you had to <b>get used to</b>.</li><li>Open the voice recorder on your <b>phone</b> and record about <b>1 minute</b>.</li><li>Listen to your recording and tick the self-check boxes. Send it to your <b>teacher</b>.</li></ol></div>
+  <div class="audio"><span class="n">🎧 7</span><span class="t">A model answer</span><audio controls preload="none" src="audio/b7-model.mp3"></audio></div>
+  <div class="box bluet"><b>Frame:</b> When I was a kid, I used to… I didn't use to… Now I'm used to… It was hard to get used to… Actually, I miss…</div>
+  <div class="box"><b>Self-check</b><br><label><input type="checkbox" data-chk="c1"> I used <i>used to</i> + base verb</label><br><label><input type="checkbox" data-chk="c2"> I used <i>be used to</i> + -ing</label><br><label><input type="checkbox" data-chk="c3"> I used <i>get used to</i> + -ing</label><br><label><input type="checkbox" data-chk="c4"> I used three new words from this homework</label></div>
+  <label class="donebox"><input type="checkbox" data-done="s7"> I finished this part</label>
+</section>
+
+<section id="wrap">
+  <div class="tab"><b>8</b><span>Writing and report</span><em>about 8 min</em></div>
+  <h2>Last step</h2>
+  <div class="steps"><b class="t">What to do · about 8 min</b><ol><li>Rate yourself honestly with the sliders.</li><li>Write a paragraph of about <b>100 words</b>: <i>Then and now</i>. Compare your life as a child with your life today. Use <b>used to</b>, <b>be used to</b>, <b>get used to</b> and at least two <b>to / for</b> phrases.</li><li>Type your name, press <b>Copy my report</b> and send it to your teacher.</li></ol></div>
+  <div id="rates"></div>
+  <h3>Your paragraph</h3>
+  <textarea id="hw" aria-label="Paragraph draft" placeholder="When I was a kid, I used to…"></textarea>
+  <div class="tools"><span class="score" id="wc">0 words</span><button class="btn sec" id="copy">Copy text</button></div>
+  <h3>Your report</h3>
+  <p><label>Your name: <input class="free" id="nm" autocomplete="name" style="width:min(100%,260px)"></label></p>
+  <div class="tools"><button class="btn" id="rep">Copy my report</button><span class="score" id="repmsg" aria-live="polite"></span></div>
+  <textarea id="repbox" readonly aria-label="Report" style="min-height:120px;display:none"></textarea>
+  <footer>Audio: synthetic voices (Kokoro). Photos: Wikimedia Commons, see credits below. Your answers are saved only in this browser.<div id="credits"></div></footer>
+</section>
+</main>
+<script>
+
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try{ return localStorage.getItem('l6:'+k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem('l6:'+k, v) }catch(e){} } };
+const norm = s => (s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/[^a-z0-9' ]+/g,' ').replace(/\s+/g,' ').trim();
+const synth = window.speechSynthesis;
+function say(t, rate=.85){ if(!synth) return; synth.cancel(); const u=new SpeechSynthesisUtterance(t); u.lang='en-US'; u.rate=rate; synth.speak(u); }
+document.addEventListener('click', e => { const b=e.target.closest('[data-say]'); if(b) say(b.dataset.say); });
+const PICS=[["waterfall","waterfall","waterfall"],["boot","boot","boot|boots"],["sunny","sunny","sunny|sun"],["sleepy","sleepy","sleepy|sleeping|asleep"],["lasagna","tasty","tasty|delicious|lasagna|lasagne"]];
+$('#picbox').innerHTML=PICS.map((p,i)=>`<div class="pic"><figure class="photo"><img src="img/photos/${p[0]}.jpg" alt="Picture ${i+1}" loading="lazy" onerror="this.parentNode.innerHTML='<div style=&quot;aspect-ratio:4/3;display:grid;place-items:center;color:#5B6B82&quot;>no photo</div>'"></figure><b>${i+1}</b><input class="ans" data-a="${p[2]}" autocomplete="off" placeholder="English word"></div>`).join('');
+const CARDS=[
+["tasty","adj.","having a good flavour","This soup is really tasty.","gostoso"],
+["taste","verb / noun","to have a flavour; the flavour itself","It tastes like lemon.","ter gosto, sabor"],
+["sleepy","adj.","feeling that you want to sleep","I feel sleepy after lunch.","sonolento"],
+["sunny","adj.","with a lot of sun","It's a sunny day.","ensolarado"],
+["actually","adv.","in fact; really","Actually, I prefer tea.","na verdade (não 'atualmente')"],
+["obviously","adv.","in a way that is easy to see","Obviously, she was tired.","obviamente"],
+["clean conscience","noun","the feeling that you have done nothing wrong","I sleep well with a clean conscience.","consciência limpa"],
+["without any guilt","phrase","feeling no shame about something you did","I ate dessert without any guilt.","sem culpa nenhuma"],
+["relieved","adj.","happy because a worry has gone","I was relieved when I passed.","aliviado"],
+["waterfall","noun","water falling from a high place","We walked to the waterfall.","cachoeira"],
+["depressed","adj.","very sad for a long time, without energy","He felt depressed all winter.","deprimido"],
+["boot","noun","a shoe that covers the ankle","These boots are waterproof.","bota"],
+["flaws","noun","small faults or weaknesses","Nobody is without flaws.","defeitos, falhas"],
+["grandmother / grandma / granny","noun","the mother of your mother or father","Granny makes the best cakes.","avó, vovó"],
+["yours","pron.","belonging to you","Is this pen yours?","o seu, a sua"]];
+$('#cards').innerHTML=CARDS.map(c=>`<div class="flash" tabindex="0" role="button" aria-label="Flashcard: ${c[0]}. Press Enter to flip"><div class="in"><div class="a"><span>${c[0]}<small>${c[1]}</small></span></div><div class="b"><u>${c[2]}</u><i>“${c[3]}”</i><span class="hint">PT: ${c[4]}</span></div></div></div>`).join('');
+$$('.flash').forEach(f=>{const t=()=>f.classList.toggle('f');f.addEventListener('click',t);f.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}})});
+const fillers=(id,list,w)=>{$(id).innerHTML=list.map((g,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${g[0].replace('_',`<input class="ans" style="width:${w||150}px" data-a="${g[1]}" autocomplete="off">`)}</span></div>`).join('')};
+fillers('#famBox',[["This pasta is really _ . (taste)","tasty"],["I always feel _ after a big lunch. (sleep)","sleepy"],["Take your sunglasses. It's a very _ day. (sun)","sunny"],["Can I _ the soup? I want to check the salt.","taste"],["She was so tired and _ that she went to bed at eight. (sleep)","sleepy"],["The cake _ like coffee. (taste)","tastes"]]);
+const MATCH=[["tasty","having a good flavour"],["relieved","happy because a worry has gone"],["depressed","very sad for a long time, without energy"],["flaws","small faults or weaknesses"],["obviously","in a way that is easy to see"],["actually","in fact; really"],["clean conscience","the feeling that you have done nothing wrong"],["waterfall","water falling from a high place"]];
+const defs=MATCH.map(m=>m[1]).sort((a,b)=>a.localeCompare(b));
+$('#matchbox').innerHTML=MATCH.map((m,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><b>${m[0]}</b></span><select class="ans" data-a="${m[1]}"><option value="">choose…</option>${defs.map(d=>`<option>${d}</option>`).join('')}</select></div>`).join('');
+function mc(id,list){ $(id).innerHTML=list.map((q,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q">${q[0]}</span><div class="opts ans" data-a="${'abc'[q[2]]}">${q[1].map((o,j)=>`<button data-v="${'abc'[j]}">${'abc'[j]}  ${o}</button>`).join('')}</div></div>`).join('') }
+mc('#mcbox',[
+["When I was a kid, I _ play outside every day.",["used to","am used to","get used to"],0],
+["I'm not _ waking up so early.",["use to","used to","using to"],1],
+["It was hard at first, but she _ living abroad.",["used to live","got used to","is use to"],1],
+["Did you _ walk to school?",["use to","used to","get used to"],0],
+["I didn't _ like spicy food.",["used to","use to","get used to"],1],
+["We're _ the new schedule. It's getting easier.",["getting used to","used to","use to"],0],
+["He is used to _ late.",["work","working","worked"],1],
+["She _ have long hair, but now it's short.",["is used to","used to","gets used to"],1],
+["You'll have to get used to _ the new rules.",["follow","following","followed"],1],
+["I _ eating dinner at ten. In my country we eat late.",["used to","am used to","get use to"],1]]);
+fillers('#formbox',[["When I was little, I _ rock music. (listen)","used to listen",""],["I'm not _ with the window open. (sleep)","used to sleeping|used to sleep"],["It took a month to _ in the new house. (live)","get used to living"],["She _ coffee, but now she loves it. (not like)","didn't use to like"],["Are you _ on the left? (drive)","used to driving"],["I _ breakfast. (not eat)","didn't use to eat"]].map(x=>[x[0],x[1]]),210);
+const ERR=[["I used to listening to rock.","I used to listen to rock."],["I didn't used to cook.","I didn't use to cook."],["I'm not used to wake up early.","I'm not used to waking up early."],["She got used to live alone.","She got used to living alone."],["Did you used to play football?","Did you use to play football?"],["We are use to the noise.","We are used to the noise."]];
+$('#errbox').innerHTML=ERR.map((e,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><span class="wrong">${e[0]}</span><br><input class="ans w" data-a="${e[1]}" autocomplete="off" placeholder="Write the correct sentence"></span></div>`).join('');
+const CQ=[["What did you use to listen to when you were a kid or a teenager?","When I was a teenager, I used to listen to rock music."],["What did you use to eat with your family on Sundays?","On Sundays we used to eat pasta with roasted chicken."],["What did you use to watch when you were a kid?","I used to watch cartoons every afternoon."],["Are you used to waking up early? Why or why not?","Yes, I'm used to waking up early because I work in the morning. / No, I'm not used to it, I prefer to sleep late."],["Is there something you had to get used to?","I had to get used to living in a big city."]];
+$('#cqbox').innerHTML=CQ.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea style="min-height:64px" data-k="cq${i}" aria-label="Answer ${i+1}"></textarea><div class="tools"><button class="btn sec" data-m="q${i}">Model answer</button></div><div class="model" id="mq${i}">${q[1]}</div></div>`).join('');
+$$('[data-m]').forEach(b=>b.onclick=()=>$('#m'+b.dataset.m).classList.toggle('show'));
+mc('#tabox',[["I went _ the supermarket.",["to","for"],0],["Thank you _ your help.",["to","for"],1],["I called him _ ask about the exam.",["to","for"],0],["She bought a gift _ her mother.",["to","for"],1],["I have lived here _ two years.",["to","for"],1],["I prefer tea _ coffee.",["to","for"],0],["Let's go out _ dinner.",["to","for"],1],["Can you carry this _ me?",["to","for"],1]]);
+fillers('#tbbox',[["I'm studying _ the test.","for"],["He gave the keys _ his sister.","to"],["We went to the park _ relax.","to"],["It's a quarter _ five.","to"],["I waited _ an hour.","for"],["She cooked dinner _ all of us.","for"]],90);
+mc('#pbox',[
+["How do we say 'used to' (past habit)?",["YOOZD too","YOOST tuh","YOOS too"],1],
+["How do we say 'conscience'?",["kon-SY-ens","KON-shuns","KOHN-see-ens"],1],
+["Where is the stress in 'waterfall'?",["WAW-ter-fawl","wa-TER-fawl","wa-ter-FAWL"],0],
+["How do we say 'relieved'?",["rih-LEEVD (2 syllables)","REL-ee-ved (3 syllables)","rih-LEV-ed"],0]]);
+const DICT=["I used to listen to rock when I was a teenager.","I'm not used to waking up this early.","She got used to living in a big city.","Thank you for your help. I did it for you.","We went to the beach to relax."];
+$('#dictbox').innerHTML=DICT.map((d,i)=>`<div class="item"><span class="no">${i+1}</span><span class="q"><input class="ans w" data-a="${d}" autocomplete="off"></span></div>`).join('');
+mc('#lbox',[
+["What did the narrator use to do every summer?",["Travel abroad","Stay at the grandmother's house","Work in a restaurant"],1],
+["What did the grandmother use to cook?",["Tasty meals for everyone","Only desserts","Nothing"],0],
+["At first, the narrator _ waking up early.",["liked","wasn't used to","used to"],1],
+["What does 'I'm used to living without a garden' mean?",["It's normal for me now.","I used to live without a garden.","I want a garden."],0],
+["Where did they walk after lunch?",["To a market","To the waterfall","To the beach"],1]]);
+$$('#reading mark').forEach(m=>m.addEventListener('click',()=>{$('#defbox').textContent=m.dataset.d}));
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+$$('[data-chk]').forEach(c=>{c.checked=store.get('chk-'+c.dataset.chk)==='1';c.addEventListener('change',()=>store.set('chk-'+c.dataset.chk,c.checked?'1':'0'))});
+// ---------- exercises engine ----------
+function getVal(el){ if(el.classList.contains('opts')){const b=el.querySelector('[aria-pressed=true]');return b?b.dataset.v:''} return el.value }
+function setVal(el,v){ if(el.classList.contains('opts')){ $$('button',el).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v)) } else el.value=v }
+function mark(el,s){ el.classList.remove('good','bad'); if(s) el.classList.add(s) }
+$$('.opts.ans').forEach(g=>g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('button',g).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');mark(g,null)}));
+$$('.ex[data-ex]').forEach(ex=>{
+  const id=ex.dataset.ex, items=$$('.ans',ex);
+  const bar=document.createElement('div'); bar.className='tools';
+  bar.innerHTML='<button class="btn">Check</button><button class="btn sec">Show answers</button><button class="btn sec">Reset</button><span class="score" aria-live="polite"></span>';
+  ex.appendChild(bar);
+  const [chk,show,reset]=$$('button',bar), score=$('.score',bar);
+  const ok=el=>{const raw=el.dataset.a, v=getVal(el); if(el.classList.contains('opts')||el.tagName==='SELECT') return norm(raw.split('|')[0])===norm(v); return raw.split('|').map(norm).includes(norm(v))};
+  try{(JSON.parse(store.get(id)||'[]')).forEach((v,i)=>items[i]&&setVal(items[i],v))}catch(e){}
+  const save=()=>store.set(id,JSON.stringify(items.map(getVal)));
+  ex.addEventListener('input',save);ex.addEventListener('change',save);ex.addEventListener('click',e=>{if(e.target.closest('.opts'))save()});
+  items.forEach(el=>el.addEventListener('input',()=>mark(el,null)));
+  chk.onclick=()=>{let n=0;items.forEach(el=>{const r=ok(el);if(r)n++;mark(el,getVal(el)===''?null:(r?'good':'bad'))});score.textContent=`${n} / ${items.length}`+(n===items.length?' 🎉':'');store.set('score-'+id,n+' / '+items.length)};
+  show.onclick=()=>{items.forEach(el=>{setVal(el,el.dataset.a.split('|')[0]);mark(el,'good')});score.textContent='';save()};
+  reset.onclick=()=>{items.forEach(el=>{setVal(el,'');mark(el,null)});score.textContent='';save()};
+});
+
+
+// ---------- progress, nav ----------
+const PARTS=[["s1","Warm-up"],["s2","Vocabulary"],["s3","Used to"],["s4","To / For"],["s5","Sounds"],["s6","Listen & read"],["s7","Speaking"],["wrap","Writing"]];
+$('#nav').innerHTML=[['plan','Start']].concat(PARTS).map(p=>`<a href="#${p[0]}" data-t="${p[0]}">${p[1]}</a>`).join('');
+const dones=$$('[data-done]');
+dones.forEach(d=>{d.checked=store.get('done-'+d.dataset.done)==='1';d.addEventListener('change',()=>{store.set('done-'+d.dataset.done,d.checked?'1':'0');prog()})});
+function prog(){const n=dones.filter(d=>d.checked).length+(($('#hw').value.trim().split(/\s+/).filter(Boolean).length>=100)?1:0);const tot=dones.length+1;$('#pct').textContent=Math.round(n/tot*100)+'%';$('#progfill').style.width=(n/tot*100)+'%';$('#now').textContent=n+' of '+tot+' parts finished'}
+const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===e.target.id))})},{rootMargin:'-30% 0px -60% 0px'}):null;
+if(io)['plan'].concat(PARTS.map(p=>p[0])).forEach(id=>{const el=document.getElementById(id);el&&io.observe(el)});
+$$('textarea[data-k]').forEach(t=>{t.value=store.get(t.dataset.k)||'';t.addEventListener('input',()=>store.set(t.dataset.k,t.value))});
+
+// ---------- self rating, homework ----------
+const RATES=["I can use the new vocabulary in my own sentences","I can choose between used to, be used to and get used to","I can pronounce the tricky words","I understood the listening","I can explain my ideas fluently"];
+$('#rates').innerHTML=RATES.map((r,i)=>`<div class="range"><span>${r}</span><input type="range" min="1" max="5" value="${store.get('rate'+i)||3}" data-r="${i}" aria-label="${r}"><b id="rv${i}">${store.get('rate'+i)||3}/5</b></div>`).join('');
+$$('[data-r]').forEach(r=>r.addEventListener('input',()=>{$('#rv'+r.dataset.r).textContent=r.value+'/5';store.set('rate'+r.dataset.r,r.value)}));
+const hw=$('#hw'),wc=$('#wc');hw.value=store.get('hw')||'';const count=()=>{wc.textContent=(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words'};count();
+hw.addEventListener('input',()=>{store.set('hw',hw.value);count();prog()});prog();
+$('#copy').onclick=async e=>{try{await navigator.clipboard.writeText(hw.value);e.target.textContent='Copied ✓'}catch(_){hw.select()}setTimeout(()=>e.target.textContent='Copy text',1500)};
+// one audio at a time
+document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')$$('audio').forEach(a=>a!==e.target&&a.pause())},true);
+
+// ---------- report ----------
+const NAMES={vP:'Pictures',vA:'Match words',vB:'Word families',gA:'Used to quiz',gB:'Used to forms',gC:'Error hunt',tA:'To or for quiz',tB:'To or for gaps',pA:'Pronunciation quiz',pB:'Dictation',lA:'Listening'};
+const nm=$('#nm');nm.value=store.get('nm')||'';nm.addEventListener('input',()=>store.set('nm',nm.value));
+$('#rep').onclick=async()=>{
+  const L=['HOMEWORK Lesson 6 (Used to, be used to, get used to)','Name: '+(nm.value||'(no name)'),'Parts finished: '+dones.filter(d=>d.checked).length+' of '+dones.length,'','SCORES (last check)'];
+  Object.keys(NAMES).forEach(k=>L.push('- '+NAMES[k]+': '+(store.get('score-'+k)||'not checked')));
+  L.push('','SELF-RATING');$$('[data-r]').forEach(r=>L.push('- '+r.getAttribute('aria-label')+': '+r.value+'/5'));
+  const w=store.get('warm');if(w)L.push('','WARM-UP ANSWER',w);
+  const ans=[['cq','Conversation answers']];
+  ans.forEach(([p,t])=>{const xs=[0,1,2,3,4].map(i=>store.get(p+i)).filter(Boolean);if(xs.length)L.push('',t.toUpperCase(),...xs.map((x,i)=>(i+1)+'. '+x))});
+  L.push('','SUMMARY ('+(hw.value.trim()?hw.value.trim().split(/\s+/).length:0)+' words)',hw.value||'(empty)');
+  const txt=L.join('\n'),box=$('#repbox');box.value=txt;box.style.display='block';
+  try{await navigator.clipboard.writeText(txt);$('#repmsg').textContent='Copied ✓ Now paste it in your message to your teacher.'}catch(_){box.select();$('#repmsg').textContent='Select the text below and copy it.'}
+};
+const CREDITS=[{"key": "waterfall", "what": "Waterfall", "title": "File:Beech Forest (AU), Great Otway National Park, Beauchamp Falls -- 2019 -- 1271.jpg", "page": "https://commons.wikimedia.org/wiki/File:Beech_Forest_(AU),_Great_Otway_National_Park,_Beauchamp_Falls_--_2019_--_1271.jpg", "license": "CC BY-SA 4.0", "artist": "Dietmar Rabich"}, {"key": "boot", "what": "Boot", "title": "File:Leather boots men's.jpg", "page": "https://commons.wikimedia.org/wiki/File:Leather_boots_men%27s.jpg", "license": "CC BY-SA 4.0", "artist": "Petar Milošević"}, {"key": "sunny", "what": "Sunny", "title": "File:A sunny summer day.jpg", "page": "https://commons.wikimedia.org/wiki/File:A_sunny_summer_day.jpg", "license": "CC BY-SA 4.0", "artist": "DPG*o0W0o"}, {"key": "sleepy", "what": "Sleepy", "title": "File:Im getting sleepy (5419907037).jpg", "page": "https://commons.wikimedia.org/wiki/File:Im_getting_sleepy_(5419907037).jpg", "license": "CC BY-SA 2.0", "artist": "Takashi Hososhima from Tokyo, Japan"}, {"key": "lasagna", "what": "Tasty", "title": "File:Lasagna (1).jpg", "page": "https://commons.wikimedia.org/wiki/File:Lasagna_(1).jpg", "license": "CC BY 2.0", "artist": "jeffreyw"}];
+$('#credits').innerHTML='<p>'+CREDITS.map(x=>`${x.what}: “${x.title.replace(/^File:/,'').replace(/\.\w+$/,'')}” by ${x.artist||'unknown'} (${x.license})`).join(' · ')+'</p>';
+</script>
+
+</body>
+</html>
