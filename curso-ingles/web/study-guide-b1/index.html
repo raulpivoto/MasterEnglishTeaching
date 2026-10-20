@@ -1,0 +1,474 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>B1 Study Guide: Verb Tenses</title>
+
+<style>
+/* Layout: a printed-workbook feel. White page, navy ink, yellow tabs; one sticky lesson bar; cards for activities. */
+:root{--navy:#001737;--yel:#FFCD04;--yelt:#FFF4BF;--blue:#7CC4FF;--bluet:#E6F3FF;--mint:#7EE0B8;--mintt:#E2F7EE;--lil:#EFEAFE;--grey:#5B6B82;--line:#D5DCE8;--panel:#F3F6FB;--red:#D64538;--redt:#FDE8E5;--green:#1B7F5C;--text:#0B1B33;--amber:#B45309;
+--head:"Arial Narrow","Helvetica Neue",Arial,sans-serif;--body:Calibri,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:120px}
+body{margin:0;background:#fff;color:var(--text);font:17px/1.55 var(--body)}
+h1,h2,h3{font-family:var(--head);color:var(--navy);line-height:1.15;margin:0}
+main{max-width:900px;margin:0 auto;padding-inline:18px;padding-bottom:80px}
+img{display:block}
+.brand{font-size:12px;font-weight:700;letter-spacing:.18em;color:var(--grey);text-transform:uppercase;padding-top:24px}
+.hero{display:flex;gap:18px;align-items:center;margin:14px 0 6px;flex-wrap:wrap}
+.tile{flex:none;background:var(--yel);color:var(--navy);border-radius:16px;padding:8px 18px;text-align:center;font:700 44px/1 var(--head)}
+.tile small{display:block;font:700 11px var(--body);letter-spacing:.2em}
+.hero h1{font-size:clamp(30px,6vw,46px)}
+.sub{color:var(--grey);margin:4px 0 0}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:#fffffff2;border-bottom:1px solid var(--line);margin-inline:-18px;padding:8px 18px}
+.prog{flex:1 1 160px;height:12px;background:var(--line);border-radius:999px;overflow:hidden;min-width:100px}
+.prog i{display:block;height:100%;width:0;background:var(--yel);transition:width .4s}
+.donebox{display:flex;gap:10px;align-items:center;background:var(--mintt);border:1px solid #BFE9D6;border-radius:12px;padding:10px 14px;margin-top:16px;font-weight:700}
+.donebox input{width:22px;height:22px;accent-color:var(--navy)}
+.steps{background:var(--bluet);border:1px solid #B7D9F5;border-radius:14px;padding:12px 16px;margin:10px 0}
+.steps ol{margin:6px 0 0;padding-left:22px}
+.steps li{margin:4px 0}
+.steps b.t{display:inline-block;background:var(--navy);color:var(--yel);border-radius:999px;padding:0 10px;font-size:13px;margin-right:6px}
+.bar .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.clock{font:700 20px var(--head);background:var(--navy);color:var(--yel);border-radius:10px;padding:2px 12px;font-variant-numeric:tabular-nums}
+.now{font-size:14px;color:var(--grey);flex:1 1 200px;min-width:0}
+nav{display:flex;gap:6px;overflow-x:auto;white-space:nowrap;padding-top:6px}
+nav a{font-size:13px;font-weight:700;text-decoration:none;color:var(--navy);background:var(--panel);border:1px solid var(--line);padding:4px 11px;border-radius:999px}
+nav a.on{background:var(--yel);border-color:var(--yel)}
+section{padding-top:36px}
+.tab{display:flex;align-items:center;gap:6px;margin-bottom:6px;flex-wrap:wrap}
+.tab b{background:var(--navy);color:var(--yel);border-radius:6px;min-width:28px;text-align:center;font-size:14px;padding:2px 6px}
+.tab span{background:var(--yel);color:var(--navy);border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:3px 14px}
+.tab em{font-style:normal;font-size:13px;color:var(--grey);margin-left:4px}
+h2{font-size:clamp(26px,5vw,34px);margin-bottom:10px}
+h3{font-size:21px;margin:24px 0 8px}
+p{margin:.4em 0}
+.hint{color:var(--grey);font-size:15px}
+.box{border:1px solid var(--line);background:var(--panel);border-radius:14px;padding:14px 16px;margin:12px 0}
+.yelt{background:var(--yelt);border-color:#F2D869}.bluet{background:var(--bluet);border-color:#B7D9F5}.mintt{background:var(--mintt);border-color:#BFE9D6}.lilt{background:var(--lil);border-color:#D8CEF7}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+.grid>*{min-width:0}
+@media(max-width:700px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.g2{grid-template-columns:1fr}}
+.card{border-radius:14px;padding:14px;border:1px solid var(--line)}
+.c1{background:var(--yelt)}.c2{background:var(--bluet)}.c3{background:var(--mintt)}.c4{background:var(--lil)}
+.audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--navy);color:#fff;border-radius:14px;padding:10px 14px;margin:10px 0}
+.audio .n{background:var(--yel);color:var(--navy);font-weight:700;border-radius:999px;padding:2px 12px;font-size:14px}
+.audio .t{font-weight:700;font-size:15px;flex:1 1 160px;min-width:0}
+.audio audio{flex:1 1 260px;min-width:200px;height:38px}
+.photo{margin:0;border-radius:14px;overflow:hidden;position:relative;border:1px solid var(--line)}
+.photo img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.photo.wide img{aspect-ratio:21/9}
+.photo figcaption{position:absolute;left:8px;bottom:8px;background:#fff;color:var(--navy);border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--grey);text-align:left;padding:6px 8px;border-bottom:2px solid var(--line)}
+td{padding:7px 8px;font-size:16px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;color:var(--navy);white-space:nowrap}
+.flash{perspective:900px;cursor:pointer;min-height:132px}
+.flash .in{position:relative;width:100%;height:100%;min-height:132px;transition:transform .5s;transform-style:preserve-3d}
+.flash.f .in{transform:rotateY(180deg)}
+.flash .a,.flash .b{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;padding:12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--line)}
+.flash .a{background:var(--bluet);align-items:center;text-align:center;font:700 22px var(--head);color:var(--navy)}
+.flash .a small{font:600 12px var(--body);color:var(--grey);display:block;margin-top:4px}
+.flash .b{background:var(--yelt);transform:rotateY(180deg);font-size:14px;line-height:1.35;overflow:auto}
+.flash .b i{color:var(--grey)}
+.flash .b u{text-decoration:none;color:var(--amber);font-weight:700}
+.ex{margin:20px 0 8px;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.exh{display:flex;gap:10px;align-items:center;font-weight:700;margin-bottom:6px}
+.exh b{flex:none;background:var(--navy);color:var(--yel);border-radius:7px;width:30px;height:30px;text-align:center;line-height:30px;font-family:var(--head);font-size:18px}
+.item{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:7px 0;border-bottom:1px dashed var(--line)}
+.item:last-of-type{border-bottom:0}
+.item .no{flex:none;width:28px;height:28px;border-radius:50%;background:var(--bluet);text-align:center;line-height:28px;font-weight:700;font-size:14px}
+.item .q{flex:1 1 240px;min-width:0}
+input.ans,select.ans,textarea,input.free{font:inherit;border:2px solid var(--line);border-radius:10px;padding:5px 10px;background:#fff;color:var(--text);min-width:0;max-width:100%}
+input.ans{width:min(100%,300px)}
+input.ans.w{width:min(100%,520px)}
+select.ans{padding:5px 6px;max-width:100%}
+input:focus,select:focus,textarea:focus,button:focus-visible,a:focus-visible,.flash:focus-visible{outline:3px solid var(--blue);outline-offset:1px}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opts button{font:inherit;border:2px solid var(--line);background:#fff;border-radius:999px;padding:3px 14px;cursor:pointer;color:var(--text)}
+.opts button[aria-pressed=true]{background:var(--navy);color:#fff;border-color:var(--navy)}
+.good{border-color:var(--mint)!important;background:var(--mintt)!important}
+.bad{border-color:#E5574B!important;background:var(--redt)!important}
+.opts.good,.opts.bad{background:none!important;border:0!important}
+.opts.good button[aria-pressed=true]{background:var(--green);border-color:var(--green)}
+.opts.bad button[aria-pressed=true]{background:var(--red);border-color:var(--red)}
+.tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:8px 0 2px}
+.btn{font:700 15px var(--body);border:0;border-radius:999px;padding:8px 18px;cursor:pointer;background:var(--yel);color:var(--navy)}
+.btn.sec{background:var(--panel);border:1px solid var(--line)}
+.score{font-weight:700;color:var(--navy)}
+.wb{display:flex;flex-wrap:wrap;gap:8px;background:var(--yelt);border:1px solid #F2D869;border-radius:12px;padding:8px 12px;font-weight:700;margin-bottom:6px}
+.model{display:none;background:var(--mintt);border:1px solid #BFE9D6;border-radius:10px;padding:8px 12px;margin-top:6px;font-size:15px}
+.model.show{display:block}
+textarea{width:100%;min-height:150px;font-size:17px;line-height:1.7}
+.text{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;font-size:18px;line-height:1.75}
+.text mark{background:var(--yelt);border-bottom:2px solid var(--yel);border-radius:3px;padding:0 2px;cursor:help;color:inherit}
+.wrong{text-decoration:line-through;color:var(--grey)}
+.ok{color:var(--green);font-weight:700}
+.chip{display:inline-block;background:var(--bluet);border:1px solid #B7D9F5;border-radius:999px;padding:2px 12px;font-size:14px;font-weight:700;margin:2px 4px 2px 0}
+details{border:1px solid var(--line);border-radius:12px;padding:8px 14px;margin:10px 0;background:var(--panel)}
+summary{cursor:pointer;font-weight:700;color:var(--navy)}
+.say{cursor:pointer;border:0;background:none;font-size:15px;padding:0 4px;color:var(--grey)}
+.range{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px dashed var(--line)}
+.range span{flex:1 1 220px}
+.range input{accent-color:var(--navy);flex:1 1 140px}
+.pic{display:flex;flex-direction:column;gap:6px}
+.pic .photo img{aspect-ratio:4/3}
+.pic b{font-family:var(--head);font-size:19px;color:var(--navy)}
+.pic input{width:100%}
+.mat{display:flex;flex-direction:column;gap:6px}
+.mat .ico{aspect-ratio:4/3;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;font-size:30px;color:var(--grey)}
+.mat b{font-family:var(--head);font-size:19px;color:var(--navy)}
+footer{margin-top:44px;color:var(--grey);font-size:13px;border-top:1px solid var(--line);padding-top:12px}
+@media(prefers-reduced-motion:reduce){.flash .in{transition:none}html{scroll-behavior:auto}}
+
+.hero small.k{display:block}
+.tl{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0;font-size:14px}
+.tl-bar{position:relative;height:34px;background:var(--bluet);border:1px solid #B7D9F5;border-radius:999px;display:flex;align-items:center;padding-left:14px;font-weight:700;color:var(--navy)}
+.tl-now{position:absolute;right:18%;top:-8px;bottom:-8px;width:6px;background:var(--yel);border-radius:3px}
+.tl-l,.tl-n{max-width:190px}
+@media(max-width:640px){.tl{grid-template-columns:1fr}.tl-l,.tl-n{max-width:none}}
+.blk{border-top:4px solid var(--navy);margin-top:44px;padding-top:6px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chips label{display:flex;gap:6px;align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:3px 12px;font-size:14px;font-weight:700}
+.chips input{width:18px;height:18px;accent-color:var(--navy)}
+h4{font-family:var(--head);font-size:18px;margin:14px 0 4px;color:var(--navy)}
+.theory ul{padding-left:22px}.theory li{margin:3px 0}
+.key{border:2px solid var(--navy);border-radius:14px;padding:6px 16px;margin:12px 0;background:#fff}
+.key li{margin:3px 0}
+.key h4{margin-top:10px}
+.ex textarea{min-height:60px}
+.stepno{display:inline-block;background:var(--yel);color:var(--navy);border-radius:999px;font-weight:700;padding:0 10px;margin-right:6px}
+.tts{background:var(--lil);border:1px solid #D8CEF7;border-radius:12px;padding:10px 14px;margin:8px 0;font-size:15px}
+@media print{.bar,.say{display:none!important}}
+</style>
+</head>
+<body>
+
+<main>
+<div class="brand">The English Skyrocket · Self-study guide · Level B1</div>
+<div class="hero"><div class="tile">4<small>BLOCKS</small></div><div><h1>Study Guide: Verb Tenses</h1><p class="sub">To be · There is/are · Present and Past Simple · Present and Past Continuous. Four one-hour study blocks to do on your own.</p></div></div>
+<div class="bar" role="region" aria-label="Progress"><div class="row"><span class="clock" id="pct">0%</span><div class="prog" aria-hidden="true"><i id="progfill"></i></div><span class="now" id="now">0 of 16 steps finished</span></div><nav id="nav"></nav></div>
+<section id="start">
+  <div class="tab"><b>i</b><span>How to use this guide</span></div>
+  <h2>Welcome! You can do this</h2>
+  <p>While your teacher is away, you will complete <b>4 study blocks</b>. Each block is equal to <b>one class of 60 minutes</b>. Do one block, rest, and then continue another day. Small steps every few days work better than one long session.</p>
+  <div class="tbl"><table><thead><tr><th>Step</th><th>What you do</th><th>Time</th></tr></thead><tbody>
+  <tr><td>1 Theory</td><td>Read the explanation. Say the examples <b>out loud</b>.</td><td>20 min</td></tr>
+  <tr><td>2 Reading</td><td>Read a short text, then answer the questions.</td><td>10 min</td></tr>
+  <tr><td>3 Listening</td><td>Listen (or read aloud), then answer the questions.</td><td>10 min</td></tr>
+  <tr><td>4 Practice</td><td>Do 4 or 5 exercises. Do <b>not</b> look at the answers.</td><td>20 min</td></tr>
+  </tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Block</th><th>Topic</th><th>Suggested day (in 15 days)</th></tr></thead><tbody>
+  <tr><td>1</td><td>To be + There is / There are</td><td>Days 2–3</td></tr><tr><td>2</td><td>Present Simple + Past Simple</td><td>Days 5–6</td></tr><tr><td>3</td><td>Present Continuous + Past Continuous</td><td>Days 9–10</td></tr><tr><td>4</td><td>Putting it all together (review of all tenses)</td><td>Days 13–14</td></tr></tbody></table></div>
+  <div class="box bluet"><b>Rules of the game</b><br>1. Write <b>your own</b> answers in every box. Your work is saved on this device.<br>2. Check the <b>Answer Key</b> at the very end of the guide <b>only after</b> you finish a block.<br>3. Correct your mistakes with a different colour or in the box, and try to understand <b>why</b> you were wrong.<br>4. When you finish, press <b>Copy my answers</b> at the end and send them to your teacher.</div>
+  <div class="tts"><b>No audio?</b> For every listening activity you can <b>read the script aloud</b> (after trying to listen), or paste it into a <b>text-to-speech</b> tool: the "Read aloud" feature of your browser, the speaker button in Google Translate, or the "Speak" function on your phone. Choose an English voice.</div>
+</section>
+<div id="blocks"></div>
+<section id="end">
+  <div class="tab"><b>✓</b><span>Final step</span></div>
+  <h2>Send your work to your teacher</h2>
+  <p>Press the button to copy <b>all your written answers</b>, then paste them in a message to your teacher. Well done for studying on your own!</p>
+  <p><label>Your name: <input class="free" id="nm" autocomplete="name" style="width:min(100%,260px)"></label></p>
+  <div class="tools"><button class="btn" id="rep">Copy my answers</button><span class="score" id="repmsg" aria-live="polite"></span></div>
+  <textarea id="repbox" readonly aria-label="Report" style="min-height:120px;display:none"></textarea>
+</section>
+<section id="answers">
+  <div class="tab"><b>★</b><span>Answer key</span></div>
+  <h2>Answer Key</h2>
+  <p class="hint">Stop! Open each block only <b>after</b> you finish all the exercises in that block.</p>
+  <div id="keys"></div>
+  <footer>Audio: synthetic voices (Kokoro). Your answers are saved only in this browser.</footer>
+</section>
+</main>
+<script>
+
+const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const store = { get(k){ try{ return localStorage.getItem('sg:'+k) }catch(e){ return null } }, set(k,v){ try{ localStorage.setItem('sg:'+k, v) }catch(e){} } };
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+const BLOCKS=[
+{id:'b1',n:1,title:'To Be + There is / There are',sub:'Describe people, places and things: who you are, where things are and what exists.',
+theory:`
+<h3>1. The verb <i>to be</i></h3>
+<div class="tbl"><table><thead><tr><th></th><th>Present</th><th>Past</th></tr></thead><tbody>
+<tr><td>+</td><td>I <b>am</b> (I'm) · you <b>are</b> (you're) · he/she/it <b>is</b> (he's) · we/you/they <b>are</b></td><td>I/he/she/it <b>was</b> · you/we/they <b>were</b></td></tr>
+<tr><td>–</td><td>I'm <b>not</b> · you <b>aren't</b> · he/she/it <b>isn't</b> · we/you/they <b>aren't</b></td><td>I/he/she/it <b>wasn't</b> · you/we/they <b>weren't</b></td></tr>
+<tr><td>?</td><td><b>Am</b> I…? <b>Are</b> you…? <b>Is</b> he/she/it…?</td><td><b>Was</b> I/he/she/it…? <b>Were</b> you/we/they…?</td></tr>
+</tbody></table></div>
+<p><b>Short answers:</b> Are you tired? → <i>Yes, I <b>am</b>.</i> / <i>No, I'm not.</i> (We never say "Yes, I'm".)</p>
+<h4>When do we use <i>to be</i>?</h4>
+<ul>
+<li><b>Identity, job, nationality:</b> "I'm a nurse." "She's Brazilian."</li>
+<li><b>Age:</b> "He is thirty (years old)." <span class="hint">(English uses <i>be</i>, not <i>have</i>.)</span></li>
+<li><b>Feelings and states:</b> "We're tired." "I was nervous yesterday."</li>
+<li><b>Description:</b> "The flat is bright and the kitchen is small."</li>
+<li><b>Location:</b> "The keys are on the table." "Where were you last night?"</li>
+<li><b>Time and weather:</b> "It's 8 o'clock." "It was cold on Monday."</li>
+</ul>
+<h3>2. There is / There are</h3>
+<p>We use <b>there is / there are</b> to say that something <b>exists</b> or <b>is in a place</b>. We often use it to introduce something <b>new</b>.</p>
+<div class="tbl"><table><thead><tr><th></th><th>Present</th><th>Past</th></tr></thead><tbody>
+<tr><td>+ singular / uncountable</td><td><b>There is</b> (there's) a park. · <b>There is</b> some water.</td><td><b>There was</b> a party.</td></tr>
+<tr><td>+ plural</td><td><b>There are</b> two bedrooms.</td><td><b>There were</b> three people.</td></tr>
+<tr><td>–</td><td>There <b>isn't</b> a cinema. · There <b>aren't any</b> shops.</td><td>There <b>wasn't</b> a lift. · There <b>weren't any</b> windows.</td></tr>
+<tr><td>?</td><td><b>Is there</b> a bank near here? · <b>Are there any</b> restaurants?</td><td><b>Was there</b> a problem? · <b>Were there any</b> tickets?</td></tr>
+</tbody></table></div>
+<p><b>Short answers:</b> Is there a lift? → <i>Yes, there <b>is</b>.</i> / <i>No, there <b>isn't</b>.</i> · Are there any shops? → <i>Yes, there <b>are</b>.</i> / <i>No, there <b>aren't</b>.</i></p>
+<p><b>Some / any / a lot of:</b> <i>some</i> in positive sentences ("There are some books"), <i>any</i> in negatives and questions ("There aren't any books. Are there any books?"), <i>a lot of</i> for large quantities. <b>How many</b> (countable) / <b>how much</b> (uncountable): "How many bedrooms are there?" "How much milk is there?"</p>
+<h3>3. Contrast: <i>It is</i> vs <i>There is</i></h3>
+<div class="grid g2">
+<div class="card c1"><b>There is…</b> introduces something new.<br>"<b>There is</b> a park near my house."</div>
+<div class="card c2"><b>It is…</b> describes something we already know.<br>"<b>It is</b> big and very green."</div>
+</div>
+<div class="box yelt"><b>Dica Brasil:</b> "Tem uma padaria aqui perto" is <b>There is a bakery near here</b> (not "Have a bakery"). We also say "My house <b>has</b> a garden" (possession) = "<b>There is</b> a garden at my house" (existence).</div>
+<h3>4. Common mistakes</h3>
+<div class="tbl"><table><thead><tr><th>✘ Wrong</th><th>✔ Right</th></tr></thead><tbody>
+<tr><td class="wrong">I have 25 years.</td><td class="ok">I'm 25 (years old).</td></tr>
+<tr><td class="wrong">Have a park near my house.</td><td class="ok">There is a park near my house.</td></tr>
+<tr><td class="wrong">There is three chairs.</td><td class="ok">There are three chairs.</td></tr>
+<tr><td class="wrong">Is a cat in the garden?</td><td class="ok">Is there a cat in the garden?</td></tr>
+<tr><td class="wrong">There are some milk.</td><td class="ok">There is some milk. (uncountable)</td></tr>
+<tr><td class="wrong">Are you tired? Yes, I'm.</td><td class="ok">Yes, I am.</td></tr>
+</tbody></table></div>`,
+reading:{title:'Welcome to My Neighbourhood',audio:'r1-reading',text:`My name is Marta, and I am a nurse. I'm 29 years old and I'm from Porto Alegre, but now I live in a small apartment in São Paulo. My neighbourhood is quiet and friendly. <mark data-d="there is: shows that something exists">There is</mark> a bakery on the corner, and there are two supermarkets near my building. There isn't a cinema, but there is a big park with a lake. On Sundays, there are always many families there. Ten years ago, the neighbourhood <mark data-d="was: past of am / is">was</mark> very different. There weren't any cafés and the streets were dirty. Now there are lots of shops and the people are happier. My favourite place is the library. It's old, but it's beautiful, and the librarians are very kind. Are there places like this where you live?`,
+ q:[["Where does Marta live now?","In a small apartment in São Paulo."],["Is there a cinema in her neighbourhood?","No, there isn't."],["What was different ten years ago?","There weren't any cafés and the streets were dirty."],["What is Marta's favourite place and why?","The library, because it's old but beautiful and the librarians are kind."]]},
+listening:{audio:'l1-listening',title:"Lisa's new apartment",intro:'Tom asks Lisa about her new home.',script:`<b>Tom:</b> Hi Lisa! How's your new apartment?<br><b>Lisa:</b> It's great! It's small, but it's very bright. There are two bedrooms and a balcony.<br><b>Tom:</b> Is there a washing machine?<br><b>Lisa:</b> Yes, there is, but there isn't a dishwasher.<br><b>Tom:</b> Are there any shops nearby?<br><b>Lisa:</b> Yes! There's a supermarket and there are three restaurants on my street.<br><b>Tom:</b> And how are the neighbours?<br><b>Lisa:</b> They're really nice. Last week there was a party on the roof, and everyone was friendly.<br><b>Tom:</b> That sounds wonderful. Where were you before this apartment?<br><b>Lisa:</b> I was in a tiny studio. There weren't any windows in the kitchen!`,
+ q:[["How many bedrooms are there in Lisa's apartment?","Two."],["Is there a dishwasher?","No, there isn't."],["What is near Lisa's building?","A supermarket and three restaurants."],["What was there on the roof last week?","A party."],["What was wrong with her old studio?","There weren't any windows in the kitchen."]]},
+practice:[
+{t:'mc',title:'Choose the correct option.',items:[["She ___ from Chile.",["am","is","are"],1],["There ___ two windows in the kitchen.",["is","are","have"],1],["___ there a bank near here?",["Is","Are","Does"],0],["The keys ___ on the table yesterday.",["was","were","are"],1],["There ___ any milk in the fridge.",["isn't","aren't","hasn't"],0],["I ___ 30 years old.",["have","am","has"],1]]},
+{t:'gap',title:'Complete the sentences with <i>is, are, was, were</i> or a <i>there</i> form.',items:[["_ a lot of traffic in my city every morning.","There is|There's"],["My parents _ at home last night.","were"],["_ twelve students in my class.","There are"],["Ten years ago, _ any cafés in this street.","there weren't|there were not"],["_ a bakery near your house?","Is there"],["The film _ very long, so I fell asleep.","was"]]},
+{t:'fix',title:'Find the mistake and write the correct sentence.',items:[["I have 20 years old.","I am 20 years old.|I'm 20 years old.|I am 20.|I'm 20."],["Have a bakery near my house.","There is a bakery near my house.|There's a bakery near my house."],["There is three chairs in the room.","There are three chairs in the room."],["Is a cat in the garden?","Is there a cat in the garden?"],["Are you a student? Yes, I'm.","Yes, I am."]]},
+{t:'open',title:'Your turn: write 1 to 3 sentences for each.',items:[["Describe your neighbourhood. What is there? What isn't there?","There is a small market near my house and there are two schools. There isn't a cinema, but there is a big park."],["Where were you yesterday at 8 pm? How were you?","I was at home. I was tired because I was at work all day."],["Describe your bedroom: say five things that there are in it.","There is a bed and a desk. There are two windows, a lot of books and some plants."],["How was your city ten years ago? Use there was / there were.","Ten years ago, there wasn't a metro station here, and there were fewer shops."]]}
+]},
+{id:'b2',n:2,title:'Present Simple + Past Simple',sub:'Talk about routines, facts and finished events: now, yesterday and in the past.',
+theory:`
+<h3>1. Present Simple</h3>
+<div class="tbl"><table><thead><tr><th></th><th>Form</th><th>Example</th></tr></thead><tbody>
+<tr><td>+</td><td>I/you/we/they <b>work</b> · he/she/it <b>works</b></td><td>She <b>works</b> in a hospital.</td></tr>
+<tr><td>–</td><td><b>don't</b> / <b>doesn't</b> + base verb</td><td>He <b>doesn't like</b> fish.</td></tr>
+<tr><td>?</td><td><b>Do</b> / <b>Does</b> + subject + base verb</td><td><b>Does</b> she <b>work</b> here?</td></tr>
+</tbody></table></div>
+<p><b>Spelling of he/she/it:</b> work → work<b>s</b> · go → go<b>es</b> · watch → watch<b>es</b> · study → stud<b>ies</b> · play → play<b>s</b> (vowel + y).</p>
+<h4>Use it for…</h4>
+<ul>
+<li><b>Habits and routines:</b> "I take the bus every day."</li>
+<li><b>Facts and permanent situations:</b> "Water boils at 100°C." "She lives in Recife."</li>
+<li><b>Timetables:</b> "The train leaves at 7:15."</li>
+<li><b>States</b> (know, like, want, need): "I know the answer."</li>
+</ul>
+<p><b>Frequency adverbs:</b> always, usually, often, sometimes, rarely, never. They go <b>before</b> the main verb and <b>after</b> <i>be</i>: "I <b>usually</b> walk" · "She is <b>always</b> late."</p>
+<h3>2. Past Simple</h3>
+<div class="tbl"><table><thead><tr><th></th><th>Form</th><th>Example</th></tr></thead><tbody>
+<tr><td>+</td><td>verb + <b>-ed</b> (regular) or irregular form</td><td>I <b>worked</b> / I <b>went</b>.</td></tr>
+<tr><td>–</td><td><b>didn't</b> + base verb</td><td>I <b>didn't go</b>.</td></tr>
+<tr><td>?</td><td><b>Did</b> + subject + base verb</td><td><b>Did</b> you <b>see</b> it?</td></tr>
+</tbody></table></div>
+<p><b>Regular spelling:</b> work → work<b>ed</b> · live → live<b>d</b> · study → stud<b>ied</b> · stop → stop<b>ped</b>. <b>Pronunciation of -ed:</b> /t/ in <i>worked</i>, /d/ in <i>played</i>, /ɪd/ in <i>wanted</i>.</p>
+<div class="tbl"><table><thead><tr><th colspan="6">Common irregular verbs</th></tr></thead><tbody>
+<tr><td>be → was/were</td><td>go → went</td><td>have → had</td><td>do → did</td><td>see → saw</td><td>eat → ate</td></tr>
+<tr><td>drink → drank</td><td>buy → bought</td><td>take → took</td><td>make → made</td><td>come → came</td><td>get → got</td></tr>
+<tr><td>give → gave</td><td>write → wrote</td><td>say → said</td><td>meet → met</td><td>leave → left</td><td>find → found</td></tr>
+</tbody></table></div>
+<h4>Use it for…</h4>
+<ul><li><b>Finished actions at a definite time:</b> "I saw that film last night."</li><li><b>A sequence of events (a story):</b> "I woke up, had coffee and left."</li><li><b>Past habits or states that stopped:</b> "When I was a child, I played football every day."</li></ul>
+<p><b>Time expressions:</b> yesterday, last night / week / year, two days <b>ago</b>, in 2019, when I was young.</p>
+<h3>3. Contrast: Present Simple vs Past Simple</h3>
+<div class="grid g2">
+<div class="card c2"><b>Present</b> (now, always)<br>I <b>work</b> in a bank.<br>She <b>doesn't eat</b> meat.<br><b>Do</b> you <b>live</b> here?</div>
+<div class="card c1"><b>Past</b> (finished)<br>I <b>worked</b> in a bank for five years.<br>She <b>didn't eat</b> meat last night.<br><b>Did</b> you <b>live</b> here in 2020?</div>
+</div>
+<div class="box bluet"><b>Golden rule:</b> after <b>do / does / did / don't / doesn't / didn't</b> the main verb is always in the <b>base form</b>: "Did she <b>go</b>?" (not "Did she went?").</div>
+<h3>4. Common mistakes</h3>
+<div class="tbl"><table><thead><tr><th>✘ Wrong</th><th>✔ Right</th></tr></thead><tbody>
+<tr><td class="wrong">She don't like coffee.</td><td class="ok">She doesn't like coffee.</td></tr>
+<tr><td class="wrong">Did you went to school?</td><td class="ok">Did you go to school?</td></tr>
+<tr><td class="wrong">I didn't saw the film.</td><td class="ok">I didn't see the film.</td></tr>
+<tr><td class="wrong">He go to work by bus.</td><td class="ok">He goes to work by bus.</td></tr>
+<tr><td class="wrong">Yesterday I am tired.</td><td class="ok">Yesterday I was tired.</td></tr>
+<tr><td class="wrong">She works yesterday.</td><td class="ok">She worked yesterday.</td></tr>
+</tbody></table></div>`,
+reading:{title:'A Day in the Life: Then and Now',audio:'r2-reading',text:`Hi, I'm Leo and I work as a graphic designer. Every weekday I <mark data-d="wake up: stop sleeping (routine = present simple)">wake up</mark> at 6:30, have a quick breakfast and take the bus to the office. I usually start work at 8:00, and I never skip lunch. In the evening I go to the gym or I watch a series. At weekends I don't work, so I often see my friends. Last year my routine was very different. I worked from home and I didn't leave the house much. I woke up late, I ate in front of the computer and I felt tired all the time. Then, in March, I <mark data-d="found: past of find">found</mark> a new job in a bigger company. My boss gave me an interesting project and I moved to a flat near the office. It changed my life! I met new people, I learned new skills and I started to run in the park. Does my life sound busy? Maybe, but I love it.`,
+ q:[["What time does Leo wake up on weekdays?","At 6:30."],["Does he work at weekends?","No, he doesn't."],["What was Leo's routine like last year?","He worked from home, woke up late, ate in front of the computer and felt tired."],["Why did his life change?","He found a new job in a bigger company and moved near the office."]]},
+listening:{audio:'l2-listening',title:'My weekend',intro:'Rita talks about her weekends: what she usually does and what she did last Saturday.',script:`Hi everyone! I'm Rita and today I want to talk about my weekend. On Saturdays I usually wake up late and I don't cook breakfast. I go to the market and I buy fruit and bread. Last Saturday, however, I did something different. I woke up at six, I took the train to the coast and I spent the whole day on the beach. I didn't take my phone, so nobody called me! In the evening I met my cousins and we ate fish at a small restaurant. On Sundays I always visit my grandmother. She lives near the park and she makes great coffee. Yesterday she told me an old story about her childhood. I loved it.`,
+ q:[["True or false? Rita usually wakes up early on Saturdays.","False. She usually wakes up late."],["True or false? Last Saturday she went to the coast by train.","True."],["True or false? She took her phone to the beach.","False. She didn't take it."],["What did she eat in the evening?","Fish, at a small restaurant."],["Who does she visit on Sundays?","Her grandmother."]]},
+practice:[
+{t:'mc',title:'Choose the correct option.',items:[["She ___ coffee every morning.",["drink","drinks","drinking"],1],["He ___ to the gym yesterday.",["go","goes","went"],2],["___ you like pizza?",["Do","Does","Did"],0],["I didn't ___ the film.",["see","saw","seen"],0],["They ___ in London in 2019.",["live","lived","lives"],1],["What time ___ the train leave? (timetable)",["do","does","did"],1]]},
+{t:'gap',title:'Write the correct form of the verb in brackets, or the missing word.',items:[["She _ (work) in a hospital. She loves it.","works"],["Yesterday we _ (watch) a great film.","watched"],["He _ (not / like) fish, so he never orders it.","doesn't like|does not like"],["_ you go to the party last Saturday?","Did"],["I _ (buy) these shoes two weeks ago.","bought"],["What time _ the shop open on Sundays?","does"],["They _ (not / see) the news yesterday.","didn't see|did not see"],["My sister _ (study) English at night.","studies"]]},
+{t:'fix',title:'Transform the sentences as shown.',items:[["He plays football on Saturdays. (negative)","He doesn't play football on Saturdays.|He does not play football on Saturdays."],["She lives in Recife. (question)","Does she live in Recife?"],["We visited our grandparents. (negative)","We didn't visit our grandparents.|We did not visit our grandparents."],["They went to the cinema. (question)","Did they go to the cinema?"],["I eat breakfast at seven. (past)","I ate breakfast at seven."]]},
+{t:'open',title:'Your turn: write 2 or 3 sentences for each.',items:[["Describe your daily routine on a weekday.","I wake up at 6:30 and I take the bus to work. I usually have lunch at noon and I get home at 7."],["What did you do last weekend?","On Saturday I went to a birthday party. On Sunday I stayed at home and watched a film."],["Tell me about your first job or your first day at school.","I started my first job in 2018. I didn't know anyone, but my colleagues were friendly."],["Name something you never do, and something you did for the first time last year.","I never eat meat. Last year I travelled by plane for the first time."]]}
+]},
+{id:'b3',n:3,title:'Present Continuous + Past Continuous',sub:'Describe actions in progress: what is happening now and what was happening in the past.',
+theory:`
+<h3>1. Present Continuous</h3>
+<div class="tbl"><table><thead><tr><th></th><th>Form</th><th>Example</th></tr></thead><tbody>
+<tr><td>+</td><td>am / is / are + verb<b>-ing</b></td><td>She <b>is cooking</b> dinner.</td></tr>
+<tr><td>–</td><td>am not / isn't / aren't + verb-ing</td><td>They <b>aren't working</b> today.</td></tr>
+<tr><td>?</td><td>Am / Is / Are + subject + verb-ing?</td><td><b>What are</b> you <b>doing</b>?</td></tr>
+</tbody></table></div>
+<p><b>-ing spelling:</b> work → work<b>ing</b> · make → mak<b>ing</b> · run → run<b>ning</b> · lie → l<b>ying</b> · study → study<b>ing</b>.</p>
+<h4>Use it for…</h4>
+<ul>
+<li><b>Actions happening now:</b> "Be quiet! The baby <b>is sleeping</b>."</li>
+<li><b>Temporary situations (around now):</b> "This week I'<b>m working</b> from home."</li>
+<li><b>Changing situations:</b> "Prices <b>are rising</b>."</li>
+<li><b>Future arrangements:</b> "I'<b>m meeting</b> Julia at 7 tonight."</li>
+<li><b>Annoying habits with <i>always</i>:</b> "He <b>is always losing</b> his keys!"</li>
+</ul>
+<p><b>Time expressions:</b> now, right now, at the moment, today, this week, currently.</p>
+<div class="box yelt"><b>Stative verbs</b> (know, like, love, hate, want, need, believe, understand, prefer, have for possession) are <b>not</b> normally used in the continuous: "I <b>know</b> the answer" (not "I'm knowing"). But "I'm <b>having</b> lunch" is fine (action).</div>
+<h4>Present Simple vs Present Continuous</h4>
+<div class="tbl"><table><thead><tr><th>Present Simple</th><th>Present Continuous</th></tr></thead><tbody>
+<tr><td>I <b>drink</b> coffee every morning. (habit)</td><td>I'<b>m drinking</b> coffee now. (action in progress)</td></tr>
+<tr><td>She <b>lives</b> in Recife. (permanent)</td><td>She'<b>s living</b> with her sister this month. (temporary)</td></tr>
+</tbody></table></div>
+<h3>2. Past Continuous</h3>
+<div class="tbl"><table><thead><tr><th></th><th>Form</th><th>Example</th></tr></thead><tbody>
+<tr><td>+</td><td>was / were + verb-ing</td><td>I <b>was cooking</b>.</td></tr>
+<tr><td>–</td><td>wasn't / weren't + verb-ing</td><td>They <b>weren't listening</b>.</td></tr>
+<tr><td>?</td><td>Was / Were + subject + verb-ing?</td><td><b>Where were</b> you <b>going</b>?</td></tr>
+</tbody></table></div>
+<h4>Use it for…</h4>
+<ul>
+<li><b>An action in progress at a specific moment in the past:</b> "At 8 pm yesterday I <b>was cooking</b>."</li>
+<li><b>The background of a story:</b> "It <b>was raining</b> and people <b>were running</b>."</li>
+<li><b>A longer action interrupted by a shorter one:</b> "I <b>was walking</b> home when I <b>saw</b> an accident."</li>
+<li><b>Two actions at the same time:</b> "While I <b>was cooking</b>, he <b>was watching</b> TV."</li>
+</ul>
+<h3>3. Contrast: Past Simple vs Past Continuous</h3>
+<div class="tl"><div class="tl-l">longer action</div><div class="tl-bar"><span>I was walking home…</span><i class="tl-now"></i></div><div class="tl-n">…when I <b>saw</b> an accident.<br><small>short action (past simple)</small></div></div>
+<div class="grid g2">
+<div class="card c1"><b>Past Simple</b> = a complete event.<br>"I <b>read</b> the book." (I finished it.)<br>"When I <b>arrived</b>, they <b>left</b>." (first I arrived, then they left)</div>
+<div class="card c2"><b>Past Continuous</b> = an action in progress.<br>"I <b>was reading</b> the book." (in the middle of it)<br>"When I <b>arrived</b>, they <b>were having</b> lunch." (they were already eating)</div>
+</div>
+<div class="box bluet"><b>When / While:</b> <b>while</b> + past continuous (a long action): "While I <b>was walking</b>…" · <b>when</b> + past simple (a short event): "…when it <b>started</b> to rain."</div>
+<h3>4. Common mistakes</h3>
+<div class="tbl"><table><thead><tr><th>✘ Wrong</th><th>✔ Right</th></tr></thead><tbody>
+<tr><td class="wrong">I was go to work.</td><td class="ok">I was going to work.</td></tr>
+<tr><td class="wrong">I'm knowing the answer.</td><td class="ok">I know the answer.</td></tr>
+<tr><td class="wrong">He is work now.</td><td class="ok">He is working now.</td></tr>
+<tr><td class="wrong">While I walked, I was seeing a fox.</td><td class="ok">While I was walking, I saw a fox.</td></tr>
+<tr><td class="wrong">When I was arriving, they ate.</td><td class="ok">When I arrived, they were eating.</td></tr>
+</tbody></table></div>`,
+reading:{title:'A Strange Evening',audio:'r3-reading',text:`Last Friday I <mark data-d="was walking: past continuous = action in progress">was walking</mark> home from work when it <mark data-d="started: past simple = short event">started</mark> to rain. I was carrying my laptop, but I didn't have an umbrella, so I was running to the bus stop. While I was waiting for the bus, I noticed an old man. He was sitting alone on a bench and he was holding a small cat. The cat was shaking because it was cold. I took off my jacket and put it over the cat. The man smiled and said, "Thank you. I'm waiting for my daughter. She's coming to pick us up." A few minutes later, a car stopped and a young woman got out. She was laughing and crying at the same time. "Dad! Why are you sitting here in the rain? We're looking for you everywhere!" When I finally got on the bus, I was wet, but I was happy.`,
+ q:[["What was the writer doing when it started to rain?","Walking home from work."],["What was the old man holding?","A small cat."],["Why was the cat shaking?","Because it was cold."],["Who was the old man waiting for?","His daughter."]]},
+listening:{audio:'l3-listening',title:'What were you doing?',intro:'A police officer asks Mr Lopes about last night.',script:`<b>Officer:</b> Good morning, Mr Lopes. Where were you last night at nine o'clock?<br><b>Mr Lopes:</b> I was at home. I was cooking dinner.<br><b>Officer:</b> Was anyone with you?<br><b>Mr Lopes:</b> Yes, my sister was watching TV in the living room while I was cooking.<br><b>Officer:</b> Did you hear anything strange?<br><b>Mr Lopes:</b> Yes. While we were eating, we heard a loud noise outside. I looked out of the window and I saw two men. They were running down the street.<br><b>Officer:</b> What were they carrying?<br><b>Mr Lopes:</b> I don't know. It was dark and it was raining.<br><b>Officer:</b> Thank you. Are you working this week?<br><b>Mr Lopes:</b> Yes, I'm working from home, so I'm here all day.`,
+ q:[["Where was Mr Lopes at nine o'clock?","At home."],["What was he doing?","Cooking dinner."],["What was his sister doing?","Watching TV in the living room."],["What did they hear while they were eating?","A loud noise outside."],["What were the two men doing?","Running down the street."],["What is Mr Lopes doing this week?","Working from home."]]},
+practice:[
+{t:'mc',title:'Choose the correct option.',items:[["Please be quiet! The baby ___.",["sleeps","is sleeping","sleeping"],1],["I ___ the answer, I'm sure.",["know","am knowing","was knowing"],0],["At 9 pm last night, I ___ a series.",["watched","was watching","am watching"],1],["She was cooking when the phone ___.",["rang","was ringing","rings"],0],["___ you working this week?",["Do","Are","Did"],1],["While he was driving, his children ___ in the back.",["slept","were sleeping","sleeping"],1]]},
+{t:'gap',title:'Write the correct form of the verb in brackets, or the missing word.',items:[["Look! It _ (snow).","is snowing"],["I usually take the bus, but today I _ (walk) to work.","am walking|'m walking"],["At eight o'clock yesterday, we _ (have) dinner.","were having"],["He _ (not / listen) when the teacher called his name.","wasn't listening|was not listening"],["What _ you doing when I called?","were"],["My brother _ (always / lose) his keys!","is always losing|'s always losing"],["I _ (wait) for the bus when I saw an old friend.","was waiting"],["They _ (not / work) today because it's a holiday.","aren't working|are not working"]]},
+{t:'gap',title:'Write <i>when</i> or <i>while</i>.',items:[["I was reading _ the lights went out.","when"],["_ she was cooking, he was setting the table.","While"],["We were walking in the park _ it started to rain.","when"],["He fell asleep _ he was watching TV.","while"],["_ I arrived, they were having lunch.","When"]]},
+{t:'open',title:'Your turn: write 1 or 2 sentences for each.',items:[["What are you doing right now? And what are you doing this week that is different from usual?","I'm studying English right now. This week I'm working from home."],["What were you doing at 8 pm yesterday?","At 8 pm I was watching a series and eating dinner."],["Tell about a time when something interrupted you (use when / while).","I was cooking when my neighbour knocked on the door."],["What is something that is changing in your city or your life?","My city is growing fast and a lot of new buildings are appearing."]]}
+]},
+{id:'b4',n:4,title:'Putting It All Together',sub:'Choose the right tense every time: review, contrast and free practice with everything you learned.',
+theory:`
+<h3>1. Which tense? A decision guide</h3>
+<div class="tbl"><table><thead><tr><th>Ask yourself…</th><th>Use…</th><th>Signal words</th><th>Example</th></tr></thead><tbody>
+<tr><td>Who/what is it? Where is it? How is it?</td><td><b>To be</b></td><td>age, job, place, feeling</td><td>She <b>is</b> a doctor. They <b>were</b> late.</td></tr>
+<tr><td>Does it exist? Is it in a place?</td><td><b>There is / are / was / were</b></td><td>some, any, a lot of</td><td><b>There are</b> three parks.</td></tr>
+<tr><td>Is it a habit, a fact or a state?</td><td><b>Present Simple</b></td><td>every day, usually, never</td><td>I <b>work</b> in a bank.</td></tr>
+<tr><td>Is it happening now, or around now?</td><td><b>Present Continuous</b></td><td>now, at the moment, this week</td><td>I'<b>m working</b> from home.</td></tr>
+<tr><td>Did it finish in the past?</td><td><b>Past Simple</b></td><td>yesterday, last week, ago</td><td>I <b>worked</b> there in 2019.</td></tr>
+<tr><td>Was it in progress at a past moment, or is it the background?</td><td><b>Past Continuous</b></td><td>at 8 pm, while, when</td><td>I <b>was working</b> when you called.</td></tr>
+</tbody></table></div>
+<h3>2. The same verb, six meanings</h3>
+<div class="grid g3">
+<div class="card c1"><b>Present Simple</b><br>I <b>work</b> in a bank.<br><span class="hint">my job, in general</span></div>
+<div class="card c2"><b>Present Continuous</b><br>I'<b>m working</b> now.<br><span class="hint">at this moment</span></div>
+<div class="card c3"><b>Past Simple</b><br>I <b>worked</b> there for five years.<br><span class="hint">finished</span></div>
+<div class="card c4"><b>Past Continuous</b><br>I <b>was working</b> when you called.<br><span class="hint">in progress, interrupted</span></div>
+<div class="card c1"><b>To be</b><br>It <b>was</b> a long day. I'<b>m</b> tired.<br><span class="hint">states and descriptions</span></div>
+<div class="card c2"><b>There is / was</b><br><b>There was</b> a lot of work. <b>There is</b> a deadline.<br><span class="hint">what exists</span></div>
+</div>
+<h3>3. Five-second checklist before you speak or write</h3>
+<ol>
+<li>Is the action <b>finished</b> or <b>in progress</b>? (simple or continuous)</li>
+<li>Is it <b>now</b> or <b>past</b>? Look for time words.</li>
+<li>Is it a <b>state</b> (know, like, want)? Then avoid the continuous.</li>
+<li>After <b>do / does / did</b>, use the <b>base verb</b>.</li>
+<li>Are you saying something <b>exists</b>? Use <b>there is / there are</b>, not "have".</li>
+</ol>
+<div class="box yelt"><b>Dica Brasil:</b> in English the subject is always necessary ("It's raining", "There is a problem") and the verb must agree: <i>she goes</i>, <i>they were</i>, <i>there are</i>.</div>`,
+reading:{title:'Greetings from Lisbon',audio:'r4-reading',text:`Hi Carla! Greetings from Lisbon! I'm writing this message from a small café near the river. It's sunny and <mark data-d="there are: shows that things exist (plural)">there are</mark> a lot of tourists. Yesterday we <mark data-d="visited: past simple = finished action">visited</mark> the castle. We <mark data-d="were taking: past continuous = action in progress">were taking</mark> photos when it started to rain, so we ran into a museum. There was an interesting exhibition about the history of the city. I usually don't like museums, but I really enjoyed this one. At the moment, my friends are shopping, but I'm drinking coffee and writing to you. Tomorrow we're taking a train to Porto. Do you want to come? Write soon! Marco.`,
+ q:[["Where is Marco now?","In a small café near the river in Lisbon."],["What were they doing when it started to rain?","They were taking photos."],["Does Marco usually like museums?","No, he doesn't (but he enjoyed this one)."],["What are they doing tomorrow?","They're taking a train to Porto."]]},
+listening:{audio:'l4-listening',title:'A voicemail from the airport',intro:'Pedro leaves a message for his friend Marta.',script:`Hi Marta, it's Pedro. I'm calling from the airport. My flight is delayed, so I'm sitting in a café and drinking a very bad coffee. There are a lot of people here, and the line is huge! Yesterday I was packing my suitcase when I realised that I didn't have my passport. I looked everywhere. Finally, I found it in my jacket pocket! I usually don't forget things, but this week I'm really tired because I'm working long hours. Anyway, I'm landing in Madrid at six. Can you pick me up? There's a bus, but I don't want to take it. Call me back! Thanks.`,
+ q:[["Where is Pedro now?","At the airport, in a café."],["Why is he sitting in a café?","His flight is delayed."],["What was he doing when he realised he didn't have his passport?","He was packing his suitcase."],["Where did he find his passport?","In his jacket pocket."],["Why is he tired this week?","He's working long hours."],["What does he want Marta to do?","Pick him up at the airport."]]},
+practice:[
+{t:'mc',title:'Choose the correct option.',items:[["My father ___ in a bank for thirty years. Now he's retired.",["works","worked","was working"],1],["Water ___ at 100°C.",["boils","is boiling","boiled"],0],["I ___ TV when the power went out.",["watched","was watching","watch"],1],["Ten years ago there ___ a cinema in this street.",["is","was","were"],1],["We ___ to Spain last summer.",["go","went","were going"],1],["Listen! Someone ___ at the door.",["knocks","knocked","is knocking"],2],["___ there any eggs in the fridge?",["Is","Are","Does"],1],["At the moment I ___ a book about history.",["read","am reading","was reading"],1]]},
+{t:'gap',title:'Complete the text with the correct form of the verbs in brackets.',items:[["Last weekend I _ (visit) my grandparents.","visited"],["They _ (live) in a small village.","live"],["Their farm is big and there _ (be) a lot of animals.","are"],["When we _ (arrive), my grandfather was feeding the chickens.","arrived"],["My grandfather _ (feed) the chickens when we arrived.","was feeding"],["My grandmother always _ (cook) delicious food on Sundays.","cooks"],["This time she _ (make) a chocolate cake.","made"],["While we _ (eat), it started to rain.","were eating"],["While we were eating, it _ (start) to rain.","started"],["So we _ (stay) inside and played cards.","stayed"]]},
+{t:'fix',title:'Find the mistake and write the correct sentence.',items:[["I am knowing the answer.","I know the answer."],["She go to work by bus every day.","She goes to work by bus every day."],["While I walked, I was seeing a fox.","While I was walking, I saw a fox."],["Did you went to school yesterday?","Did you go to school yesterday?"],["There was three people in the queue.","There were three people in the queue."],["He doesn't working today.","He isn't working today.|He is not working today."]]},
+{t:'open',title:'Write a message of 100 to 120 words to your teacher about your holiday. Include: where you are (there is/are), what you usually do (present simple), what you did yesterday (past simple), what you were doing when something happened (past continuous) and what you are doing now (present continuous).',items:[["Your message","Hi teacher! I'm at the beach and it's very sunny. There are a lot of people here. I usually wake up early, but on holiday I wake up late. Yesterday I went to a small town and I bought some gifts. I was walking to the bus stop when it started to rain, so I ran into a café. At the moment I'm drinking a coffee and I'm writing to you. See you soon!"]]},
+{t:'open',title:'Speaking: record a voice message of about 2 minutes on your phone telling a story from your last holiday. Listen to it and write down two mistakes you can correct.',items:[["Two mistakes I found and how I corrected them","Example: I said 'I go to the beach yesterday'. Correct: 'I went to the beach yesterday.'"]]}
+]}
+];
+
+const L='ABCDE';
+function exHTML(b,ei,e){
+  const id=`${b.id}p${ei}`; let h=`<div class="ex"><div class="exh"><b>${L[ei]}</b><span>${e.title}</span></div>`;
+  e.items.forEach((it,i)=>{ const k=`${id}i${i}`;
+    if(e.t==='mc') h+=`<div class="item"><span class="no">${i+1}</span><span class="q">${it[0].replace('___','_____')}</span><div class="opts" data-k="${k}">${it[1].map((o,j)=>`<button data-v="${'abc'[j]}" aria-pressed="false">${'abc'[j]}  ${o}</button>`).join('')}</div></div>`;
+    else if(e.t==='gap') h+=`<div class="item"><span class="no">${i+1}</span><span class="q">${it[0].replace('_',`<input class="ans" style="width:150px" data-k="${k}" autocomplete="off">`)}</span></div>`;
+    else if(e.t==='fix') h+=`<div class="item"><span class="no">${i+1}</span><span class="q"><span class="wrong">${it[0]}</span><br><input class="ans w" data-k="${k}" autocomplete="off" placeholder="Write the correct sentence"></span></div>`;
+    else h+=`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${it[0]}</p><textarea data-k="${k}" aria-label="Answer ${i+1}" style="min-height:${e.items.length===1?150:70}px"></textarea></div>`; });
+  return h+'</div>';
+}
+function blockHTML(b){
+  const r=b.reading, l=b.listening;
+  return `<section id="${b.id}" class="blk"><div class="tab"><b>${b.n}</b><span>Block ${b.n}</span><em>about 60 min</em></div><h2>${b.title}</h2><p class="sub">${b.sub}</p>
+  <div class="chips" aria-label="Block progress"><label><input type="checkbox" data-done="${b.id}-t"> 1 Theory</label><label><input type="checkbox" data-done="${b.id}-r"> 2 Reading</label><label><input type="checkbox" data-done="${b.id}-l"> 3 Listening</label><label><input type="checkbox" data-done="${b.id}-p"> 4 Practice</label></div>
+  <h3><span class="stepno">1</span> Theory <span class="hint">· 20 min</span></h3><div class="theory">${b.theory}</div>
+  <h3><span class="stepno">2</span> Reading: ${r.title} <span class="hint">· 10 min</span></h3>
+  <div class="steps"><b class="t">What to do</b><ol><li>Read the text once without stopping. Tap the highlighted words to see how the grammar works.</li><li>Read it again, underline the verbs from this block, and listen to the audio (optional).</li><li>Answer the questions in full sentences.</li></ol></div>
+  <div class="audio"><span class="n">🎧</span><span class="t">Listen to the text (optional)</span><audio controls preload="none" src="audio/${r.audio}.mp3"></audio></div>
+  <div class="text">${r.text}</div><p class="hint" data-def>Highlighted words: tap one to see its meaning.</p>
+  <div class="ex"><div class="exh"><b>R</b><span>Reading questions</span></div>${r.q.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea data-k="${b.id}r${i}" aria-label="Answer ${i+1}"></textarea></div>`).join('')}</div>
+  <h3><span class="stepno">3</span> Listening: ${l.title} <span class="hint">· 10 min</span></h3>
+  <p>${l.intro}</p>
+  <div class="steps"><b class="t">What to do</b><ol><li>Read the questions first. Then press play and listen <b>without</b> reading the script.</li><li>Listen again and answer the questions.</li><li>Open the script and check. Then <b>read it aloud</b> to practise your pronunciation.</li></ol></div>
+  <div class="audio"><span class="n">🎧</span><span class="t">${l.title}</span><audio controls preload="none" src="audio/${l.audio}.mp3"></audio></div>
+  <div class="tts"><b>No audio?</b> Ask a friend to read the script aloud, read it aloud yourself, or paste it into a text-to-speech tool (see the start of this guide).</div>
+  <div class="ex"><div class="exh"><b>L</b><span>Listening questions</span></div>${l.q.map((q,i)=>`<div class="item" style="display:block"><p><span class="no" style="display:inline-block;margin-right:8px">${i+1}</span>${q[0]}</p><textarea data-k="${b.id}l${i}" aria-label="Answer ${i+1}" style="min-height:50px"></textarea></div>`).join('')}</div>
+  <details class="scr"><summary>Show the script (after you listen)</summary><p>${l.script}</p></details>
+  <h3><span class="stepno">4</span> Practice <span class="hint">· 20 min</span></h3>
+  <div class="steps"><b class="t">What to do</b><ol><li>Do the exercises in order. Do not look at the answers.</li><li>Write something in every box, even if you are not sure.</li><li>When you finish, go to the Answer Key at the end and correct your work.</li></ol></div>
+  ${b.practice.map((e,i)=>exHTML(b,i,e)).join('')}
+  <p class="hint">Finished? Tick the four boxes at the top of this block and check the <a href="#answers">Answer Key</a>.</p></section>`;
+}
+function keyHTML(b){
+  const ans=(e,it)=>e.t==='mc'?`${'abc'[it[2]]}) ${it[1][it[2]]}`:(e.t==='open'?it[1]:it[1].split('|')[0]+(it[1].includes('|')?` <span class="hint">(also: ${it[1].split('|').slice(1).join(' / ')})</span>`:''));
+  return `<details class="key" id="key-${b.id}"><summary>Block ${b.n} · ${b.title}</summary>
+  <h4>Reading questions</h4><ol>${b.reading.q.map(q=>`<li>${q[1]}</li>`).join('')}</ol>
+  <h4>Listening questions</h4><ol>${b.listening.q.map(q=>`<li>${q[1]}</li>`).join('')}</ol>
+  ${b.practice.map((e,i)=>`<h4>Exercise ${L[i]}${e.t==='open'?' (model answers; yours can be different)':''}</h4><ol>${e.items.map(it=>`<li>${ans(e,it)}</li>`).join('')}</ol>`).join('')}</details>`;
+}
+$('#blocks').innerHTML=BLOCKS.map(blockHTML).join('');
+$('#keys').innerHTML=BLOCKS.map(keyHTML).join('');
+$('#nav').innerHTML=[['start','Start']].concat(BLOCKS.map(b=>[b.id,'Block '+b.n])).concat([['end','Send'],['answers','Answers']]).map(s=>`<a href="#${s[0]}" data-t="${s[0]}">${s[1]}</a>`).join('');
+// persistence
+$$('textarea[data-k],input.ans[data-k]').forEach(el=>{el.value=store.get(el.dataset.k)||'';el.addEventListener('input',()=>store.set(el.dataset.k,el.value))});
+$$('.opts[data-k]').forEach(g=>{const v=store.get(g.dataset.k);if(v)$$('button',g).forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===v));g.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;$$('button',g).forEach(x=>x.setAttribute('aria-pressed','false'));b.setAttribute('aria-pressed','true');store.set(g.dataset.k,b.dataset.v)})});
+// progress
+const dones=$$('[data-done]');
+function prog(){const n=dones.filter(d=>d.checked).length;$('#pct').textContent=Math.round(n/dones.length*100)+'%';$('#progfill').style.width=(n/dones.length*100)+'%';$('#now').textContent=n+' of '+dones.length+' steps finished'}
+dones.forEach(d=>{d.checked=store.get('d-'+d.dataset.done)==='1';d.addEventListener('change',()=>{store.set('d-'+d.dataset.done,d.checked?'1':'0');prog()})});prog();
+$$('.text mark').forEach(m=>m.addEventListener('click',()=>{m.closest('section').querySelector('[data-def]').textContent=m.dataset.d}));
+const io=('IntersectionObserver' in window)?new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)$$('#nav a').forEach(a=>a.classList.toggle('on',a.dataset.t===e.target.id))})},{rootMargin:'-30% 0px -60% 0px'}):null;
+if(io)['start'].concat(BLOCKS.map(b=>b.id),['end','answers']).forEach(id=>{const el=document.getElementById(id);el&&io.observe(el)});
+document.addEventListener('play',e=>{if(e.target.tagName==='AUDIO')$$('audio').forEach(a=>a!==e.target&&a.pause())},true);
+// report
+const nm=$('#nm');nm.value=store.get('nm')||'';nm.addEventListener('input',()=>store.set('nm',nm.value));
+$('#rep').onclick=async()=>{
+  const out=['STUDY GUIDE: Verb Tenses','Name: '+(nm.value||'(no name)'),'Steps finished: '+dones.filter(d=>d.checked).length+' of '+dones.length];
+  BLOCKS.forEach(b=>{out.push('','=== BLOCK '+b.n+': '+b.title+' ===');
+    out.push('Reading answers:');b.reading.q.forEach((q,i)=>out.push((i+1)+'. '+(store.get(b.id+'r'+i)||'-')));
+    out.push('Listening answers:');b.listening.q.forEach((q,i)=>out.push((i+1)+'. '+(store.get(b.id+'l'+i)||'-')));
+    b.practice.forEach((e,ei)=>{out.push('Exercise '+L[ei]+':');e.items.forEach((it,i)=>{const v=store.get(b.id+'p'+ei+'i'+i)||'-';out.push((i+1)+'. '+(e.t==='mc'?(v==='-'?'-':v+') '+it[1]['abc'.indexOf(v)]):v))})})});
+  const txt=out.join('\n'),box=$('#repbox');box.value=txt;box.style.display='block';
+  try{await navigator.clipboard.writeText(txt);$('#repmsg').textContent='Copied ✓ Paste it in a message to your teacher.'}catch(_){box.select();$('#repmsg').textContent='Select the text below and copy it.'}
+};
+</script>
+
+</body>
+</html>
